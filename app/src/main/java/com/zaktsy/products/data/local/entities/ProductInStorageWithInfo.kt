@@ -1,4 +1,4 @@
-package com.zaktsy.products.data.local
+package com.zaktsy.products.data.local.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation

@@ -1,4 +1,4 @@
-package com.zaktsy.products.data.local
+package com.zaktsy.products.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
