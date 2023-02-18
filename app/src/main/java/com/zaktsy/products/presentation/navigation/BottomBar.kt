@@ -3,7 +3,9 @@ package com.zaktsy.products.presentation.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -18,26 +20,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun BottomBar(navController: NavController, bottomBarState: MutableState<Boolean>) {
+fun BottomBar(
+    navController: NavController,
+    bottomBarState: MutableState<Boolean>,
+    scrollState: LazyListState
+) {
     val items = listOf(
         NavigationItem.Products,
         NavigationItem.ShoppingList
     )
 
     AnimatedVisibility(
-        visible = bottomBarState.value,
+        visible = bottomBarState.value && scrollState.firstVisibleItemIndex == 0,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
         content = {
             NavigationBar(
                 modifier = Modifier
+                    .height(100.dp)
                     .padding(10.dp)
                     .clip(RoundedCornerShape(24.dp)),
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -71,14 +74,4 @@ fun BottomBar(navController: NavController, bottomBarState: MutableState<Boolean
             }
         }
     )
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewBottomBar(){
-
-    val navController = rememberNavController()
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-
-    BottomBar(navController, bottomBarState)
 }
