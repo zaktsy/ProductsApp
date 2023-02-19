@@ -31,7 +31,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class, DelicateCoroutinesApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpandableSearch(
     expanded: Boolean, scrollState: LazyListState
@@ -66,7 +66,6 @@ fun ExpandableSearch(
                         contentDescription = "Search",
                         modifier = Modifier.weight(1f)
                     )
-
                     TextField(
                         singleLine = true,
                         modifier = Modifier.weight(6f),

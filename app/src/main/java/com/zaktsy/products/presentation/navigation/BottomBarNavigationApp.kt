@@ -12,10 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.zaktsy.products.presentation.screens.AddProductScreen
-import com.zaktsy.products.presentation.screens.ProductsScreen
-import com.zaktsy.products.presentation.screens.SettingsScreen
-import com.zaktsy.products.presentation.screens.ShoppingListScreen
+import com.zaktsy.products.presentation.screens.*
 import com.zaktsy.products.ui.theme.ProductsTheme
 
 @Composable
@@ -42,6 +39,9 @@ fun BottomBarAnimationApp() {
             NavigationRoutes.Settings -> {
                 bottomBarState.value = true
             }
+            NavigationRoutes.Categories -> {
+                bottomBarState.value = false
+            }
         }
 
         Scaffold(modifier = Modifier.navigationBarsPadding(), bottomBar = {
@@ -56,24 +56,19 @@ fun BottomBarAnimationApp() {
                 startDestination = NavigationItem.Products.route,
             ) {
                 composable(NavigationItem.Products.route) {
-                    ProductsScreen(
-                        navController = navController, scrollState = scrollState
-                    )
+                    ProductsScreen(navController = navController, scrollState = scrollState)
                 }
                 composable(NavigationItem.ShoppingList.route) {
-                    ShoppingListScreen(
-                        navController = navController
-                    )
+                    ShoppingListScreen(navController = navController)
                 }
                 composable(NavigationItem.AddProduct.route) {
-                    AddProductScreen(
-                        navController = navController
-                    )
+                    AddProductScreen(navController = navController)
                 }
                 composable(NavigationItem.Settings.route) {
-                    SettingsScreen(
-                        navController = navController
-                    )
+                    SettingsScreen(navController = navController)
+                }
+                composable(NavigationItem.Categories.route) {
+                    CategoriesScreen(navController = navController, scrollState = scrollState)
                 }
             }
         })

@@ -6,5 +6,6 @@ sealed class NavigationRoutes{
         const val ShoppingList = "shopping_list"
         const val AddProduct = "add_product"
         const val Settings = "settings"
+        const val Categories = "categories"
     }
 }
