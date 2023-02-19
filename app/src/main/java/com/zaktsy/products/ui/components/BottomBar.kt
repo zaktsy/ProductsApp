@@ -30,7 +30,8 @@ fun BottomBar(
 ) {
     val items = listOf(
         NavigationItem.Products,
-        NavigationItem.ShoppingList
+        NavigationItem.ShoppingList,
+        NavigationItem.Settings
     )
 
     AnimatedVisibility(
@@ -52,11 +53,7 @@ fun BottomBar(
                 items.forEach { item ->
                     NavigationBarItem(
                         icon = {
-                            //Icon(
-                             //   painter = painterResource(id = item.icon),
-                             //   contentDescription = item.title
-                            //)
-                            Icon(Icons.Filled.ShoppingCart, contentDescription = stringResource(id = item.title))
+                            Icon(item.icon, contentDescription = stringResource(id = item.title))
                         },
                         label = { Text( text = stringResource(id = item.title))},
                         selected = currentRoute == item.route,

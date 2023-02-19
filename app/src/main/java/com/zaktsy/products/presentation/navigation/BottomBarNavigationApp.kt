@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.presentation.screens.AddProductScreen
 import com.zaktsy.products.presentation.screens.ProductsScreen
+import com.zaktsy.products.presentation.screens.SettingsScreen
 import com.zaktsy.products.presentation.screens.ShoppingListScreen
 import com.zaktsy.products.ui.theme.ProductsTheme
 
@@ -37,6 +38,9 @@ fun BottomBarAnimationApp() {
             }
             NavigationRoutes.AddProduct -> {
                 bottomBarState.value = false
+            }
+            NavigationRoutes.Settings -> {
+                bottomBarState.value = true
             }
         }
 
@@ -63,7 +67,12 @@ fun BottomBarAnimationApp() {
                 }
                 composable(NavigationItem.AddProduct.route) {
                     AddProductScreen(
-                        navController = navController,
+                        navController = navController
+                    )
+                }
+                composable(NavigationItem.Settings.route) {
+                    SettingsScreen(
+                        navController = navController
                     )
                 }
             }
