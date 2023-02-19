@@ -32,7 +32,7 @@ fun ProductsScreen(
             myItems.add("Item $it")
         }
         Column() {
-            ExpandableSearch(false)
+            ExpandableSearch(false, scrollState)
             LazyColumn(
                 state = scrollState,
             ) {

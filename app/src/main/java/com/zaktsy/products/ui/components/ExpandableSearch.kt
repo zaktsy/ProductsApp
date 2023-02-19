@@ -6,6 +6,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zaktsy.products.R
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpandableSearch(
-    expanded: Boolean
+    expanded: Boolean,
+    scrollState: LazyListState
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     val rotationState by animateFloatAsState(if (expandedState) 180f else 0f)
@@ -90,7 +91,7 @@ fun ExpandableSearch(
                     )
                 }
             }
-            AnimatedVisibility(visible = expandedState) {
+            AnimatedVisibility(visible = expandedState && scrollState.firstVisibleItemIndex == 0) {
                 Column(modifier = Modifier.animateContentSize(
                     animationSpec = tween(
                         durationMillis = 400,
@@ -157,11 +158,4 @@ fun ExpandableSearch(
             }
         }
     }
-}
-
-
-@Composable
-@Preview
-fun PreviewExpandableSearch() {
-    ExpandableSearch(true)
 }
