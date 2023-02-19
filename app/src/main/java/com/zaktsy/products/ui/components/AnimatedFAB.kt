@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.zaktsy.products.presentation.navigation.NavigationRoutes
 
 @Composable
 fun AnimatedFAB(
     navController: NavController,
-    scrollState: LazyListState
+    scrollState: LazyListState,
+    navigationRoute: String
 ) {
     AnimatedVisibility(
         visible = scrollState.firstVisibleItemIndex == 0,
@@ -27,7 +27,7 @@ fun AnimatedFAB(
         content = {
             FloatingActionButton(
                 modifier = Modifier.padding(0.dp,0.dp,0.dp,90.dp),
-                onClick = { navController.navigate(NavigationRoutes.AddProduct) },
+                onClick = { navController.navigate(navigationRoute) },
                 backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 shape = RoundedCornerShape(16.dp),
