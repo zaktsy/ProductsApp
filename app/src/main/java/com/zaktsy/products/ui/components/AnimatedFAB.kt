@@ -14,14 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 
 @Composable
 fun AnimatedFAB(
-    navController: NavController,
     scrollState: LazyListState,
-    navigationRoute: String,
-    bottomPadding: Dp
+    bottomPadding: Dp,
+    onClickAction: () -> Unit
 ) {
     AnimatedVisibility(
         visible = scrollState.firstVisibleItemIndex == 0,
@@ -32,7 +30,7 @@ fun AnimatedFAB(
                 modifier = Modifier
                     .padding(bottom = bottomPadding)
                     .size(70.dp),
-                onClick = { navController.navigate(navigationRoute) },
+                onClick = { onClickAction() },
                 backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 shape = RoundedCornerShape(16.dp),

@@ -24,11 +24,9 @@ import com.zaktsy.products.ui.components.ExpandableSearch
 fun ProductsScreen(
     navController: NavController, scrollState: LazyListState
 ) {
-    Scaffold(
-        floatingActionButton = {
-            AnimatedFAB(navController, scrollState, NavigationRoutes.AddProduct, 90.dp)
-        }
-    ) {
+    Scaffold(floatingActionButton = {
+        AnimatedFAB(scrollState, 90.dp) { navController.navigate(NavigationRoutes.AddProduct) }
+    }) {
         val myItems = mutableListOf<String>()
         repeat(40) {
             myItems.add("Item $it")
