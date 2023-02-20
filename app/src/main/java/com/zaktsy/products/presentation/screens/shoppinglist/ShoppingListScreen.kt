@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens
+package com.zaktsy.products.presentation.screens.shoppinglist
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

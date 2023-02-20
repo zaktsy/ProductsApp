@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens
+package com.zaktsy.products.presentation.screens.products
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

@@ -1,6 +1,5 @@
 package com.zaktsy.products.presentation.screens.categories
 
-import android.widget.Toast
 import androidx.compose.ui.window.Dialog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

@@ -12,8 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.zaktsy.products.presentation.screens.*
+import com.zaktsy.products.presentation.screens.addproduct.AddProductScreen
 import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
+import com.zaktsy.products.presentation.screens.products.ProductsScreen
+import com.zaktsy.products.presentation.screens.settings.SettingsScreen
+import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
 import com.zaktsy.products.ui.theme.ProductsTheme
 
 @Composable

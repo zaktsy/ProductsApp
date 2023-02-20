@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens
+package com.zaktsy.products.presentation.screens.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
