@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.screens.products
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -20,6 +21,7 @@ import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.ExpandableSearch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
     navController: NavController, scrollState: LazyListState
@@ -31,22 +33,11 @@ fun ProductsScreen(
         repeat(40) {
             myItems.add("Item $it")
         }
-        Column() {
-            AnimatedVisibility(visible = scrollState.firstVisibleItemIndex == 0) {
-                Column(
-                    modifier = Modifier.animateContentSize(
-                        animationSpec = tween(
-                            durationMillis = 400, easing = LinearOutSlowInEasing
-                        )
-                    )
-                ) {
-                    ExpandableSearch(false, scrollState)
-                }
-            }
+        Column {
             LazyColumn(
                 state = scrollState,
             ) {
-
+                item { ExpandableSearch(false, scrollState) }
                 items(items = myItems, itemContent = { item ->
                     Text(text = item, style = TextStyle(fontSize = 80.sp))
                 })
