@@ -8,22 +8,29 @@ import javax.inject.Inject
 
 class ProductsRepository @Inject constructor(private val productsDao: ProductsDao){
 
-    suspend fun getAllCategories(): List<Category>{
+    suspend fun getAllCategories(): List<Category> {
         val categoryEntities = productsDao.getAllCategories()
-        val categories = ArrayList<Category>()
+        return transformToCategories(categoryEntities)
+    }
 
-        categoryEntities.forEach(){
-           val category =  CategoryMapper.transformFrom(it)
-            categories.add(category)
-        }
-
-        return categories
+    suspend fun getCategories(name: String): List<Category>{
+        val categoryEntities = productsDao.getCategories(name)
+        return transformToCategories(categoryEntities)
     }
 
     suspend fun addCategory(category: Category) {
         val categoryEntity = CategoryMapper.transformTo(category)
-        if (categoryEntity != null) {
-            productsDao.addCategory(categoryEntity)
+        productsDao.addCategory(categoryEntity)
+    }
+
+    private fun transformToCategories(categoryEntities: List<CategoryEntity>): List<Category>{
+        val categories = ArrayList<Category>()
+
+        categoryEntities.forEach(){
+            val category =  CategoryMapper.transformFrom(it)
+            categories.add(category)
         }
+
+        return categories
     }
 }

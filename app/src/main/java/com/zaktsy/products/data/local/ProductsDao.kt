@@ -11,6 +11,9 @@ interface ProductsDao {
     @Query("SELECT * FROM categories")
     suspend fun getAllCategories(): List<CategoryEntity>
 
+    @Query("SELECT * FROM categories WHERE name LIKE '%' || :name || '%'")
+    suspend fun getCategories(name: String): List<CategoryEntity>;
+
     @Insert()
     suspend fun addCategory(categoryEntity: CategoryEntity)
 }

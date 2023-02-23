@@ -11,13 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zaktsy.products.presentation.screens.ViewModelWithSearch
 
 @Composable
-fun Search() {
-    var searchText by remember { mutableStateOf(TextFieldValue("")) }
+fun Search(searchEnteredName: State<String>, viewModel: ViewModelWithSearch) {
 
     Card(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp),
@@ -44,9 +43,10 @@ fun Search() {
                 TextField(
                     singleLine = true,
                     modifier = Modifier.weight(6f),
-                    value = searchText,
+                    value = searchEnteredName.value,
                     onValueChange = {
-                        searchText = it
+                        viewModel.setSearchedValue(it)
+                        viewModel.onSearchValueChanged()
                     },
                     textStyle = TextStyle.Default.copy(fontSize = 16.sp),
                     colors = TextFieldDefaults.textFieldColors(
