@@ -23,6 +23,16 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         productsDao.addCategory(categoryEntity)
     }
 
+    suspend fun deleteCategory(category: Category) {
+        val categoryEntity = CategoryMapper.transformTo(category)
+        productsDao.deleteCategory(categoryEntity)
+    }
+
+    suspend fun editCategory(category: Category) {
+        val categoryEntity = CategoryMapper.transformTo(category)
+        productsDao.updateCategory(categoryEntity)
+    }
+
     private fun transformToCategories(categoryEntities: List<CategoryEntity>): List<Category>{
         val categories = ArrayList<Category>()
 

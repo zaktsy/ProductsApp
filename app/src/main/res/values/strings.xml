@@ -16,4 +16,5 @@
     <string name="ok">OK</string>
     <string name="add">Add</string>
     <string name="add_category_name">Add category name</string>
+    <string name="edit_category_name">Edit category name</string>
 </resources>

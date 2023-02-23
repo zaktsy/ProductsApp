@@ -1,8 +1,6 @@
 package com.zaktsy.products.data.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.zaktsy.products.data.local.entities.CategoryEntity
 
 @Dao
@@ -14,6 +12,12 @@ interface ProductsDao {
     @Query("SELECT * FROM categories WHERE name LIKE '%' || :name || '%'")
     suspend fun getCategories(name: String): List<CategoryEntity>;
 
-    @Insert()
+    @Insert
     suspend fun addCategory(categoryEntity: CategoryEntity)
+
+    @Delete
+    suspend fun deleteCategory(categoryEntity: CategoryEntity)
+
+    @Update
+    suspend fun updateCategory(categoryEntity: CategoryEntity)
 }

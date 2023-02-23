@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.ui.components.AddDialog
+import com.zaktsy.products.ui.components.TextFieldDialog
 import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.HeaderWithSearch
 import com.zaktsy.products.ui.components.SimpleListElement
@@ -31,22 +31,33 @@ import com.zaktsy.products.ui.components.SimpleListElement
 fun CategoriesScreen(
     navController: NavController, scrollState: LazyListState
 ) {
+    var recentlyEditedCategory = Category("")
+
     val viewModel = hiltViewModel<CategoriesViewModel>()
     val searchEnteredName = viewModel.searchedValue.collectAsState()
+    val isLoading = viewModel.isLoading.collectAsState()
+    val categories = viewModel.categories.collectAsState()
 
-    val dialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val addDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val addedCategoryName: MutableState<String> = remember { mutableStateOf("") }
+
+    val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val editedCategoryName: MutableState<String> = remember { mutableStateOf("") }
+
     val displayProgressIndicator: MutableState<Boolean> = remember { mutableStateOf(true) }
 
-    val uiState by viewModel.uiState.collectAsState()
-
     Scaffold(floatingActionButton = {
-        AnimatedFAB(scrollState, 10.dp) { dialogOpenedState.value = true }
+        AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
 
         Column {
 
-            AddCategoryDialog(dialogOpenedState, addedCategoryName, viewModel)
+            CategoryDialog(stringResource(id = R.string.add_category_name),addDialogOpenedState, addedCategoryName){
+                viewModel.addCategory(Category(addedCategoryName.value))
+            }
+            CategoryDialog(stringResource(id = R.string.edit_category_name),editDialogOpenedState, editedCategoryName){
+                viewModel.editCategory(recentlyEditedCategory, editedCategoryName.value)
+            }
 
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -56,40 +67,36 @@ fun CategoriesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.categories),
-                            searchEnteredName,
-                            viewModel
+                            stringResource(id = R.string.categories), searchEnteredName, viewModel
                         )
                     }
 
-                    when (uiState.categoriesState) {
-                        CategoriesUiState.Error -> {
+                    if (!isLoading.value){
+                        displayProgressIndicator.value = false
+                        items(
+                            items = categories.value,
+                            key = { it.id },
+                            itemContent = { item ->
+                                val buttonIcons =
+                                    listOf(Icons.Default.Edit, Icons.Default.Delete)
 
-                        }
-                        CategoriesUiState.Loading -> {
-                            displayProgressIndicator.value = true
-                        }
-                        is CategoriesUiState.Success -> {
-                            displayProgressIndicator.value = false
-                            items(
-                                items = (uiState.categoriesState as CategoriesUiState.Success).items,
-                                key = { it.id },
-                                itemContent = { item ->
-                                    val buttonIcons =
-                                        listOf(Icons.Default.Edit, Icons.Default.Delete)
-                                    val buttonActions = listOf({},{})
+                                val buttonActions = listOf({
+                                    editDialogOpenedState.value = true
+                                    recentlyEditedCategory = item
+                                }, {
+                                    viewModel.deleteCategory(item)
+                                })
 
-                                    SimpleListElement(
-                                        title = item.name,
-                                        buttonActions = buttonActions,
-                                        buttonIcons = buttonIcons
-                                    )
-                                },
-                            )
-                        }
+                                SimpleListElement(
+                                    title = item.name,
+                                    buttonActions = buttonActions,
+                                    buttonIcons = buttonIcons
+                                )
+                            },
+                        )
                     }
                 }
-                if (uiState.categoriesState == CategoriesUiState.Loading) {
+                if (isLoading.value) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
@@ -104,10 +111,11 @@ fun CategoriesScreen(
 }
 
 @Composable
-fun AddCategoryDialog(
+fun CategoryDialog(
+    title: String,
     dialogOpenedState: MutableState<Boolean>,
     typedName: MutableState<String>,
-    viewModel: CategoriesViewModel
+    onSubmit: () -> Unit
 ) {
     if (dialogOpenedState.value) {
         Dialog(
@@ -116,10 +124,10 @@ fun AddCategoryDialog(
                 typedName.value = ""
             },
         ) {
-            AddDialog(
-                stringResource(id = R.string.add_category_name), dialogOpenedState, typedName
+            TextFieldDialog(
+                title, dialogOpenedState, typedName
             ) {
-                viewModel.addCategory(Category(typedName.value))
+                onSubmit()
                 typedName.value = ""
             }
         }

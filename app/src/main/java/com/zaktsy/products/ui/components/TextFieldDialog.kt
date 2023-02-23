@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.zaktsy.products.R
 
 @Composable
-fun AddDialog(
+fun TextFieldDialog(
     message: String,
     openDialogState: MutableState<Boolean>,
     editMessage: MutableState<String>,
@@ -97,5 +97,5 @@ fun PreviewAddDialog() {
     val openDialog: MutableState<Boolean> = remember { mutableStateOf(true) }
     val editMessage: MutableState<String> = remember { mutableStateOf("") }
 
-    AddDialog("message", openDialog, editMessage) {}
+    TextFieldDialog("message", openDialog, editMessage) {}
 }
