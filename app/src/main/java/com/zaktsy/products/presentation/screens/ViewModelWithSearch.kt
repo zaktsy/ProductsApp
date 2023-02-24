@@ -9,7 +9,7 @@ abstract class ViewModelWithSearch(): ViewModel() {
     protected val _searchedValue = MutableStateFlow("")
     val searchedValue = _searchedValue.asStateFlow()
 
-    fun setSearchedValue(value: String){
+    open fun setSearchedValue(value: String){
         _searchedValue.value = value
     }
 

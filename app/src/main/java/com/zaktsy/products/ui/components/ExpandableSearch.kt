@@ -30,7 +30,12 @@ import com.zaktsy.products.R
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpandableSearch(
-    expanded: Boolean, scrollState: LazyListState
+    expanded: Boolean,
+    scrollState: LazyListState,
+    selectedDisplayMode: State<Int>,
+    onSelectedDisplayModeChanged: (index: Int) -> Unit,
+    selectedSortOrder: State<Int>,
+    onSelectedSortOrderChanged: (index: Int) -> Unit
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     val rotationState by animateFloatAsState(if (expandedState) 180f else 0f)
@@ -127,8 +132,8 @@ fun ExpandableSearch(
                                 .align(alignment = CenterHorizontally)
                         ) {
                             SegmentedButton(
-                                items = productsDisplayModes, defaultSelectedItemIndex = 1
-                            ) {}
+                                productsDisplayModes, selectedDisplayMode, onSelectedDisplayModeChanged
+                            )
                         }
 
                         Text(
@@ -153,7 +158,9 @@ fun ExpandableSearch(
                                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                                 .align(alignment = CenterHorizontally)
                         ) {
-                            SegmentedButton(items = sortOrders, defaultSelectedItemIndex = 1) {}
+                            SegmentedButton(
+                                sortOrders, selectedSortOrder, onSelectedSortOrderChanged
+                            )
                         }
                     }
                 }

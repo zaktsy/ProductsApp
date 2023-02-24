@@ -9,11 +9,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -21,10 +19,9 @@ import androidx.compose.ui.zIndex
 @Composable
 fun SegmentedButton(
     items: List<String>,
-    defaultSelectedItemIndex: Int,
+    selectedItemIndex: State<Int>,
     itemSelection: (selectedItemIndex: Int) -> Unit
 ) {
-    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
     val firstItemIndex = 0
     val lastItemIndex = items.lastIndex
 
@@ -34,22 +31,21 @@ fun SegmentedButton(
         items.forEachIndexed { index, item ->
             OutlinedButton(
                 onClick = {
-                    selectedIndex.value = index
-                    itemSelection(selectedIndex.value)
+                    itemSelection(index)
                 },
                 modifier = when (index) {
                     firstItemIndex -> {
                         Modifier
                             .fillMaxWidth()
                             .offset(0.dp, 0.dp)
-                            .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                            .zIndex(if (selectedItemIndex.value == index) 1f else 0f)
                             .weight(1f)
                     }
                     else -> {
                         Modifier
                             .fillMaxWidth()
                             .offset((-1 * index).dp, 0.dp)
-                            .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                            .zIndex(if (selectedItemIndex.value == index) 1f else 0f)
                             .weight(1f)
                     }
                 },
@@ -73,7 +69,7 @@ fun SegmentedButton(
                         bottomEndPercent = 0
                     )
                 },
-                colors = if (selectedIndex.value == index) {
+                colors = if (selectedItemIndex.value == index) {
                     ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
@@ -87,7 +83,7 @@ fun SegmentedButton(
                     text = item,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = if (selectedIndex.value == index) {
+                    color = if (selectedItemIndex.value == index) {
                         MaterialTheme.colorScheme.onPrimary
                     } else {
                         MaterialTheme.colorScheme.onPrimaryContainer
@@ -96,11 +92,4 @@ fun SegmentedButton(
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewSegmentedButton() {
-    val items = listOf("Storage", "Category", "All")
-    SegmentedButton(items, 0) {}
 }
