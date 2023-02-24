@@ -28,14 +28,14 @@ fun TextFieldDialog(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(25.dp))
-            .background(MaterialTheme.colorScheme.background, )
+            .background(MaterialTheme.colorScheme.background )
             .padding(8.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
             Text(
-                text = message, fontSize = 20.sp, color = MaterialTheme.colorScheme.tertiary
+                text = message, fontSize = 20.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             TextField(
@@ -44,10 +44,10 @@ fun TextFieldDialog(
                 singleLine = true,
                 textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = MaterialTheme.colorScheme.tertiary,
+                    textColor = MaterialTheme.colorScheme.primary,
                     disabledTextColor = MaterialTheme.colorScheme.secondary,
                     backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                     unfocusedIndicatorColor = MaterialTheme.colorScheme.secondary,
                     disabledIndicatorColor = Color.Transparent
                 )
@@ -59,13 +59,11 @@ fun TextFieldDialog(
         Row(
             modifier = Modifier.align(Alignment.End)
         ) {
-            Button(
+            TextButton(
                 onClick = {
                     openDialogState.value = false
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                }, colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     disabledContentColor = MaterialTheme.colorScheme.onSecondary
                 )
             ) {
@@ -74,14 +72,12 @@ fun TextFieldDialog(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Button(
+            TextButton(
                 enabled = editMessage.value.isNotEmpty(), onClick = {
                     onOkAction()
                     openDialogState.value = false
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                }, colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {

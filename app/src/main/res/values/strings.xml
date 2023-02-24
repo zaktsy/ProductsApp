@@ -21,4 +21,7 @@
     <string name="no_storages">You don\'t have storages</string>
     <string name="add_first_one">Add the first one, please</string>
     <string name="no_categories">You don\'t have categories</string>
+    <string name="add_product">Add product</string>
+    <string name="name">Name</string>
+    <string name="expiration_range">Expiration range</string>
 </resources>
