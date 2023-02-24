@@ -5,6 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "storages")
 data class StorageEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+}

@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.screens.settings
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.R
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SettingsScreen(
     navController: NavController
@@ -32,9 +34,8 @@ fun SettingsScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(
-                modifier = Modifier
-                    .align(CenterHorizontally)
-            ){
+                modifier = Modifier.align(CenterHorizontally)
+            ) {
                 Text(
                     text = stringResource(id = R.string.settings),
                     fontSize = 40.sp,
@@ -42,25 +43,36 @@ fun SettingsScreen(
                     modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
                 )
             }
-            Box(modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 20.dp)
-                .clip(RoundedCornerShape(100.dp))
-                .clickable { navController.navigate(NavigationRoutes.Categories) }) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        modifier = Modifier.padding(start = 5.dp, end = 5.dp, bottom = 2.dp),
-                        text = stringResource(id = R.string.categories),
-                        fontSize = 30.sp,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                    Icon(
-                        Icons.Default.ChevronRight,
-                        contentDescription = "Right",
-                        Modifier.size(35.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
+
+            SettingsElement(navController, NavigationRoutes.Categories, stringResource(R.string.categories))
+            SettingsElement(navController, NavigationRoutes.Storages, stringResource(R.string.storages))
+        }
+    }
+}
+
+@Composable
+fun SettingsElement(
+    navController: NavController,
+    navigationRoute: String,
+    title: String
+) {
+    Box(modifier = Modifier
+        .padding(vertical = 10.dp, horizontal = 20.dp)
+        .clip(RoundedCornerShape(100.dp))
+        .clickable { navController.navigate(navigationRoute) }) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                modifier = Modifier.padding(start = 5.dp, end = 5.dp, bottom = 2.dp),
+                text = title,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            Icon(
+                Icons.Default.ChevronRight,
+                contentDescription = "Right",
+                Modifier.size(35.dp),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
         }
     }
 }

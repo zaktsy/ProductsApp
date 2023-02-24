@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
@@ -17,8 +18,10 @@ import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
 import com.zaktsy.products.presentation.screens.products.ProductsScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
+import com.zaktsy.products.presentation.screens.storages.StoragesScreen
 import com.zaktsy.products.ui.theme.ProductsTheme
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun BottomBarAnimationApp() {
 
@@ -44,6 +47,9 @@ fun BottomBarAnimationApp() {
                 bottomBarState.value = true
             }
             NavigationRoutes.Categories -> {
+                bottomBarState.value = false
+            }
+            NavigationRoutes.Storages -> {
                 bottomBarState.value = false
             }
         }
@@ -73,6 +79,9 @@ fun BottomBarAnimationApp() {
                 }
                 composable(NavigationItem.Categories.route) {
                     CategoriesScreen(navController = navController, scrollState = scrollState)
+                }
+                composable(NavigationItem.Storages.route) {
+                    StoragesScreen(navController = navController, scrollState = scrollState)
                 }
             }
         })

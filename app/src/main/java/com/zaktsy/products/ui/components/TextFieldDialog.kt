@@ -85,7 +85,7 @@ fun TextFieldDialog(
                     disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
-                Text(stringResource(id = R.string.add))
+                Text(stringResource(id = R.string.ok))
             }
         }
     }

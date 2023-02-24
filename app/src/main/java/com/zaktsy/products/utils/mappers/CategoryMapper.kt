@@ -11,9 +11,20 @@ class CategoryMapper {
 
         fun transformTo(data: Category): CategoryEntity {
             val category = CategoryEntity(data.name)
-            if (data.id != null) category.id = data.id!!
+            category.id = data.id
 
             return category
+        }
+
+        fun transformToCategories(categoryEntities: List<CategoryEntity>): List<Category> {
+            val categories = ArrayList<Category>()
+
+            categoryEntities.forEach() {
+                val category = transformFrom(it)
+                categories.add(category)
+            }
+
+            return categories
         }
     }
 }

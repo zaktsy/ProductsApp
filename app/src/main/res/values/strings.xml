@@ -17,4 +17,8 @@
     <string name="add">Add</string>
     <string name="add_category_name">Add category name</string>
     <string name="edit_category_name">Edit category name</string>
+    <string name="storages">Storages</string>
+    <string name="no_storages">You don\'t have storages</string>
+    <string name="add_first_one">Add the first one, please</string>
+    <string name="no_categories">You don\'t have categories</string>
 </resources>

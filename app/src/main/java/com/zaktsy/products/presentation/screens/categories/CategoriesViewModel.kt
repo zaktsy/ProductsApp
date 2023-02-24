@@ -37,10 +37,8 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
             val items = getCategoriesUseCase.invoke(_searchedValue.value)
-            if (items.isNotEmpty()) {
-                _categories.value = items
-                _isLoading.value = false
-            }
+            _categories.value = items
+            _isLoading.value = false
         }
     }
 
@@ -51,7 +49,7 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategory(category: Category){
+    fun deleteCategory(category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteCategoryUseCase.invoke(category)
             _categories.value -= category
@@ -59,9 +57,11 @@ class CategoriesViewModel @Inject constructor(
     }
 
     fun editCategory(editedCategory: Category, newCategoryName: String) {
-        editedCategory.name = newCategoryName
         viewModelScope.launch(Dispatchers.IO) {
+            _categories.value -= editedCategory
+            editedCategory.name = newCategoryName
             editCategoryUseCase.invoke(editedCategory)
+            _categories.value += editedCategory
         }
     }
 
