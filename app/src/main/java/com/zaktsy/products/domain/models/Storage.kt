@@ -1,11 +1,9 @@
 package com.zaktsy.products.domain.models
 
-class Storage(
-    var name: String
-) {
-    var id: Long = 0
+class Storage : ModelWithName {
+    override var id: Long = 0
+    override lateinit var name: String
 
-    constructor(id: Long, name: String) : this(name) {
-        this.id = id
-    }
+    constructor(name: String) : super(name = name)
+    constructor(id: Long, name: String) : super(id = id, name = name)
 }

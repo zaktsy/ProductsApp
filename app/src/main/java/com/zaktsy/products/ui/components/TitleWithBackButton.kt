@@ -54,7 +54,7 @@ fun TitleWithBackButton(
                 Text(
                     text = title,
                     modifier = Modifier.align(Center),
-                    fontSize = 30.sp,
+                    fontSize = 25.sp,
                     color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
             }

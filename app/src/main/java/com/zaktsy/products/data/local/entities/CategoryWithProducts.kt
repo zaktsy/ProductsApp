@@ -7,5 +7,5 @@ data class CategoryWithProducts(
     @Embedded val category: CategoryEntity,
     @Relation(
         parentColumn = "id", entityColumn = "categoryId", entity = ProductEntity::class
-    ) val playlists: List<ProductInStorageWithInfo>
+    ) val products: List<ProductInStorageWithInfo>
 )
