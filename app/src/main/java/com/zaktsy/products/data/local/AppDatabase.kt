@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.zaktsy.products.data.local.entities.*
 
 @Database(
-    entities = [CategoryEntity::class, ExpirationAlarmEntity::class, ProductEntity::class, ProductInStorageEntity::class, StorageEntity::class],
+    entities = [CategoryEntity::class, ProductEntity::class, StorageEntity::class],
     version = 1
 )
 @TypeConverters(Converters::class)

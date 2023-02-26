@@ -1,4 +1,4 @@
-package com.zaktsy.products.utils.mappers
+package com.zaktsy.products.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

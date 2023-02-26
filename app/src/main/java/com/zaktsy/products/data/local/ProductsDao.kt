@@ -2,6 +2,7 @@ package com.zaktsy.products.data.local
 
 import androidx.room.*
 import com.zaktsy.products.data.local.entities.CategoryEntity
+import com.zaktsy.products.data.local.entities.ProductEntity
 import com.zaktsy.products.data.local.entities.StorageEntity
 
 @Dao
@@ -41,4 +42,7 @@ interface ProductsDao {
     suspend fun updateStorage(storageEntity: StorageEntity)
     //endregion
 
+    //region products
+    @Insert
+    suspend fun addProduct(productEntity: ProductEntity)
 }

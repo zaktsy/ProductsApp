@@ -2,8 +2,10 @@ package com.zaktsy.products.domain.repository
 
 import com.zaktsy.products.data.local.ProductsDao
 import com.zaktsy.products.domain.models.Category
+import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.utils.mappers.CategoryMapper
+import com.zaktsy.products.utils.mappers.ProductMapper
 import com.zaktsy.products.utils.mappers.StorageMapper
 import javax.inject.Inject
 
@@ -60,6 +62,13 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     suspend fun editStorage(storage: Storage) {
         val storageEntity = StorageMapper.transformTo(storage)
         productsDao.updateStorage(storageEntity)
+    }
+    //endregion
+
+    //region Products
+    suspend fun addProduct(product: Product) {
+        val productEntity = ProductMapper.transformTo(product)
+        productsDao.addProduct(productEntity)
     }
     //endregion
 }

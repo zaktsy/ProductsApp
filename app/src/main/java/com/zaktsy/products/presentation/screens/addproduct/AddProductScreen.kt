@@ -1,10 +1,6 @@
 package com.zaktsy.products.presentation.screens.addproduct
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,12 +16,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.marosseleng.compose.material3.datetimepickers.date.domain.DatePickerDefaults
-import com.zaktsy.products.R
-import com.zaktsy.products.ui.components.TextInput
-import com.zaktsy.products.ui.components.TitleWithBackButton
 import com.marosseleng.compose.material3.datetimepickers.date.ui.dialog.DatePickerDialog
+import com.zaktsy.products.R
 import com.zaktsy.products.ui.components.ExpandableSelector
 import com.zaktsy.products.ui.components.ReadonlyTextField
+import com.zaktsy.products.ui.components.TextInput
+import com.zaktsy.products.ui.components.TitleWithBackButton
 import java.time.ZoneId
 import java.util.*
 
@@ -44,11 +40,11 @@ fun AddProductScreen(
 
     val categoriesSelectorExpanded = remember { mutableStateOf(false) }
     val categories = viewModel.categories.collectAsState()
-    val selectedCategoryIndex = remember { mutableStateOf(0) }
+    val selectedCategoryIndex = remember { mutableStateOf(-1) }
 
     val storagesSelectorExpanded = remember { mutableStateOf(false) }
     val storages = viewModel.storages.collectAsState()
-    val selectedStorageIndex = remember { mutableStateOf(0) }
+    val selectedStorageIndex = remember { mutableStateOf(-1) }
 
     Scaffold() { paddingValues ->
         Column(
@@ -111,13 +107,20 @@ fun AddProductScreen(
             )
 
             Column(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
+                    enabled = productName.value.isNotEmpty(), onClick = {
+                        viewModel.addProduct(
+                            selectedCategoryIndex.value,
+                            selectedStorageIndex.value
+                        )
+                        navController.popBackStack()
+                    }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                         disabledContainerColor = MaterialTheme.colorScheme.secondary,
