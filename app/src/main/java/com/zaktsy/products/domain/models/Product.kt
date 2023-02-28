@@ -10,4 +10,5 @@ data class Product(
     val category: Category?,
     val storage: Storage?,
     var manufactureDate: Date
-)
+) {
+}

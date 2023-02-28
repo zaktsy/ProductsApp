@@ -12,10 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zaktsy.products.presentation.screens.ViewModelWithSearch
 
 @Composable
-fun HeaderWithSearch(title: String, searchEnteredName: State<String>, viewModel: ViewModelWithSearch) {
+fun HeaderWithSearch(title: String, searchEnteredName: State<String>, onSearchValueChanged: (String) -> Unit) {
     Row(Modifier.padding(bottom = 20.dp)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
@@ -28,7 +27,7 @@ fun HeaderWithSearch(title: String, searchEnteredName: State<String>, viewModel:
                     modifier = Modifier.padding(top = 20.dp)
                 )
             }
-            Search(searchEnteredName, viewModel)
+            Search(searchEnteredName, onSearchValueChanged)
         }
     }
 }

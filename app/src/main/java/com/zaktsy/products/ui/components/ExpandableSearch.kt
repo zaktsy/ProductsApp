@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,16 +34,17 @@ fun ExpandableSearch(
     selectedDisplayMode: State<Int>,
     onSelectedDisplayModeChanged: (index: Int) -> Unit,
     selectedSortOrder: State<Int>,
-    onSelectedSortOrderChanged: (index: Int) -> Unit
+    onSelectedSortOrderChanged: (index: Int) -> Unit,
+    onSearchValueChanged: (String) -> Unit,
+    searchedValue: State<String>
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     val rotationState by animateFloatAsState(if (expandedState) 180f else 0f)
-    var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
     Surface(
         color = Color.Transparent
     ) {
-        Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp),
+        Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
             shape = RoundedCornerShape(25.dp),
             onClick = {
@@ -70,9 +70,9 @@ fun ExpandableSearch(
                     TextField(
                         singleLine = true,
                         modifier = Modifier.weight(6f),
-                        value = searchText,
+                        value = searchedValue.value,
                         onValueChange = {
-                            searchText = it
+                            onSearchValueChanged(it)
                         },
                         textStyle = TextStyle.Default.copy(fontSize = 16.sp),
                         colors = TextFieldDefaults.textFieldColors(

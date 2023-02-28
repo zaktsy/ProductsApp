@@ -13,10 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zaktsy.products.presentation.screens.ViewModelWithSearch
 
 @Composable
-fun Search(searchEnteredName: State<String>, viewModel: ViewModelWithSearch) {
+fun Search(searchEnteredName: State<String>, onSearchValueChanged: (String) -> Unit) {
 
     Card(
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp),
@@ -45,8 +44,7 @@ fun Search(searchEnteredName: State<String>, viewModel: ViewModelWithSearch) {
                     modifier = Modifier.weight(6f),
                     value = searchEnteredName.value,
                     onValueChange = {
-                        viewModel.setSearchedValue(it)
-                        viewModel.onSearchValueChanged()
+                        onSearchValueChanged(it)
                     },
                     textStyle = TextStyle.Default.copy(fontSize = 16.sp),
                     colors = TextFieldDefaults.textFieldColors(

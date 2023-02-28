@@ -70,5 +70,10 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val productEntity = ProductMapper.transformTo(product)
         productsDao.addProduct(productEntity)
     }
+
+    suspend fun getProducts(name: String): List<Product> {
+        val products = productsDao.getProducts(name)
+        return ProductMapper.transformToProducts(products)
+    }
     //endregion
 }

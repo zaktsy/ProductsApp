@@ -78,7 +78,7 @@ fun StoragesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.storages), searchEnteredName, viewModel
+                            stringResource(id = R.string.storages), searchEnteredName, viewModel::onSearchValueChanged
                         )
                     }
 

@@ -67,7 +67,8 @@ class StoragesViewModel @Inject constructor(
         }
     }
 
-    override fun onSearchValueChanged() {
+    override fun onSearchValueChanged(text: String) {
+        _searchedValue.value = text
         getStorages()
     }
 }

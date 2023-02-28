@@ -1,5 +1,6 @@
 package com.zaktsy.products.data.local.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -15,13 +16,14 @@ import java.util.*
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("storageId")
     )]
-
 )
 data class ProductEntity(
     val name: String,
     val expirationDuration: Long,
     val barCode: String,
+    @ColumnInfo(index = true)
     val categoryId: Long?,
+    @ColumnInfo(index = true)
     val storageId: Long?,
     val manufactureDate: Date
 ) {

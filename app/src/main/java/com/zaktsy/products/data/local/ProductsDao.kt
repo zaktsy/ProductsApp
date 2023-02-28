@@ -3,6 +3,7 @@ package com.zaktsy.products.data.local
 import androidx.room.*
 import com.zaktsy.products.data.local.entities.CategoryEntity
 import com.zaktsy.products.data.local.entities.ProductEntity
+import com.zaktsy.products.data.local.entities.ProductEntityWithCategoryAndStorage
 import com.zaktsy.products.data.local.entities.StorageEntity
 
 @Dao
@@ -45,4 +46,8 @@ interface ProductsDao {
     //region products
     @Insert
     suspend fun addProduct(productEntity: ProductEntity)
+
+    @Transaction
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :name || '%'")
+    suspend fun getProducts(name: String): List<ProductEntityWithCategoryAndStorage>
 }

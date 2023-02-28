@@ -79,7 +79,7 @@ fun CategoriesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.categories), searchEnteredName, viewModel
+                            stringResource(id = R.string.categories), searchEnteredName, viewModel::onSearchValueChanged
                         )
                     }
 
