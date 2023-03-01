@@ -20,9 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.ui.components.AnimatedFAB
+import com.zaktsy.products.ui.components.ExpandableList
 import com.zaktsy.products.ui.components.ExpandableSearch
 import com.zaktsy.products.ui.components.ProductElement
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -35,6 +35,9 @@ fun ProductsScreen(
     val selectedDisplayMode = viewModel.selectedDisplayMode.collectAsState()
     val selectedSortOrder = viewModel.selectedSortOrder.collectAsState()
     val searchedValue = viewModel.searchedValue.collectAsState()
+
+    val showGroupedProducts = viewModel.showGroupedProducts.collectAsState()
+    val groupedProducts = viewModel.groupedProducts.collectAsState()
 
     val showProducts = viewModel.showProducts.collectAsState()
     val products = viewModel.products.collectAsState()
@@ -71,11 +74,17 @@ fun ProductsScreen(
                 if (showProducts.value and products.value.isNotEmpty() and !isLoading.value) {
                     items(items = products.value, itemContent = { item ->
                         ProductElement(
-                            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                             text = item.name,
                             daysToExpiration = "3"
                         )
+                    })
+                }
+
+                if (showGroupedProducts.value and groupedProducts.value.isNotEmpty() and !isLoading.value) {
+                    items(items = groupedProducts.value, itemContent = { item ->
+                        ExpandableList(item.groupingModel.name, item.products)
                     })
                 }
 

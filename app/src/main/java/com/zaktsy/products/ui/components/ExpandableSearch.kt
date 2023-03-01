@@ -40,6 +40,7 @@ fun ExpandableSearch(
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     val rotationState by animateFloatAsState(if (expandedState) 180f else 0f)
+    val isFirstItemVisible by remember { derivedStateOf { scrollState.firstVisibleItemIndex == 0 } }
 
     Surface(
         color = Color.Transparent
@@ -96,7 +97,7 @@ fun ExpandableSearch(
                         )
                     }
                 }
-                AnimatedVisibility(visible = expandedState and (scrollState.firstVisibleItemIndex == 0)) {
+                AnimatedVisibility(visible = expandedState and (isFirstItemVisible)) {
                     Column(
                         modifier = Modifier.animateContentSize(
                             animationSpec = tween(
@@ -132,7 +133,9 @@ fun ExpandableSearch(
                                 .align(alignment = CenterHorizontally)
                         ) {
                             SegmentedButton(
-                                productsDisplayModes, selectedDisplayMode, onSelectedDisplayModeChanged
+                                productsDisplayModes,
+                                selectedDisplayMode,
+                                onSelectedDisplayModeChanged
                             )
                         }
 
@@ -167,5 +170,4 @@ fun ExpandableSearch(
             }
         }
     }
-
 }

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -21,8 +22,11 @@ fun AnimatedFAB(
     bottomPadding: Dp,
     onClickAction: () -> Unit
 ) {
+
+    val isFirstItemVisible by remember { derivedStateOf { scrollState.firstVisibleItemIndex == 0 } }
+
     AnimatedVisibility(
-        visible = scrollState.firstVisibleItemIndex == 0,
+        visible = isFirstItemVisible,
         enter = slideInHorizontally(initialOffsetX = { it }),
         exit = slideOutHorizontally(targetOffsetX = { it }),
         content = {

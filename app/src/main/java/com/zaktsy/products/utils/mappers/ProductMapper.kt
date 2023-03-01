@@ -1,10 +1,9 @@
 package com.zaktsy.products.utils.mappers
 
+import com.zaktsy.products.data.local.entities.CategoryWithProducts
 import com.zaktsy.products.data.local.entities.ProductEntity
 import com.zaktsy.products.data.local.entities.ProductEntityWithCategoryAndStorage
-import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.domain.models.Product
-import com.zaktsy.products.domain.models.Storage
+import com.zaktsy.products.domain.models.*
 
 class ProductMapper {
     companion object {
@@ -34,6 +33,21 @@ class ProductMapper {
             return products
         }
 
+        fun transformToGroupedByCategory(products: List<CategoryWithProducts>): List<GroupedProducts> {
+            val groupedProducts = ArrayList<GroupedProducts>()
+            products.forEach {
+                val productsList = ArrayList<Product>()
+                it.products.forEach { product ->
+                    productsList.add(transformFrom(product))
+                }
+                val groupedProduct =
+                    GroupedProducts(ModelWithName(it.category.id, it.category.name), productsList)
+                groupedProducts.add(groupedProduct)
+            }
+
+            return groupedProducts
+        }
+
         private fun transformFrom(data: ProductEntityWithCategoryAndStorage): Product {
             return Product(
                 data.product.id,
@@ -43,6 +57,18 @@ class ProductMapper {
                 data.category?.let { Category(it.id, data.category.name) },
                 data.storage?.let { Storage(it.id, data.storage.name) },
                 data.product.manufactureDate,
+            )
+        }
+
+        private fun transformFrom(data: ProductEntity): Product {
+            return Product(
+                data.id,
+                data.name,
+                data.expirationDuration,
+                data.barCode,
+                null,
+                null,
+                data.manufactureDate,
             )
         }
     }

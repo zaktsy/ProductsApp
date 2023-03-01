@@ -5,7 +5,7 @@ import androidx.room.Relation
 
 data class CategoryWithProducts(
     @Embedded
-    val storage: CategoryEntity,
+    val category: CategoryEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "categoryId"

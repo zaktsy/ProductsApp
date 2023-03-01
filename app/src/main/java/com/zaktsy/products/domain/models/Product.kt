@@ -1,6 +1,6 @@
 package com.zaktsy.products.domain.models
 
-import java.util.Date
+import java.util.*
 
 data class Product(
     val id: Long = 0,

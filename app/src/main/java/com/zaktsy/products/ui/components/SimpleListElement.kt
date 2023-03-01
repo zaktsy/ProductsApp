@@ -26,7 +26,7 @@ fun SimpleListElement(
 ) {
     Card(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        backgroundColor = (MaterialTheme.colorScheme.secondaryContainer),
         shape = RoundedCornerShape(25.dp),
     ) {
         Column(
@@ -43,7 +43,7 @@ fun SimpleListElement(
                 Text(
                     text = title,
                     fontSize = 25.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.weight(6f)
                 )
 

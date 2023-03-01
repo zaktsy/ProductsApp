@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +41,9 @@ fun ProductElement(
                     text = text,
                     fontSize = 25.sp,
                     color = contentColor,
-                    modifier = Modifier.weight(6f)
+                    modifier = Modifier.weight(6f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = "due",
@@ -63,7 +66,7 @@ fun ProductElement(
 @Preview
 fun PreviewProductElement(){
     ProductElement(
-        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         text = "vhdvjd",
         daysToExpiration = "3"

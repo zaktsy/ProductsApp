@@ -5,7 +5,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -25,10 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.ui.components.TextFieldDialog
 import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.HeaderWithSearch
 import com.zaktsy.products.ui.components.SimpleListElement
+import com.zaktsy.products.ui.components.TextFieldDialog
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

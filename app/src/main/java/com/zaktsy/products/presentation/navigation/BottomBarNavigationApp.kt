@@ -19,6 +19,7 @@ import com.zaktsy.products.presentation.screens.products.ProductsScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
 import com.zaktsy.products.presentation.screens.storages.StoragesScreen
+import com.zaktsy.products.ui.components.BottomBar
 import com.zaktsy.products.ui.theme.ProductsTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

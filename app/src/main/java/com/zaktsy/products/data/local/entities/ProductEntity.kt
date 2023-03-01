@@ -18,6 +18,7 @@ import java.util.*
     )]
 )
 data class ProductEntity(
+    @ColumnInfo(name = "productName")
     val name: String,
     val expirationDuration: Long,
     val barCode: String,

@@ -45,15 +45,41 @@ interface ProductsDao {
     suspend fun addProduct(productEntity: ProductEntity)
 
     @Transaction
-    @Query("SELECT * FROM products WHERE name LIKE '%' || :name || '%'")
+    @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%'")
     suspend fun getProducts(name: String): List<ProductEntityWithCategoryAndStorage>
 
-    @Transaction
-    @Query("SELECT * FROM categories WHERE name LIKE '%' || :name || '%'")
-    suspend fun getCategoriesWithProducts(name: String): List<CategoryWithProducts>
+    @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%' and categoryId = :categoryId")
+    suspend fun getProductsSortedByCategory(categoryId: Long, name: String): List<ProductEntity>
 
     @Transaction
-    @Query("SELECT * FROM categories WHERE name LIKE '%' || :name || '%'")
-    suspend fun getStoragesWithProducts(name: String): List<StorageWithProducts>
+    @Query("")
+    suspend fun getCategoriesWithProducts(name: String): List<CategoryWithProducts> {
+        val rv = arrayListOf<CategoryWithProducts>()
+        for (category in getAllCategories()) {
+            rv.add(
+                CategoryWithProducts(
+                    category, this.getProductsSortedByCategory(category.id, name)
+                )
+            )
+        }
+        return rv
+    }
+
+    @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%' and storageId = :storageId")
+    suspend fun getProductsSortedByStorage(storageId: Long, name: String): List<ProductEntity>
+
+    @Transaction
+    @Query("")
+    suspend fun getStoragesWithProducts(name: String): List<StorageWithProducts> {
+        val rv = arrayListOf<StorageWithProducts>()
+        for (storage in getAllStorages()) {
+            rv.add(
+                StorageWithProducts(
+                    storage, this.getProductsSortedByStorage(storage.id, name)
+                )
+            )
+        }
+        return rv
+    }
     //endregion
 }

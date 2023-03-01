@@ -2,6 +2,7 @@ package com.zaktsy.products.domain.repository
 
 import com.zaktsy.products.data.local.ProductsDao
 import com.zaktsy.products.domain.models.Category
+import com.zaktsy.products.domain.models.GroupedProducts
 import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.utils.mappers.CategoryMapper
@@ -74,6 +75,11 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     suspend fun getProducts(name: String): List<Product> {
         val products = productsDao.getProducts(name)
         return ProductMapper.transformToProducts(products)
+    }
+
+    suspend fun getProductsGropedByCategory(name: String): List<GroupedProducts> {
+        val products = productsDao.getCategoriesWithProducts(name)
+        return ProductMapper.transformToGroupedByCategory(products)
     }
     //endregion
 }
