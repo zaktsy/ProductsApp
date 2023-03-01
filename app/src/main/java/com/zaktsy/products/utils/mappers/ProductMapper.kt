@@ -3,6 +3,7 @@ package com.zaktsy.products.utils.mappers
 import com.zaktsy.products.data.local.entities.CategoryWithProducts
 import com.zaktsy.products.data.local.entities.ProductEntity
 import com.zaktsy.products.data.local.entities.ProductEntityWithCategoryAndStorage
+import com.zaktsy.products.data.local.entities.StorageWithProducts
 import com.zaktsy.products.domain.models.*
 
 class ProductMapper {
@@ -42,6 +43,21 @@ class ProductMapper {
                 }
                 val groupedProduct =
                     GroupedProducts(ModelWithName(it.category.id, it.category.name), productsList)
+                groupedProducts.add(groupedProduct)
+            }
+
+            return groupedProducts
+        }
+
+        fun transformToGroupedByStorage(products: List<StorageWithProducts>): List<GroupedProducts> {
+            val groupedProducts = ArrayList<GroupedProducts>()
+            products.forEach {
+                val productsList = ArrayList<Product>()
+                it.products.forEach { product ->
+                    productsList.add(transformFrom(product))
+                }
+                val groupedProduct =
+                    GroupedProducts(ModelWithName(it.storage.id, it.storage.name), productsList)
                 groupedProducts.add(groupedProduct)
             }
 

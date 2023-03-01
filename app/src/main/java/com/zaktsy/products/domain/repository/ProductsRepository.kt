@@ -81,5 +81,10 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val products = productsDao.getCategoriesWithProducts(name)
         return ProductMapper.transformToGroupedByCategory(products)
     }
+
+    suspend fun getProductsGropedByStorage(name: String): List<GroupedProducts> {
+        val products = productsDao.getStoragesWithProducts(name)
+        return ProductMapper.transformToGroupedByStorage(products)
+    }
     //endregion
 }

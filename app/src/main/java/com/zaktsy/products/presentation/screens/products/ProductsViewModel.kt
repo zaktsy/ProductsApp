@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.GroupedProducts
 import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.usecases.products.GetProductsGropedByCategoryUseCase
+import com.zaktsy.products.domain.usecases.products.GetProductsGropedByStorageUseCase
 import com.zaktsy.products.domain.usecases.products.GetProductsUseCase
 import com.zaktsy.products.presentation.screens.ViewModelWithSearch
 import com.zaktsy.products.utils.ProductDisplayMode
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
-    private val getProductsGropedByCategoryUseCase: GetProductsGropedByCategoryUseCase
+    private val getProductsGropedByCategoryUseCase: GetProductsGropedByCategoryUseCase,
+    private val getProductsGropedByStorageUseCase: GetProductsGropedByStorageUseCase
 ) : ViewModelWithSearch() {
 
     private val _isLoading = MutableStateFlow(true)
@@ -73,6 +75,11 @@ class ProductsViewModel @Inject constructor(
             when (_selectedDisplayMode.value) {
                 0 -> {
                     ProductDisplayMode.STORAGE
+                    val items =
+                        getProductsGropedByStorageUseCase.invoke(sortOrder, _searchedValue.value)
+                    _isLoading.value = false
+                    _showGroupedProducts.value = true
+                    _gropedProducts.value = items
                 }
                 1 -> {
                     ProductDisplayMode.CATEGORY
