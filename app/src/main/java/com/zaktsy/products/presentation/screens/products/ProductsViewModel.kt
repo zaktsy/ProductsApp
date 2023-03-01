@@ -18,6 +18,9 @@ class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase
 ) : ViewModelWithSearch() {
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+
     private val _showProducts = MutableStateFlow(true)
     val showProducts = _showProducts.asStateFlow()
 
@@ -45,8 +48,10 @@ class ProductsViewModel @Inject constructor(
     }
 
     @Synchronized
-    private fun getProducts() {
+    fun getProducts() {
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.value = true
+            _showProducts.value = false
             val sortOrder = when (_selectedSortOrder.value) {
                 0 -> ProductsSortOrder.ALPHABETICALLY
                 1 -> ProductsSortOrder.EXPIRATION
@@ -64,10 +69,12 @@ class ProductsViewModel @Inject constructor(
                 }
                 else -> {
                     ProductDisplayMode.ALL
+                    _showProducts.value = true
                     val items = getProductsUseCase.invoke(sortOrder, _searchedValue.value)
                     _products.value = items
                 }
             }
+            _isLoading.value = false
         }
     }
 

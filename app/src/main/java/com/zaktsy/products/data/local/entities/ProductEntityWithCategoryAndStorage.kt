@@ -11,11 +11,11 @@ data class ProductEntityWithCategoryAndStorage(
         parentColumn = "storageId",
         entityColumn = "id"
     )
-    val storage: StorageEntity,
+    val storage: StorageEntity?,
 
     @Relation(
         parentColumn = "categoryId",
         entityColumn = "id"
     )
-    val category: CategoryEntity,
+    val category: CategoryEntity?,
 )

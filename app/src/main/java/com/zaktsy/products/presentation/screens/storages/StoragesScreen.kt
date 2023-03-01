@@ -47,8 +47,6 @@ fun StoragesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedStorageName: MutableState<String> = remember { mutableStateOf("") }
 
-    val displayProgressIndicator: MutableState<Boolean> = remember { mutableStateOf(true) }
-
     Scaffold(floatingActionButton = {
         AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
@@ -83,7 +81,6 @@ fun StoragesScreen(
                     }
 
                     if (!isLoading.value and storages.value.isNotEmpty()) {
-                        displayProgressIndicator.value = false
                         items(
                             items = storages.value,
                             itemContent = { item ->

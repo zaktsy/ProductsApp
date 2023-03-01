@@ -40,8 +40,8 @@ class ProductMapper {
                 data.product.name,
                 data.product.expirationDuration,
                 data.product.barCode,
-                Category(data.category.id, data.category.name),
-                Storage(data.storage.id, data.storage.name),
+                data.category?.let { Category(it.id, data.category.name) },
+                data.storage?.let { Storage(it.id, data.storage.name) },
                 data.product.manufactureDate,
             )
         }

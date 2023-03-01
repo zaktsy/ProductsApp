@@ -26,6 +26,7 @@ import com.zaktsy.products.ui.theme.ProductsTheme
 fun BottomBarAnimationApp() {
 
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+    val needToUpdate = rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
 
     ProductsTheme {
@@ -66,13 +67,13 @@ fun BottomBarAnimationApp() {
                 startDestination = NavigationItem.Products.route,
             ) {
                 composable(NavigationItem.Products.route) {
-                    ProductsScreen(navController = navController, scrollState = scrollState)
+                    ProductsScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
                 }
                 composable(NavigationItem.ShoppingList.route) {
                     ShoppingListScreen(navController = navController)
                 }
                 composable(NavigationItem.AddProduct.route) {
-                    AddProductScreen(navController = navController)
+                    AddProductScreen(navController = navController, needToUpdate = needToUpdate)
                 }
                 composable(NavigationItem.Settings.route) {
                     SettingsScreen(navController = navController)

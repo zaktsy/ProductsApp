@@ -29,7 +29,6 @@ class StoragesViewModel @Inject constructor(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        _isLoading.value = true
         getStorages()
     }
 

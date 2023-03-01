@@ -48,8 +48,6 @@ fun CategoriesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedCategoryName: MutableState<String> = remember { mutableStateOf("") }
 
-    val displayProgressIndicator: MutableState<Boolean> = remember { mutableStateOf(true) }
-
     Scaffold(floatingActionButton = {
         AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
@@ -84,7 +82,6 @@ fun CategoriesScreen(
                     }
 
                     if (!isLoading.value and categories.value.isNotEmpty()) {
-                        displayProgressIndicator.value = false
                         items(
                             items = categories.value,
                             itemContent = { item ->

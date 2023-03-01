@@ -29,7 +29,6 @@ class CategoriesViewModel @Inject constructor(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        _isLoading.value = true
         getCategories()
     }
 

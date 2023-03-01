@@ -28,7 +28,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun AddProductScreen(
-    navController: NavController
+    navController: NavController, needToUpdate: MutableState<Boolean>
 ) {
     val viewModel = hiltViewModel<AddProductViewModel>()
     val productName = viewModel.productName.collectAsState()
@@ -119,6 +119,7 @@ fun AddProductScreen(
                             selectedCategoryIndex.value,
                             selectedStorageIndex.value
                         )
+                        needToUpdate.value = true
                         navController.popBackStack()
                     }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -175,11 +176,4 @@ fun AddProductScreen(
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewAddProductScreen() {
-    val navController = rememberNavController()
-    AddProductScreen(navController)
 }
