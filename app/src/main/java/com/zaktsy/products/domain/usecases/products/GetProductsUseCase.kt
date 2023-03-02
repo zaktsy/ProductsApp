@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetProductsUseCase @Inject constructor(private val repository: ProductsRepository) {
     suspend operator fun invoke(sortOrder: ProductsSortOrder, name: String): List<Product> {
-        val products = repository.getProducts(name)
+        val products = repository.getProductsByCategory(name)
 
         when (sortOrder) {
 

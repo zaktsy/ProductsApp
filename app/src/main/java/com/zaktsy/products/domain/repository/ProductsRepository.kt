@@ -1,6 +1,7 @@
 package com.zaktsy.products.domain.repository
 
 import com.zaktsy.products.data.local.ProductsDao
+import com.zaktsy.products.data.local.entities.ProductEntity
 import com.zaktsy.products.domain.models.Category
 import com.zaktsy.products.domain.models.GroupedProducts
 import com.zaktsy.products.domain.models.Product
@@ -29,6 +30,11 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     }
 
     suspend fun deleteCategory(category: Category) {
+        val productsWithCategory = getProductsByCategory(category.id)
+        productsWithCategory.forEach(){
+            it.categoryId = null
+        }
+        productsDao.updateProducts(productsWithCategory)
         val categoryEntity = CategoryMapper.transformTo(category)
         productsDao.deleteCategory(categoryEntity)
     }
@@ -56,6 +62,11 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     }
 
     suspend fun deleteStorage(storage: Storage) {
+        val productsWithStorage = getProductsByStorage(storage.id)
+        productsWithStorage.forEach(){
+            it.storageId = null
+        }
+        productsDao.updateProducts(productsWithStorage)
         val storageEntity = StorageMapper.transformTo(storage)
         productsDao.deleteStorage(storageEntity)
     }
@@ -72,7 +83,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         productsDao.addProduct(productEntity)
     }
 
-    suspend fun getProducts(name: String): List<Product> {
+    suspend fun getProductsByCategory(name: String): List<Product> {
         val products = productsDao.getProducts(name)
         return ProductMapper.transformToProducts(products)
     }
@@ -85,6 +96,14 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     suspend fun getProductsGropedByStorage(name: String): List<GroupedProducts> {
         val products = productsDao.getStoragesWithProducts(name)
         return ProductMapper.transformToGroupedByStorage(products)
+    }
+
+    private suspend fun getProductsByCategory(categoryId: Long): List<ProductEntity> {
+        return productsDao.getProductsByCategory(categoryId)
+    }
+
+    private suspend fun getProductsByStorage(storageId: Long): List<ProductEntity> {
+        return productsDao.getProductsByStorage(storageId)
     }
     //endregion
 }

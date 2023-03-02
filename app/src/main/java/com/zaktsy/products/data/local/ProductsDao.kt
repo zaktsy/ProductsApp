@@ -44,6 +44,15 @@ interface ProductsDao {
     @Insert
     suspend fun addProduct(productEntity: ProductEntity)
 
+    @Query("SELECT * FROM products WHERE categoryId = :categoryId")
+    suspend fun getProductsByCategory(categoryId: Long): List<ProductEntity>
+
+    @Query("SELECT * FROM products WHERE storageId = :storageId")
+    suspend fun getProductsByStorage(storageId: Long): List<ProductEntity>
+
+    @Update
+    suspend fun updateProducts(products: List<ProductEntity>)
+
     @Transaction
     @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%'")
     suspend fun getProducts(name: String): List<ProductEntityWithCategoryAndStorage>

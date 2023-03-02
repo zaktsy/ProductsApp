@@ -23,9 +23,9 @@ data class ProductEntity(
     val expirationDuration: Long,
     val barCode: String,
     @ColumnInfo(index = true)
-    val categoryId: Long?,
+    var categoryId: Long?,
     @ColumnInfo(index = true)
-    val storageId: Long?,
+    var storageId: Long?,
     val manufactureDate: Date
 ) {
     @PrimaryKey(autoGenerate = true)
