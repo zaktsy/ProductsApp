@@ -80,10 +80,10 @@ fun BottomBarAnimationApp() {
                     SettingsScreen(navController = navController)
                 }
                 composable(NavigationItem.Categories.route) {
-                    CategoriesScreen(navController = navController, scrollState = scrollState)
+                    CategoriesScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
                 }
                 composable(NavigationItem.Storages.route) {
-                    StoragesScreen(navController = navController, scrollState = scrollState)
+                    StoragesScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
                 }
             }
         })

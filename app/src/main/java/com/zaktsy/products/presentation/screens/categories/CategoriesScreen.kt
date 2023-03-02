@@ -32,7 +32,7 @@ import com.zaktsy.products.ui.components.TextFieldDialog
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CategoriesScreen(
-    navController: NavController, scrollState: LazyListState
+    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
 ) {
     var recentlyEditedCategory = Category("")
 
@@ -59,6 +59,7 @@ fun CategoriesScreen(
                 addedCategoryName
             ) {
                 viewModel.addCategory(Category(addedCategoryName.value))
+                needToUpdate.value = true
             }
             CategoryDialog(
                 stringResource(id = R.string.edit_category_name),
@@ -66,6 +67,7 @@ fun CategoriesScreen(
                 editedCategoryName
             ) {
                 viewModel.editCategory(recentlyEditedCategory, editedCategoryName.value)
+                needToUpdate.value = true
             }
 
             Column(
@@ -91,6 +93,7 @@ fun CategoriesScreen(
                                     recentlyEditedCategory = item
                                 }, {
                                     viewModel.deleteCategory(item)
+                                    needToUpdate.value = true
                                 })
                                 SimpleListElement(
                                     title = item.name,

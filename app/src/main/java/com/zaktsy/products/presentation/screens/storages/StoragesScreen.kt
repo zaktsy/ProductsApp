@@ -32,7 +32,7 @@ import com.zaktsy.products.ui.components.TextFieldDialog
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StoragesScreen(
-    navController: NavController, scrollState: LazyListState
+    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
 ) {
     var recentlyEditedStorage = Storage("")
 
@@ -59,6 +59,7 @@ fun StoragesScreen(
                 addedStorageName
             ) {
                 viewModel.addStorage(Storage(addedStorageName.value))
+                needToUpdate.value = true
             }
             StorageDialog(
                 stringResource(id = R.string.edit_category_name),
@@ -66,6 +67,7 @@ fun StoragesScreen(
                 editedStorageName
             ) {
                 viewModel.editStorage(recentlyEditedStorage, editedStorageName.value)
+                needToUpdate.value = true
             }
 
             Column(
@@ -91,6 +93,7 @@ fun StoragesScreen(
                                     recentlyEditedStorage = item
                                 }, {
                                     viewModel.deleteStorage(item)
+                                    needToUpdate.value = true
                                 })
                                 SimpleListElement(
                                     title = item.name,
