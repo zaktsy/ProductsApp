@@ -42,7 +42,7 @@ class AddProductViewModel @Inject constructor(
     )
 
     fun setManufactureDate(value: Date) {
-        _expirationDate.value = value
+        _manufactureDate.value = value
         _manufactureDateString.value = value.toSimpleString()
     }
 
@@ -69,8 +69,13 @@ class AddProductViewModel @Inject constructor(
     )
 
     fun setExpirationDate(value: Date) {
-        _expirationDate.value = value
-        _expirationDateString.value = value.toSimpleString()
+        if (value < _manufactureDate.value) {
+            _expirationDate.value = _manufactureDate.value
+            _expirationDateString.value = _manufactureDate.value.toSimpleString()
+        } else {
+            _expirationDate.value = value
+            _expirationDateString.value = value.toSimpleString()
+        }
     }
 
     private val _expirationDateString = MutableStateFlow(_expirationDate.value.toSimpleString())

@@ -68,8 +68,7 @@ fun ExpandableList(
                     ) {
                         products.forEach { product ->
                             ProductElement(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                percentageDueExpiration = product.percentageDueExpiration,
                                 text = product.name,
                                 daysToExpiration = "3"
                             )

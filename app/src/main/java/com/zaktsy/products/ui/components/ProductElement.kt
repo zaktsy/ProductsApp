@@ -8,22 +8,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.zaktsy.products.R
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zaktsy.products.ui.theme.*
 
 @Composable
 fun ProductElement(
-    backgroundColor: Color,
-    contentColor: Color,
-    text: String,
-    daysToExpiration: String
-){
+    percentageDueExpiration: Float, text: String, daysToExpiration: String
+) {
     Card(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-        backgroundColor = backgroundColor,
+        backgroundColor = when (percentageDueExpiration) {
+            in 0.0..0.2 -> {
+                androidx.compose.material.MaterialTheme.colors.RedContainer
+            }
+            in 0.2..0.5 -> {
+                androidx.compose.material.MaterialTheme.colors.YellowContainer
+            }
+            else -> {
+                androidx.compose.material.MaterialTheme.colors.GreenContainer
+            }
+        },
+
         shape = RoundedCornerShape(25.dp),
     ) {
         Column(
@@ -37,23 +48,34 @@ fun ProductElement(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                val contentColor = when (percentageDueExpiration) {
+                    in 0.0..0.2 -> {
+                        androidx.compose.material.MaterialTheme.colors.onRedContainer
+                    }
+                    in 0.2..0.5 -> {
+                        androidx.compose.material.MaterialTheme.colors.onYellowContainer
+                    }
+                    else -> {
+                        androidx.compose.material.MaterialTheme.colors.onGreenContainer
+                    }
+                }
                 Text(
                     text = text,
                     fontSize = 25.sp,
                     color = contentColor,
-                    modifier = Modifier.weight(6f),
+                    modifier = Modifier.weight(5f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "due",
-                    fontSize = 25.sp,
+                    text = stringResource(id = R.string.expiration),
+                    fontSize = 15.sp,
                     color = contentColor,
-                    modifier = Modifier.weight(2f)
+                    modifier = Modifier.weight(3f)
                 )
                 Text(
                     text = daysToExpiration,
-                    fontSize = 25.sp,
+                    fontSize = 20.sp,
                     color = contentColor,
                     modifier = Modifier.weight(1f)
                 )
@@ -64,10 +86,9 @@ fun ProductElement(
 
 @Composable
 @Preview
-fun PreviewProductElement(){
+fun PreviewProductElement() {
     ProductElement(
-        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        0.25f,
         text = "vhdvjd",
         daysToExpiration = "3"
     )

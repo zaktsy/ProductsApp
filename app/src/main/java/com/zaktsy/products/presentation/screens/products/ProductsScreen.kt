@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme as MyTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -23,6 +24,7 @@ import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.ExpandableList
 import com.zaktsy.products.ui.components.ExpandableSearch
 import com.zaktsy.products.ui.components.ProductElement
+import com.zaktsy.products.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -42,7 +44,7 @@ fun ProductsScreen(
     val showProducts = viewModel.showProducts.collectAsState()
     val products = viewModel.products.collectAsState()
 
-    if (needToUpdate.value){
+    if (needToUpdate.value) {
         viewModel.getProducts()
         needToUpdate.value = false
     }
@@ -74,10 +76,9 @@ fun ProductsScreen(
                 if (showProducts.value and products.value.isNotEmpty() and !isLoading.value) {
                     items(items = products.value, itemContent = { item ->
                         ProductElement(
-                            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            item.percentageDueExpiration,
                             text = item.name,
-                            daysToExpiration = "3"
+                            daysToExpiration = item.daysDueExpiration.toString()
                         )
                     })
                 }
