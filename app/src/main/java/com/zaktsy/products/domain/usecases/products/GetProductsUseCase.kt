@@ -8,14 +8,14 @@ import javax.inject.Inject
 
 class GetProductsUseCase @Inject constructor(private val repository: ProductsRepository) {
     suspend operator fun invoke(sortOrder: ProductsSortOrder, name: String): List<Product> {
-        val products = repository.getProductsByCategory(name)
+        var products = repository.getProductsByCategory(name)
 
-        when (sortOrder) {
+        products = when (sortOrder) {
 
             ProductsSortOrder.ALPHABETICALLY -> products.sortedBy {
                 it.name
             }
-            ProductsSortOrder.EXPIRATION -> products.sortedBy {
+            ProductsSortOrder.EXPIRATION -> products.sortedByDescending {
                 Date().time - (it.manufactureDate.time + it.expirationDuration)
             }
         }
