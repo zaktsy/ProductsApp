@@ -64,19 +64,7 @@ class ProductMapper {
             return groupedProducts
         }
 
-        private fun transformFrom(data: ProductEntityWithCategoryAndStorage): Product {
-            return Product(
-                data.product.id,
-                data.product.name,
-                data.product.expirationDuration,
-                data.product.barCode,
-                data.category?.let { Category(it.id, data.category.name) },
-                data.storage?.let { Storage(it.id, data.storage.name) },
-                data.product.manufactureDate,
-            )
-        }
-
-        private fun transformFrom(data: ProductEntity): Product {
+        fun transformFrom(data: ProductEntity): Product {
             return Product(
                 data.id,
                 data.name,
@@ -85,6 +73,18 @@ class ProductMapper {
                 null,
                 null,
                 data.manufactureDate,
+            )
+        }
+
+        fun transformFrom(data: ProductEntityWithCategoryAndStorage): Product {
+            return Product(
+                data.product.id,
+                data.product.name,
+                data.product.expirationDuration,
+                data.product.barCode,
+                data.category?.let { Category(it.id, data.category.name) },
+                data.storage?.let { Storage(it.id, data.storage.name) },
+                data.product.manufactureDate,
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens.addproduct
+package com.zaktsy.products.presentation.screens.editscreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -25,10 +25,10 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun AddProductScreen(
+fun EditProductScreen(
     navController: NavController, needToUpdate: MutableState<Boolean>
 ) {
-    val viewModel = hiltViewModel<AddProductViewModel>()
+    val viewModel = hiltViewModel<EditProductViewModel>()
     val productName = viewModel.productName.collectAsState()
     val manufactureDateString = viewModel.manufactureDateString.collectAsState()
     val manufactureDateDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
@@ -38,18 +38,21 @@ fun AddProductScreen(
 
     val categoriesSelectorExpanded = remember { mutableStateOf(false) }
     val categories = viewModel.categories.collectAsState()
+    val selectedCategoryName = viewModel.selectedCategoryName.collectAsState()
     val selectedCategoryIndex = remember { mutableStateOf(-1) }
 
     val storagesSelectorExpanded = remember { mutableStateOf(false) }
     val storages = viewModel.storages.collectAsState()
+    val selectedStorageName = viewModel.selectedStorageName.collectAsState()
     val selectedStorageIndex = remember { mutableStateOf(-1) }
+
 
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
             TitleWithBackButton(
-                title = stringResource(id = R.string.add_product),
+                title = stringResource(id = R.string.edit_product),
                 onBackAction = navController::popBackStack
             )
 
@@ -67,7 +70,7 @@ fun AddProductScreen(
                 )
             )
 
-            Row() {
+            Row {
                 ReadonlyTextField(
                     value = manufactureDateString,
                     onClick = { manufactureDateDialogOpenedState.value = true },
@@ -82,22 +85,23 @@ fun AddProductScreen(
             }
 
 
-            /*ExpandableSelector(
+            ExpandableSelector(
                 expanded = categoriesSelectorExpanded,
                 label = stringResource(id = R.string.category),
-                items = categories.value,,
+                items = categories.value,
+                selectedItemName = selectedCategoryName,
                 selectedItemIndex = selectedCategoryIndex,
-                onselectedChanged = viewModel::setSelectedStorageName
+                onSelectedChanged = viewModel::setSelectedCategoryName
             )
 
             ExpandableSelector(
                 expanded = storagesSelectorExpanded,
                 label = stringResource(id = R.string.storage),
                 items = storages.value,
-                selectedItemName = "",
                 selectedItemIndex = selectedStorageIndex,
-                onselectedChanged = viewModel::setSelectedStorageName
-            )*/
+                selectedItemName = selectedStorageName,
+                onSelectedChanged = viewModel::setSelectedStorageName
+            )
 
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp),
@@ -116,9 +120,8 @@ fun AddProductScreen(
             ) {
                 Button(
                     enabled = productName.value.isNotEmpty(), onClick = {
-                        viewModel.addProduct(
-                            selectedCategoryIndex.value,
-                            selectedStorageIndex.value
+                        viewModel.saveProduct(
+                            selectedCategoryIndex.value, selectedStorageIndex.value
                         )
                         needToUpdate.value = true
                         navController.popBackStack()

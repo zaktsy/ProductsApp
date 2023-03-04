@@ -8,5 +8,8 @@ sealed class NavigationRoutes {
         const val Settings = "settings"
         const val Categories = "categories"
         const val Storages = "storages"
+        const val EditProductRoot = "edit_product"
+        const val EditProductArg = "productId"
+        const val EditProduct = "$EditProductRoot/{$EditProductArg}"
     }
 }

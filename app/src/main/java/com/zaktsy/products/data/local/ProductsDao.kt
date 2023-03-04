@@ -41,6 +41,10 @@ interface ProductsDao {
     //endregion
 
     //region products
+
+    @Query("SELECT * FROM products WHERE id = :productId")
+    suspend fun getProduct(productId: Long): ProductEntityWithCategoryAndStorage
+
     @Insert
     suspend fun addProduct(productEntity: ProductEntity)
 
@@ -52,6 +56,9 @@ interface ProductsDao {
 
     @Update
     suspend fun updateProducts(products: List<ProductEntity>)
+
+    @Update
+    suspend fun updateProduct(productEntity: ProductEntity)
 
     @Transaction
     @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%'")
@@ -90,5 +97,7 @@ interface ProductsDao {
         }
         return rv
     }
+
+
     //endregion
 }

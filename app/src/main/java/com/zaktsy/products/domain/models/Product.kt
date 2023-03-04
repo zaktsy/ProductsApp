@@ -12,8 +12,8 @@ class Product(
     var name: String,
     var expirationDuration: Long,
     var barCode: String,
-    val category: Category?,
-    val storage: Storage?,
+    var category: Category?,
+    var storage: Storage?,
     var manufactureDate: Date
 ) {
     val percentageDueExpiration: Float = calculatePercentage()

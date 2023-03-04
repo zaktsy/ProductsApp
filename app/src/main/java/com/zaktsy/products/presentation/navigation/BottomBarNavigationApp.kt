@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.presentation.screens.addproduct.AddProductScreen
 import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
+import com.zaktsy.products.presentation.screens.editscreen.EditProductScreen
 import com.zaktsy.products.presentation.screens.products.ProductsScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
@@ -54,6 +55,9 @@ fun BottomBarAnimationApp() {
             NavigationRoutes.Storages -> {
                 bottomBarState.value = false
             }
+            NavigationRoutes.EditProduct -> {
+                bottomBarState.value = false
+            }
         }
 
         Scaffold(modifier = Modifier.navigationBarsPadding(), bottomBar = {
@@ -84,6 +88,9 @@ fun BottomBarAnimationApp() {
                 }
                 composable(NavigationItem.Storages.route) {
                     StoragesScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
+                }
+                composable(NavigationItem.EditProduct.route) {
+                    EditProductScreen(navController = navController, needToUpdate = needToUpdate)
                 }
             }
         })

@@ -15,11 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.zaktsy.products.domain.models.Product
+import com.zaktsy.products.presentation.navigation.NavigationRoutes
 
 @Composable
 fun ExpandableList(
-    title: String, products: List<Product>
+    title: String, products: List<Product>, navController: NavController
 ) {
     var expandedState by remember { mutableStateOf(false) }
 
@@ -40,7 +42,7 @@ fun ExpandableList(
                         .clickable(onClick = {
                             expandedState = !expandedState
                         }),
-                ){
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -71,7 +73,9 @@ fun ExpandableList(
                                 percentageDueExpiration = product.percentageDueExpiration,
                                 text = product.name,
                                 daysToExpiration = "3"
-                            )
+                            ) {
+                                navController.navigate(buildTwoRoute(product.id.toString()))
+                            }
                         }
                     }
                 }
@@ -79,3 +83,5 @@ fun ExpandableList(
         }
     }
 }
+
+fun buildTwoRoute(argument: String) = "${NavigationRoutes.EditProductRoot}/$argument"

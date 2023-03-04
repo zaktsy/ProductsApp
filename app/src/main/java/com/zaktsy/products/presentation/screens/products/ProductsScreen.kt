@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material.MaterialTheme as MyTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -20,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
+import com.zaktsy.products.presentation.navigation.NavigationRoutes.Companion.EditProductRoot
 import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.ExpandableList
 import com.zaktsy.products.ui.components.ExpandableSearch
@@ -79,14 +78,19 @@ fun ProductsScreen(
                             item.percentageDueExpiration,
                             text = item.name,
                             daysToExpiration = item.daysDueExpiration.toString()
-                        )
+                        ) {
+                            navController.navigate(buildTwoRoute(item.id.toString()))
+                        }
                     })
                 }
 
                 if (showGroupedProducts.value and groupedProducts.value.isNotEmpty() and !isLoading.value) {
-                    items(items = groupedProducts.value, itemContent = { item ->
-                        ExpandableList(item.groupingModel.name, item.products)
-                    })
+                    items(items = groupedProducts.value) { item ->
+                        ExpandableList(
+                            item.groupingModel.name, item.products, navController
+                        )
+
+                    }
                 }
 
             }
@@ -104,3 +108,4 @@ fun ProductsScreen(
     }
 }
 
+fun buildTwoRoute(argument: String) = "$EditProductRoot/$argument"

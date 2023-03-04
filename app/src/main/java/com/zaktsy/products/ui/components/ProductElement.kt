@@ -3,6 +3,7 @@ package com.zaktsy.products.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,12 +18,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zaktsy.products.ui.theme.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProductElement(
-    percentageDueExpiration: Float, text: String, daysToExpiration: String
+    percentageDueExpiration: Float,
+    text: String,
+    daysToExpiration: String,
+    onItemClick: () -> Unit,
 ) {
-    Card(
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+    Card(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
         backgroundColor = when (percentageDueExpiration) {
             in 0.0..0.2 -> {
                 androidx.compose.material.MaterialTheme.colors.RedContainer
@@ -36,7 +40,9 @@ fun ProductElement(
         },
 
         shape = RoundedCornerShape(25.dp),
-    ) {
+        onClick = {
+            onItemClick()
+        }) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -88,8 +94,6 @@ fun ProductElement(
 @Preview
 fun PreviewProductElement() {
     ProductElement(
-        0.25f,
-        text = "vhdvjd",
-        daysToExpiration = "3"
-    )
+        0.25f, text = "vhdvjd", daysToExpiration = "3"
+    ) {}
 }

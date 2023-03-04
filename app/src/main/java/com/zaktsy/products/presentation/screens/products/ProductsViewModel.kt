@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.screens.products
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.GroupedProducts
 import com.zaktsy.products.domain.models.Product
@@ -25,6 +26,7 @@ class ProductsViewModel @Inject constructor(
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
+
 
     private val _showProducts = MutableStateFlow(true)
     val showProducts = _showProducts.asStateFlow()

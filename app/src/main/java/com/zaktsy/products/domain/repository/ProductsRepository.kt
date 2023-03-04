@@ -78,6 +78,11 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     //endregion
 
     //region Products
+    suspend fun getProduct(productId: Long): Product {
+        val product = productsDao.getProduct(productId)
+        return ProductMapper.transformFrom(product)
+    }
+
     suspend fun addProduct(product: Product) {
         val productEntity = ProductMapper.transformTo(product)
         productsDao.addProduct(productEntity)
@@ -104,6 +109,11 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
 
     private suspend fun getProductsByStorage(storageId: Long): List<ProductEntity> {
         return productsDao.getProductsByStorage(storageId)
+    }
+
+    suspend fun editProduct(product: Product) {
+        val productEntity = ProductMapper.transformTo(product)
+        productsDao.updateProduct(productEntity)
     }
     //endregion
 }

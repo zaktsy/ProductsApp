@@ -3,15 +3,13 @@ package com.zaktsy.products.ui.components
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zaktsy.products.domain.models.ModelWithName
+import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,9 +17,10 @@ fun ExpandableSelector(
     expanded: MutableState<Boolean>,
     label: String,
     items: List<ModelWithName>,
-    selectedItemIndex: MutableState<Int>
+    selectedItemName: State<String>,
+    selectedItemIndex: MutableState<Int>,
+    onSelectedChanged: KFunction1<String, Unit>,
 ) {
-    val selectedOptionText = remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
@@ -33,7 +32,7 @@ fun ExpandableSelector(
         OutlinedTextField(singleLine = true,
             readOnly = true,
             modifier = Modifier.menuAnchor(),
-            value = selectedOptionText.value,
+            value = selectedItemName.value,
             onValueChange = { },
             label = {
                 Text(
@@ -52,13 +51,12 @@ fun ExpandableSelector(
                     expanded = expanded.value
                 )
             })
-        ExposedDropdownMenu(expanded = expanded.value,
-            onDismissRequest = {
-                expanded.value = false
-            }) {
+        ExposedDropdownMenu(expanded = expanded.value, onDismissRequest = {
+            expanded.value = false
+        }) {
             items.forEachIndexed { index, selectionOption ->
                 DropdownMenuItem(onClick = {
-                    selectedOptionText.value = selectionOption.name
+                    onSelectedChanged(selectionOption.name)
                     expanded.value = false
                     selectedItemIndex.value = index
                 },
