@@ -9,26 +9,26 @@ import javax.inject.Inject
 class GetProductsGropedByCategoryUseCase @Inject constructor(private val repository: ProductsRepository) {
 
     suspend operator fun invoke(sortOrder: ProductsSortOrder, name: String): List<GroupedProducts> {
-        val products = repository.getProductsGropedByCategory(name)
+        val groups = repository.getProductsGropedByCategory(name)
 
         when (sortOrder) {
 
             ProductsSortOrder.ALPHABETICALLY -> {
-                products.forEach{ groupedProducts ->
-                    groupedProducts.products.sortedBy {
+                groups.forEach { groupedProducts ->
+                    groupedProducts.products = groupedProducts.products.sortedBy {
                         it.name
                     }
                 }
             }
-            ProductsSortOrder.EXPIRATION ->{
-                products.forEach{ groupedProducts ->
-                    groupedProducts.products.sortedBy {
+            ProductsSortOrder.EXPIRATION -> {
+                groups.forEach { groupedProducts ->
+                    groupedProducts.products = groupedProducts.products.sortedBy {
                         Date().time - (it.manufactureDate.time + it.expirationDuration)
                     }
                 }
             }
         }
 
-        return products
+        return groups
     }
 }
