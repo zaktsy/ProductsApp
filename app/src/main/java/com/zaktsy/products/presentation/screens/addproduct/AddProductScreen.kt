@@ -38,10 +38,12 @@ fun AddProductScreen(
 
     val categoriesSelectorExpanded = remember { mutableStateOf(false) }
     val categories = viewModel.categories.collectAsState()
+    val selectedCategoryName = viewModel.selectedCategoryName.collectAsState()
     val selectedCategoryIndex = remember { mutableStateOf(-1) }
 
     val storagesSelectorExpanded = remember { mutableStateOf(false) }
     val storages = viewModel.storages.collectAsState()
+    val selectedStorageName = viewModel.selectedStorageName.collectAsState()
     val selectedStorageIndex = remember { mutableStateOf(-1) }
 
     Scaffold { paddingValues ->
@@ -82,22 +84,23 @@ fun AddProductScreen(
             }
 
 
-            /*ExpandableSelector(
+            ExpandableSelector(
                 expanded = categoriesSelectorExpanded,
                 label = stringResource(id = R.string.category),
-                items = categories.value,,
+                items = categories.value,
+                selectedItemName = selectedCategoryName,
                 selectedItemIndex = selectedCategoryIndex,
-                onselectedChanged = viewModel::setSelectedStorageName
+                onSelectedChanged = viewModel::setSelectedCategoryName
             )
 
             ExpandableSelector(
                 expanded = storagesSelectorExpanded,
                 label = stringResource(id = R.string.storage),
                 items = storages.value,
-                selectedItemName = "",
+                selectedItemName = selectedStorageName,
                 selectedItemIndex = selectedStorageIndex,
-                onselectedChanged = viewModel::setSelectedStorageName
-            )*/
+                onSelectedChanged = viewModel::setSelectedStorageName
+            )
 
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp),

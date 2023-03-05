@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.screens.storages
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.domain.usecases.storages.AddStorageUseCase
@@ -22,7 +23,7 @@ class StoragesViewModel @Inject constructor(
     private val editStorageUseCase: EditStorageUseCase
 ) : ViewModelWithSearch() {
 
-    private val _storages = MutableStateFlow(emptyList<Storage>())
+    private val _storages = MutableStateFlow(mutableStateListOf<Storage>())
     val storages = _storages.asStateFlow()
 
     private val _isLoading = MutableStateFlow(true)
@@ -36,7 +37,8 @@ class StoragesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
             val items = getStoragesUseCase.invoke(_searchedValue.value)
-            _storages.value = items
+            _storages.value = mutableStateListOf()
+            _storages.value.addAll(items)
             _isLoading.value = false
         }
     }
@@ -44,7 +46,7 @@ class StoragesViewModel @Inject constructor(
     fun addStorage(storage: Storage) {
         viewModelScope.launch(Dispatchers.IO) {
             addStorageUseCase.invoke(storage)
-            _storages.value += storage
+            getStorages()
         }
     }
 
@@ -56,13 +58,12 @@ class StoragesViewModel @Inject constructor(
     }
 
     fun editStorage(editedStorage: Storage, newStorageName: String) {
-        editedStorage.name = newStorageName
         viewModelScope.launch(Dispatchers.IO) {
             editStorageUseCase.invoke(editedStorage)
             _storages.value -= editedStorage
             editedStorage.name = newStorageName
             editStorageUseCase.invoke(editedStorage)
-            _storages.value += editedStorage
+            getStorages()
         }
     }
 

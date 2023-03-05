@@ -60,6 +60,9 @@ interface ProductsDao {
     @Update
     suspend fun updateProduct(productEntity: ProductEntity)
 
+    @Delete
+    suspend fun deleteProduct(productEntity: ProductEntity)
+
     @Transaction
     @Query("SELECT * FROM products WHERE productName LIKE '%' || :name || '%'")
     suspend fun getProducts(name: String): List<ProductEntityWithCategoryAndStorage>
@@ -97,7 +100,6 @@ interface ProductsDao {
         }
         return rv
     }
-
 
     //endregion
 }

@@ -1,7 +1,9 @@
 package com.zaktsy.products.presentation.screens.categories
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.Category
+import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.domain.usecases.categories.AddCategoryUseCase
 import com.zaktsy.products.domain.usecases.categories.DeleteCategoryUseCase
 import com.zaktsy.products.domain.usecases.categories.EditCategoryUseCase
@@ -22,7 +24,7 @@ class CategoriesViewModel @Inject constructor(
     private val editCategoryUseCase: EditCategoryUseCase
 ) : ViewModelWithSearch() {
 
-    private val _categories = MutableStateFlow(emptyList<Category>())
+    private val _categories = MutableStateFlow(mutableStateListOf<Category>())
     val categories = _categories.asStateFlow()
 
     private val _isLoading = MutableStateFlow(true)
@@ -36,7 +38,8 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
             val items = getCategoriesUseCase.invoke(_searchedValue.value)
-            _categories.value = items
+            _categories.value = mutableStateListOf()
+            _categories.value.addAll(items)
             _isLoading.value = false
         }
     }
@@ -44,7 +47,7 @@ class CategoriesViewModel @Inject constructor(
     fun addCategory(category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
             addCategoryUseCase.invoke(category)
-            _categories.value += category
+            getCategories()
         }
     }
 
@@ -60,7 +63,7 @@ class CategoriesViewModel @Inject constructor(
             _categories.value -= editedCategory
             editedCategory.name = newCategoryName
             editCategoryUseCase.invoke(editedCategory)
-            _categories.value += editedCategory
+            getCategories()
         }
     }
 

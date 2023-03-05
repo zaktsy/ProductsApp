@@ -2,6 +2,7 @@ package com.zaktsy.products.presentation.screens.storages
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.lazy.grid.*
@@ -29,6 +30,7 @@ import com.zaktsy.products.ui.components.HeaderWithSearch
 import com.zaktsy.products.ui.components.SimpleListElement
 import com.zaktsy.products.ui.components.TextFieldDialog
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StoragesScreen(
@@ -85,6 +87,7 @@ fun StoragesScreen(
                     if (!isLoading.value and storages.value.isNotEmpty()) {
                         items(
                             items = storages.value,
+                            key = { storage -> storage.id },
                             itemContent = { item ->
                                 val buttonIcons = listOf(Icons.Default.Edit, Icons.Default.Delete)
 
@@ -95,11 +98,15 @@ fun StoragesScreen(
                                     viewModel.deleteStorage(item)
                                     needToUpdate.value = true
                                 })
-                                SimpleListElement(
-                                    title = item.name,
-                                    buttonActions = buttonActions,
-                                    buttonIcons = buttonIcons
-                                )
+                                Row(
+                                    modifier = Modifier.animateItemPlacement(),
+                                ) {
+                                    SimpleListElement(
+                                        title = item.name,
+                                        buttonActions = buttonActions,
+                                        buttonIcons = buttonIcons
+                                    )
+                                }
                             },
                         )
                     }

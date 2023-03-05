@@ -2,6 +2,7 @@ package com.zaktsy.products.presentation.screens.categories
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.lazy.grid.*
@@ -29,6 +30,7 @@ import com.zaktsy.products.ui.components.HeaderWithSearch
 import com.zaktsy.products.ui.components.SimpleListElement
 import com.zaktsy.products.ui.components.TextFieldDialog
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CategoriesScreen(
@@ -78,13 +80,16 @@ fun CategoriesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.categories), searchEnteredName, viewModel::onSearchValueChanged
+                            stringResource(id = R.string.categories),
+                            searchEnteredName,
+                            viewModel::onSearchValueChanged
                         )
                     }
 
                     if (!isLoading.value and categories.value.isNotEmpty()) {
                         items(
                             items = categories.value,
+                            key = { category -> category.id },
                             itemContent = { item ->
                                 val buttonIcons = listOf(Icons.Default.Edit, Icons.Default.Delete)
 
@@ -95,11 +100,15 @@ fun CategoriesScreen(
                                     viewModel.deleteCategory(item)
                                     needToUpdate.value = true
                                 })
-                                SimpleListElement(
-                                    title = item.name,
-                                    buttonActions = buttonActions,
-                                    buttonIcons = buttonIcons
-                                )
+                                Row(
+                                    modifier = Modifier.animateItemPlacement(),
+                                ) {
+                                    SimpleListElement(
+                                        title = item.name,
+                                        buttonActions = buttonActions,
+                                        buttonIcons = buttonIcons
+                                    )
+                                }
                             },
                         )
                     }
@@ -114,7 +123,7 @@ fun CategoriesScreen(
                     }
                 }
 
-                if (categories.value.isEmpty() and !isLoading.value){
+                if (categories.value.isEmpty() and !isLoading.value) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,

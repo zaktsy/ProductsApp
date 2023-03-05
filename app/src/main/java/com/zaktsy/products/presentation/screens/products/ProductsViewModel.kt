@@ -1,5 +1,7 @@
 package com.zaktsy.products.presentation.screens.products
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.GroupedProducts
@@ -7,6 +9,7 @@ import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.usecases.products.GetProductsGropedByCategoryUseCase
 import com.zaktsy.products.domain.usecases.products.GetProductsGropedByStorageUseCase
 import com.zaktsy.products.domain.usecases.products.GetProductsUseCase
+import com.zaktsy.products.domain.usecases.products.RemoveProductUseCase
 import com.zaktsy.products.presentation.screens.ViewModelWithSearch
 import com.zaktsy.products.utils.ProductDisplayMode
 import com.zaktsy.products.utils.ProductsSortOrder
@@ -21,12 +24,12 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val getProductsGropedByCategoryUseCase: GetProductsGropedByCategoryUseCase,
-    private val getProductsGropedByStorageUseCase: GetProductsGropedByStorageUseCase
+    private val getProductsGropedByStorageUseCase: GetProductsGropedByStorageUseCase,
+    private val removeProductUseCase: RemoveProductUseCase
 ) : ViewModelWithSearch() {
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
-
 
     private val _showProducts = MutableStateFlow(true)
     val showProducts = _showProducts.asStateFlow()
@@ -50,8 +53,15 @@ class ProductsViewModel @Inject constructor(
         getProducts()
     }
 
-    private val _products = MutableStateFlow(emptyList<Product>())
-    val products = _products.asStateFlow()
+    private val _products = MutableStateFlow(mutableStateListOf<Product>())
+    var products = _products.asStateFlow()
+
+    fun removeProductFromProducts(product: Product){
+        _products.value.removeIf{ it.id == product.id}
+        viewModelScope.launch(Dispatchers.IO){
+            removeProductUseCase(product)
+        }
+    }
 
     private val _gropedProducts = MutableStateFlow(emptyList<GroupedProducts>())
     val groupedProducts = _gropedProducts.asStateFlow()
@@ -97,7 +107,8 @@ class ProductsViewModel @Inject constructor(
                     val items = getProductsUseCase.invoke(sortOrder, _searchedValue.value)
                     _isLoading.value = false
                     _showProducts.value = true
-                    _products.value = items
+                    _products.value = mutableStateListOf()
+                    _products.value.addAll(items)
                 }
             }
 

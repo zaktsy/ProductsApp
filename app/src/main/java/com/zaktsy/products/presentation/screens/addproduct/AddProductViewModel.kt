@@ -52,8 +52,22 @@ class AddProductViewModel @Inject constructor(
     private val _categories = MutableStateFlow(emptyList<Category>())
     val categories = _categories.asStateFlow()
 
+    private val _selectedCategoryName = MutableStateFlow("")
+    val selectedCategoryName = _selectedCategoryName.asStateFlow()
+
+    fun setSelectedCategoryName(value: String){
+        _selectedCategoryName.value = value
+    }
+
     private val _storages = MutableStateFlow(emptyList<Storage>())
     val storages = _storages.asStateFlow()
+
+    private val _selectedStorageName = MutableStateFlow("")
+    val selectedStorageName = _selectedStorageName.asStateFlow()
+
+    fun setSelectedStorageName(value: String){
+        _selectedStorageName.value = value
+    }
 
     init {
         getCategories()

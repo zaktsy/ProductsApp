@@ -19,7 +19,7 @@ fun ExpandableSelector(
     items: List<ModelWithName>,
     selectedItemName: State<String>,
     selectedItemIndex: MutableState<Int>,
-    onSelectedChanged: KFunction1<String, Unit>,
+    onSelectedChanged: (String) -> Unit,
 ) {
 
     ExposedDropdownMenuBox(

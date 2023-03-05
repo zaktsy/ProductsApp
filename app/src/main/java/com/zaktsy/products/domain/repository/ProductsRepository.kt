@@ -115,5 +115,10 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val productEntity = ProductMapper.transformTo(product)
         productsDao.updateProduct(productEntity)
     }
+
+    suspend fun removeProduct(product: Product) {
+        val productEntity = ProductMapper.transformTo(product)
+        productsDao.deleteProduct(productEntity)
+    }
     //endregion
 }
