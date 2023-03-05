@@ -34,8 +34,11 @@ fun ProductElement(
             in 0.2..0.5 -> {
                 androidx.compose.material.MaterialTheme.colors.YellowContainer
             }
-            else -> {
+            in 0.5..1.0 -> {
                 androidx.compose.material.MaterialTheme.colors.GreenContainer
+            }
+            else -> {
+                MaterialTheme.colorScheme.surfaceVariant
             }
         },
 
@@ -61,8 +64,11 @@ fun ProductElement(
                     in 0.2..0.5 -> {
                         androidx.compose.material.MaterialTheme.colors.onYellowContainer
                     }
-                    else -> {
+                    in 0.5..1.0 -> {
                         androidx.compose.material.MaterialTheme.colors.onGreenContainer
+                    }
+                    else -> {
+                        MaterialTheme.colorScheme.onSurfaceVariant
                     }
                 }
                 Text(
