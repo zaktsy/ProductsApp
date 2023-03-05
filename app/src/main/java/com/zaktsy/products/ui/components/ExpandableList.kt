@@ -18,9 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
 
@@ -28,9 +30,10 @@ import com.zaktsy.products.presentation.navigation.NavigationRoutes
 @Composable
 fun ExpandableList(
     title: String,
+    itemCount: String,
     products: MutableList<Product>,
     navController: NavController,
-    onSwipeToDismiss: (Product) -> Unit
+    onSwipeToDismiss: (Product) -> Unit = {}
 ) {
     var expandedState by remember { mutableStateOf(false) }
 
@@ -55,7 +58,7 @@ fun ExpandableList(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 30.dp)
+                            .padding(start = 20.dp, end = 15.dp)
                             .height(55.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -64,7 +67,13 @@ fun ExpandableList(
                             text = title,
                             fontSize = 30.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.weight(6f)
+                            modifier = Modifier.weight(8f)
+                        )
+                        Text(
+                            text = itemCount,
+                            fontSize = 25.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.weight(1f)
                         )
                     }
                 }

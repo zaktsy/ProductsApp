@@ -142,6 +142,7 @@ fun ProductsScreen(
                     items(items = groupedProducts.value,) { item ->
                         ExpandableList(
                             title = item.groupingModel.name,
+                            item.products.count().toString(),
                             products = item.products,
                             navController = navController,
                             onSwipeToDismiss =  viewModel::removeProductFromGroupedProducts
