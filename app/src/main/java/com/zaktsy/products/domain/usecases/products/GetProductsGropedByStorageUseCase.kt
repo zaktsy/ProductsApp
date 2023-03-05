@@ -1,6 +1,7 @@
 package com.zaktsy.products.domain.usecases.products
 
 import com.zaktsy.products.domain.models.GroupedProducts
+import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.repository.ProductsRepository
 import com.zaktsy.products.utils.ProductsSortOrder
 import java.util.*
@@ -15,16 +16,20 @@ class GetProductsGropedByStorageUseCase @Inject constructor(private val reposito
 
             ProductsSortOrder.ALPHABETICALLY -> {
                 groups.forEach { groupedProducts ->
-                    groupedProducts.products = groupedProducts.products.sortedBy {
+                    val sortedProducts = groupedProducts.products.sortedBy {
                         it.name
                     }
+                    groupedProducts.products.clear()
+                    groupedProducts.products.addAll(sortedProducts)
                 }
             }
             ProductsSortOrder.EXPIRATION -> {
                 groups.forEach { groupedProducts ->
-                    groupedProducts.products = groupedProducts.products.sortedBy {
+                    val sortedProducts = groupedProducts.products.sortedBy {
                         Date().time - (it.manufactureDate.time + it.expirationDuration)
                     }
+                    groupedProducts.products.clear()
+                    groupedProducts.products.addAll(sortedProducts)
                 }
             }
         }

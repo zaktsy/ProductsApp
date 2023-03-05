@@ -85,46 +85,47 @@ fun ProductsScreen(
                                 } else false
                             })
                             SwipeToDismiss(state = dismissState,
-                                modifier = Modifier
-                                    .animateItemPlacement(),
+                                modifier = Modifier.animateItemPlacement(),
                                 dismissThresholds = { direction ->
                                     FractionalThreshold(
                                         if (direction == DismissDirection.StartToEnd) 0.66f else 0.50f
                                     )
                                 },
                                 background = {
-                                val color = when (dismissState.dismissDirection) {
-                                    DismissDirection.StartToEnd -> Color.Transparent
-                                    DismissDirection.EndToStart -> MaterialTheme.colorScheme.error
-                                    null -> Color.Transparent
-                                }
+                                    val color = when (dismissState.dismissDirection) {
+                                        DismissDirection.StartToEnd -> Color.Transparent
+                                        DismissDirection.EndToStart -> MaterialTheme.colorScheme.error
+                                        null -> Color.Transparent
+                                    }
 
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                                        .clip(RoundedCornerShape(25.dp))
-                                        .background(color)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onError,
+                                    Box(
                                         modifier = Modifier
-                                            .align(Alignment.CenterEnd)
-                                            .padding(end = 20.dp)
-                                    )
-                                }
+                                            .fillMaxSize()
+                                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                                            .clip(RoundedCornerShape(25.dp))
+                                            .background(color)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onError,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterEnd)
+                                                .padding(end = 20.dp)
+                                        )
+                                    }
 
-                            }, dismissContent = {
-                                ProductElement(
-                                    item.percentageDueExpiration,
-                                    text = item.name,
-                                    daysToExpiration = item.daysDueExpiration.toString()
-                                ) {
-                                    navController.navigate(buildTwoRoute(item.id.toString()))
-                                }
-                            }, directions = setOf(DismissDirection.EndToStart)
+                                },
+                                dismissContent = {
+                                    ProductElement(
+                                        item.percentageDueExpiration,
+                                        text = item.name,
+                                        daysToExpiration = item.daysDueExpiration.toString()
+                                    ) {
+                                        navController.navigate(buildTwoRoute(item.id.toString()))
+                                    }
+                                },
+                                directions = setOf(DismissDirection.EndToStart)
                             )
                         })
                 }
@@ -132,7 +133,10 @@ fun ProductsScreen(
                 if (showGroupedProducts.value and groupedProducts.value.isNotEmpty() and !isLoading.value) {
                     items(items = groupedProducts.value) { item ->
                         ExpandableList(
-                            item.groupingModel.name, item.products, navController
+                            title = item.groupingModel.name,
+                            products = item.products,
+                            navController = navController,
+                            onSwipeToDismiss =  viewModel::removeProductFromGroupedProducts
                         )
 
                     }

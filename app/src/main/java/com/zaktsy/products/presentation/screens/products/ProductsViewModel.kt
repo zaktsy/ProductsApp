@@ -56,15 +56,27 @@ class ProductsViewModel @Inject constructor(
     private val _products = MutableStateFlow(mutableStateListOf<Product>())
     var products = _products.asStateFlow()
 
-    fun removeProductFromProducts(product: Product){
-        _products.value.removeIf{ it.id == product.id}
-        viewModelScope.launch(Dispatchers.IO){
+    fun removeProductFromProducts(product: Product) {
+        _products.value.removeIf { it.id == product.id }
+        viewModelScope.launch(Dispatchers.IO) {
             removeProductUseCase(product)
         }
     }
 
     private val _gropedProducts = MutableStateFlow(emptyList<GroupedProducts>())
     val groupedProducts = _gropedProducts.asStateFlow()
+
+    fun removeProductFromGroupedProducts(product: Product) {
+        val indexOfGroupWithProduct =
+            _gropedProducts.value.indexOfFirst { it.products.contains(product) }
+
+        if (indexOfGroupWithProduct != -1)
+            _gropedProducts.value[indexOfGroupWithProduct].products.removeIf { it.id == product.id }
+        viewModelScope.launch(Dispatchers.IO) {
+            removeProductUseCase(product)
+            getProducts()
+        }
+    }
 
     init {
         getProducts()
