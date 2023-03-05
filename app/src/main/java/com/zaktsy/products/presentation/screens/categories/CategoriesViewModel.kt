@@ -52,9 +52,9 @@ class CategoriesViewModel @Inject constructor(
     }
 
     fun deleteCategory(category: Category) {
+        _categories.value.removeIf { it.id == category.id }
         viewModelScope.launch(Dispatchers.IO) {
             deleteCategoryUseCase.invoke(category)
-            _categories.value -= category
         }
     }
 

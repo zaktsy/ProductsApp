@@ -1,6 +1,8 @@
 package com.zaktsy.products.presentation.screens.products
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -85,7 +88,12 @@ fun ProductsScreen(
                                 } else false
                             })
                             SwipeToDismiss(state = dismissState,
-                                modifier = Modifier.animateItemPlacement(),
+                                modifier = Modifier.animateItemPlacement(
+                                    animationSpec = spring(
+                                        dampingRatio = Spring.DampingRatioNoBouncy,
+                                        stiffness = Spring.StiffnessMediumLow
+                                    )
+                                ),
                                 dismissThresholds = { direction ->
                                     FractionalThreshold(
                                         if (direction == DismissDirection.StartToEnd) 0.66f else 0.50f
@@ -131,7 +139,7 @@ fun ProductsScreen(
                 }
 
                 if (showGroupedProducts.value and groupedProducts.value.isNotEmpty() and !isLoading.value) {
-                    items(items = groupedProducts.value) { item ->
+                    items(items = groupedProducts.value,) { item ->
                         ExpandableList(
                             title = item.groupingModel.name,
                             products = item.products,
