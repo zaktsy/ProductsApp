@@ -2,10 +2,8 @@ package com.zaktsy.products.domain.repository
 
 import com.zaktsy.products.data.local.ProductsDao
 import com.zaktsy.products.data.local.entities.ProductEntity
-import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.domain.models.GroupedProducts
-import com.zaktsy.products.domain.models.Product
-import com.zaktsy.products.domain.models.Storage
+import com.zaktsy.products.domain.models.*
+import com.zaktsy.products.utils.mappers.AlarmMapper
 import com.zaktsy.products.utils.mappers.CategoryMapper
 import com.zaktsy.products.utils.mappers.ProductMapper
 import com.zaktsy.products.utils.mappers.StorageMapper
@@ -83,9 +81,9 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         return ProductMapper.transformFrom(product)
     }
 
-    suspend fun addProduct(product: Product) {
+    suspend fun addProduct(product: Product):Long {
         val productEntity = ProductMapper.transformTo(product)
-        productsDao.addProduct(productEntity)
+        return productsDao.addProduct(productEntity)
     }
 
     suspend fun getProductsByCategory(name: String): List<Product> {
@@ -119,6 +117,13 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
     suspend fun removeProduct(product: Product) {
         val productEntity = ProductMapper.transformTo(product)
         productsDao.deleteProduct(productEntity)
+    }
+    //endregion
+
+    //region alarms
+    suspend fun addAlarm(alarm: ExpirationAlarm): Long {
+        val alarmEntity = AlarmMapper.transformTo(alarm)
+        return productsDao.addAlarm(alarmEntity)
     }
     //endregion
 }

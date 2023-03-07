@@ -19,7 +19,7 @@ class CategoryMapper {
         fun transformToCategories(categoryEntities: List<CategoryEntity>): List<Category> {
             val categories = ArrayList<Category>()
 
-            categoryEntities.forEach() {
+            categoryEntities.forEach {
                 val category = transformFrom(it)
                 categories.add(category)
             }

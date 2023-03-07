@@ -29,4 +29,8 @@
     <string name="notifications">Notifications</string>
     <string name="save">Save</string>
     <string name="edit_product">Edit product</string>
+    <string name="add_notifications">Add notifications</string>
+    <string name="one_day_before">One day before</string>
+    <string name="two_day_before">Two days before</string>
+    <string name="one_week_before">One week before</string>
 </resources>

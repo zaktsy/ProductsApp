@@ -46,7 +46,7 @@ interface ProductsDao {
     suspend fun getProduct(productId: Long): ProductEntityWithCategoryAndStorage
 
     @Insert
-    suspend fun addProduct(productEntity: ProductEntity)
+    suspend fun addProduct(productEntity: ProductEntity): Long
 
     @Query("SELECT * FROM products WHERE categoryId = :categoryId")
     suspend fun getProductsByCategory(categoryId: Long): List<ProductEntity>
@@ -100,6 +100,11 @@ interface ProductsDao {
         }
         return rv
     }
+    //endregion
 
+    //region alarms
+
+    @Insert
+    suspend fun addAlarm(alarmEntity: ExpirationAlarmEntity): Long
     //endregion
 }

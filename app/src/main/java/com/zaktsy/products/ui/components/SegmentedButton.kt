@@ -26,9 +26,7 @@ fun SegmentedButton(
     val firstItemIndex = 0
     val lastItemIndex = items.lastIndex
 
-    Row(
-        modifier = Modifier
-    ) {
+    Row {
         items.forEachIndexed { index, item ->
             OutlinedButton(
                 contentPadding = PaddingValues(0.dp),

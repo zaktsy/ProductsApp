@@ -16,10 +16,8 @@ import androidx.navigation.NavController
 import com.marosseleng.compose.material3.datetimepickers.date.domain.DatePickerDefaults
 import com.marosseleng.compose.material3.datetimepickers.date.ui.dialog.DatePickerDialog
 import com.zaktsy.products.R
-import com.zaktsy.products.ui.components.ExpandableSelector
-import com.zaktsy.products.ui.components.ReadonlyTextField
-import com.zaktsy.products.ui.components.TextInput
-import com.zaktsy.products.ui.components.TitleWithBackButton
+import com.zaktsy.products.utils.AlarmType
+import com.zaktsy.products.ui.components.*
 import java.time.ZoneId
 import java.util.*
 
@@ -46,6 +44,8 @@ fun AddProductScreen(
     val selectedStorageName = viewModel.selectedStorageName.collectAsState()
     val selectedStorageIndex = remember { mutableStateOf(-1) }
 
+    val notificationStates = HashMap<Int, Pair<AlarmType, MutableState<Boolean>>>()
+
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
@@ -62,14 +62,14 @@ fun AddProductScreen(
             )
 
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                 text = stringResource(id = R.string.expiration_range),
                 style = TextStyle(
                     fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
 
-            Row() {
+            Row {
                 ReadonlyTextField(
                     value = manufactureDateString,
                     onClick = { manufactureDateDialogOpenedState.value = true },
@@ -103,12 +103,28 @@ fun AddProductScreen(
             )
 
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 15.dp),
                 text = stringResource(id = R.string.notifications),
                 style = TextStyle(
                     fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
+
+
+            Column {
+                notificationStates[R.string.one_day_before] =
+                    Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
+                notificationStates[R.string.two_day_before] =
+                    Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
+                notificationStates[R.string.one_week_before] =
+                    Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
+
+                notificationStates.forEach {
+                    CheckableItem(
+                        checked = it.value.second, it.key
+                    )
+                }
+            }
 
             Column(
                 modifier = Modifier
@@ -119,9 +135,9 @@ fun AddProductScreen(
             ) {
                 Button(
                     enabled = productName.value.isNotEmpty(), onClick = {
-                        viewModel.addProduct(
-                            selectedCategoryIndex.value,
-                            selectedStorageIndex.value
+                        viewModel.addProductAndNotifications(
+                            selectedCategoryIndex.value, selectedStorageIndex.value,
+                            notificationStates.values
                         )
                         needToUpdate.value = true
                         navController.popBackStack()

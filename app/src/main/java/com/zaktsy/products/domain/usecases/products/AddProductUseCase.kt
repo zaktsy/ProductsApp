@@ -5,5 +5,5 @@ import com.zaktsy.products.domain.repository.ProductsRepository
 import javax.inject.Inject
 
 class AddProductUseCase @Inject constructor(private val repository: ProductsRepository) {
-    suspend operator fun invoke(product: Product) = repository.addProduct(product)
+    suspend operator fun invoke(product: Product): Long = repository.addProduct(product)
 }
