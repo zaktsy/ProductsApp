@@ -3,6 +3,7 @@ package com.zaktsy.products.presentation.screens.addproduct
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zaktsy.products.domain.alarms.ProductsAlarmScheduler
 import com.zaktsy.products.utils.AlarmType
 import com.zaktsy.products.domain.models.Category
 import com.zaktsy.products.domain.models.ExpirationAlarm
@@ -28,7 +29,8 @@ class AddProductViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getStoragesUseCase: GetStoragesUseCase,
     private val addProductUseCase: AddProductUseCase,
-    private val addAlarmUseCase: AddAlarmUseCase
+    private val addAlarmUseCase: AddAlarmUseCase,
+    private val productsAlarmScheduler: ProductsAlarmScheduler
 ) : ViewModel() {
 
     private val _productName = MutableStateFlow("")
@@ -144,6 +146,8 @@ class AddProductViewModel @Inject constructor(
         )
 
         val alarmId = addAlarmUseCase.invoke(alarm)
+        alarm.id = alarmId
+        productsAlarmScheduler.schedule(alarm)
     }
 
     private suspend fun addProduct(selectedCategoryIndex: Int, selectedStorageIndex: Int): Long {
