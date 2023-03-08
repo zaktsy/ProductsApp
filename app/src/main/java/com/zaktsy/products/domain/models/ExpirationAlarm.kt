@@ -6,5 +6,5 @@ class ExpirationAlarm(
     var id: Long = 0,
     val productId: Long,
     val daysToExpiration: Int,
-    val dayToNotify: Date
+    var dayToNotify: Date
 )

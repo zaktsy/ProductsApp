@@ -125,5 +125,20 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val alarmEntity = AlarmMapper.transformTo(alarm)
         return productsDao.addAlarm(alarmEntity)
     }
+
+    suspend fun getAlarms(productId: Long): List<ExpirationAlarm> {
+        val alarmEntities = productsDao.getAlarms(productId)
+        return AlarmMapper.transformToAlarms(alarmEntities)
+    }
+
+    suspend fun editAlarm(alarm: ExpirationAlarm) {
+        val alarmEntity = AlarmMapper.transformTo(alarm)
+        productsDao.updateAlarm(alarmEntity)
+    }
+
+    suspend fun removeAlarm(alarm: ExpirationAlarm){
+        val alarmEntity = AlarmMapper.transformTo(alarm)
+        productsDao.deleteAlarm(alarmEntity)
+    }
     //endregion
 }

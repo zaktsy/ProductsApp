@@ -1,16 +1,24 @@
 package com.zaktsy.products.presentation.screens.editscreen
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zaktsy.products.domain.alarms.ProductsAlarmScheduler
 import com.zaktsy.products.domain.models.Category
+import com.zaktsy.products.domain.models.ExpirationAlarm
 import com.zaktsy.products.domain.models.Product
 import com.zaktsy.products.domain.models.Storage
+import com.zaktsy.products.domain.usecases.alarms.AddAlarmUseCase
+import com.zaktsy.products.domain.usecases.alarms.DeleteAlarmUseCase
+import com.zaktsy.products.domain.usecases.alarms.EditAlarmUseCase
+import com.zaktsy.products.domain.usecases.alarms.GetAlarmsUseCase
 import com.zaktsy.products.domain.usecases.categories.GetCategoriesUseCase
 import com.zaktsy.products.domain.usecases.products.EditProductUseCase
 import com.zaktsy.products.domain.usecases.products.GetProductUseCase
 import com.zaktsy.products.domain.usecases.storages.GetStoragesUseCase
 import com.zaktsy.products.presentation.navigation.NavigationRoutes.Companion.EditProductArg
+import com.zaktsy.products.utils.AlarmType
 import com.zaktsy.products.utils.DateUtils.Companion.toSimpleString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +36,11 @@ class EditProductViewModel @Inject constructor(
     private val getStoragesUseCase: GetStoragesUseCase,
     private val editProductUseCase: EditProductUseCase,
     private val getProductUseCase: GetProductUseCase,
+    private val getAlarmsUseCase: GetAlarmsUseCase,
+    private val productsAlarmScheduler: ProductsAlarmScheduler,
+    private val editAlarmUseCase: EditAlarmUseCase,
+    private val removeAlarmUseCase: DeleteAlarmUseCase,
+    private val addAlarmUseCase: AddAlarmUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -62,7 +75,7 @@ class EditProductViewModel @Inject constructor(
     private val _selectedCategoryName = MutableStateFlow("")
     val selectedCategoryName = _selectedCategoryName.asStateFlow()
 
-    fun setSelectedCategoryName(value: String){
+    fun setSelectedCategoryName(value: String) {
         _selectedCategoryName.value = value
     }
 
@@ -72,9 +85,13 @@ class EditProductViewModel @Inject constructor(
     private val _selectedStorageName = MutableStateFlow("")
     val selectedStorageName = _selectedStorageName.asStateFlow()
 
-    fun setSelectedStorageName(value: String){
+    fun setSelectedStorageName(value: String) {
         _selectedStorageName.value = value
     }
+
+    private var _alarms = emptyList<ExpirationAlarm>()
+    private val _notificationStates = MutableStateFlow(HashMap<AlarmType, Boolean>())
+    val notificationStates = _notificationStates.asStateFlow()
 
     init {
         val argument = savedStateHandle.get<String>(EditProductArg).orEmpty()
@@ -82,6 +99,7 @@ class EditProductViewModel @Inject constructor(
             getProduct(argument.toLong())
             getCategories()
             getStorages()
+            getNotificationStates()
         }
     }
 
@@ -92,11 +110,27 @@ class EditProductViewModel @Inject constructor(
         _manufactureDate.value = product.manufactureDate
         _expirationDate.value = Date(product.manufactureDate.time + product.expirationDuration)
 
-        if (product.category != null)
-            setSelectedCategoryName(product.category!!.name)
+        if (product.category != null) setSelectedCategoryName(product.category!!.name)
 
-        if (product.storage != null)
-            setSelectedStorageName(product.storage!!.name)
+        if (product.storage != null) setSelectedStorageName(product.storage!!.name)
+    }
+
+    private suspend fun getNotificationStates() {
+        val alarms = getAlarmsUseCase.invoke(_product.id)
+        _alarms = alarms
+        alarms.forEach {
+            when (it.daysToExpiration) {
+                1 -> {
+                    _notificationStates.value[AlarmType.ONE_DAY_BEFORE] = true
+                }
+                2 -> {
+                    _notificationStates.value[AlarmType.TWO_DAYS_BEFORE] = true
+                }
+                7 -> {
+                    _notificationStates.value[AlarmType.ONE_WEEK_BEFORE] = true
+                }
+            }
+        }
     }
 
     private val _expirationDate = MutableStateFlow(
@@ -121,7 +155,7 @@ class EditProductViewModel @Inject constructor(
     val expirationDateString = _expirationDateString.asStateFlow()
 
     fun saveProduct(selectedCategoryIndex: Int, selectedStorageIndex: Int) {
-        viewModelScope.launch((Dispatchers.IO)) {
+        viewModelScope.launch(Dispatchers.IO) {
             _product.name = _productName.value
             _product.category =
                 if (selectedCategoryIndex == -1) _product.category else _categories.value[selectedCategoryIndex]
@@ -130,6 +164,63 @@ class EditProductViewModel @Inject constructor(
             _product.expirationDuration = _expirationDate.value.time - _manufactureDate.value.time
             _product.manufactureDate = _manufactureDate.value
             editProductUseCase.invoke(_product)
+        }
+    }
+
+    fun updateNotifications(notificationStates: MutableCollection<Pair<AlarmType, MutableState<Boolean>>>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            for (notificationState in notificationStates) {
+                updateNotification(notificationState.first, notificationState.second)
+            }
+        }
+    }
+
+    private suspend fun updateNotification(
+        alarmType: AlarmType, alarmEnabled: MutableState<Boolean>
+    ) {
+        val expirationDate = _expirationDate.value
+        val calender = Calendar.getInstance()
+        calender.time = expirationDate
+        val existedAlarm: ExpirationAlarm?
+
+        val daysToExpiration = when (alarmType) {
+            AlarmType.ONE_DAY_BEFORE -> {
+                existedAlarm = _alarms.firstOrNull { it.daysToExpiration == 1 }
+                calender.add(Calendar.DAY_OF_MONTH, -1)
+                1
+            }
+            AlarmType.TWO_DAYS_BEFORE -> {
+                existedAlarm = _alarms.firstOrNull { it.daysToExpiration == 2 }
+                calender.add(Calendar.DAY_OF_MONTH, -2)
+                2
+            }
+            AlarmType.ONE_WEEK_BEFORE -> {
+                existedAlarm = _alarms.firstOrNull { it.daysToExpiration == 7 }
+                calender.add(Calendar.DAY_OF_MONTH, -7)
+                7
+            }
+        }
+        val dayToNotify = calender.time
+        if (existedAlarm == null){
+            if (alarmEnabled.value){
+                val alarm = ExpirationAlarm(
+                    productId = _product.id,
+                    daysToExpiration = daysToExpiration,
+                    dayToNotify = dayToNotify
+                )
+                addAlarmUseCase.invoke(alarm)
+            }
+
+            return
+        }
+
+        if (alarmEnabled.value) {
+            existedAlarm.dayToNotify = dayToNotify
+            editAlarmUseCase.invoke(existedAlarm)
+            productsAlarmScheduler.schedule(existedAlarm)
+        } else {
+            removeAlarmUseCase.invoke(existedAlarm)
+            productsAlarmScheduler.cancel(existedAlarm)
         }
     }
 

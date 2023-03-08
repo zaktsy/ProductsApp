@@ -106,5 +106,14 @@ interface ProductsDao {
 
     @Insert
     suspend fun addAlarm(alarmEntity: ExpirationAlarmEntity): Long
+
+    @Query("SELECT * FROM expiration_alarms WHERE productId = :productId")
+    suspend fun getAlarms(productId: Long): List<ExpirationAlarmEntity>
+
+    @Update
+    suspend fun updateAlarm(alarm: ExpirationAlarmEntity)
+
+    @Delete
+    suspend fun deleteAlarm(alarm: ExpirationAlarmEntity)
     //endregion
 }

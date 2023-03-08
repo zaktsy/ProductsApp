@@ -82,11 +82,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     private val _expirationDate = MutableStateFlow(
-        Date.from(
-            LocalDate.now().atStartOfDay().atZone(
-                ZoneId.systemDefault()
-            ).toInstant()
-        )
+        Date()
     )
 
     fun setExpirationDate(value: Date) {

@@ -16,10 +16,8 @@ import androidx.navigation.NavController
 import com.marosseleng.compose.material3.datetimepickers.date.domain.DatePickerDefaults
 import com.marosseleng.compose.material3.datetimepickers.date.ui.dialog.DatePickerDialog
 import com.zaktsy.products.R
-import com.zaktsy.products.ui.components.ExpandableSelector
-import com.zaktsy.products.ui.components.ReadonlyTextField
-import com.zaktsy.products.ui.components.TextInput
-import com.zaktsy.products.ui.components.TitleWithBackButton
+import com.zaktsy.products.ui.components.*
+import com.zaktsy.products.utils.AlarmType
 import java.time.ZoneId
 import java.util.*
 
@@ -46,6 +44,8 @@ fun EditProductScreen(
     val selectedStorageName = viewModel.selectedStorageName.collectAsState()
     val selectedStorageIndex = remember { mutableStateOf(-1) }
 
+    val notificationStatesFromViewModel = viewModel.notificationStates.collectAsState()
+    val notificationStates = HashMap<Int, Pair<AlarmType, MutableState<Boolean>>>()
 
     Scaffold { paddingValues ->
         Column(
@@ -111,6 +111,44 @@ fun EditProductScreen(
                 )
             )
 
+            Column {
+                if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_DAY_BEFORE)) {
+                    notificationStatesFromViewModel.value[AlarmType.ONE_DAY_BEFORE]?.let {
+                        notificationStates[R.string.one_day_before] =
+                            Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(it) })
+                    }
+                } else {
+                    notificationStates[R.string.one_day_before] =
+                        Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
+                }
+
+                if (notificationStatesFromViewModel.value.containsKey(AlarmType.TWO_DAYS_BEFORE)) {
+                    notificationStatesFromViewModel.value[AlarmType.TWO_DAYS_BEFORE]?.let {
+                        notificationStates[R.string.two_day_before] =
+                            Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(it) })
+                    }
+                } else {
+                    notificationStates[R.string.two_day_before] =
+                        Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
+                }
+
+                if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_WEEK_BEFORE)) {
+                    notificationStatesFromViewModel.value[AlarmType.ONE_WEEK_BEFORE]?.let {
+                        notificationStates[R.string.one_week_before] =
+                            Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(it) })
+                    }
+                } else {
+                    notificationStates[R.string.one_week_before] =
+                        Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
+                }
+
+                notificationStates.forEach {
+                    CheckableItem(
+                        checked = it.value.second, it.key
+                    )
+                }
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -123,6 +161,7 @@ fun EditProductScreen(
                         viewModel.saveProduct(
                             selectedCategoryIndex.value, selectedStorageIndex.value
                         )
+                        viewModel.updateNotifications(notificationStates.values)
                         needToUpdate.value = true
                         navController.popBackStack()
                     }, colors = ButtonDefaults.buttonColors(
