@@ -3,6 +3,7 @@ package com.zaktsy.products.data.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import java.util.*
 
@@ -10,7 +11,8 @@ import java.util.*
     tableName = "expiration_alarms", foreignKeys = [ForeignKey(
         entity = ProductEntity::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("productId")
+        childColumns = arrayOf("productId"),
+        onDelete = CASCADE
     )]
 )
 data class ExpirationAlarmEntity(

@@ -5,22 +5,24 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -28,12 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Storage
-import com.zaktsy.products.ui.components.AnimatedFAB
-import com.zaktsy.products.ui.components.HeaderWithSearch
-import com.zaktsy.products.ui.components.SimpleListElement
-import com.zaktsy.products.ui.components.TextFieldDialog
+import com.zaktsy.products.ui.components.*
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StoragesScreen(
@@ -83,40 +82,73 @@ fun StoragesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.storages), searchEnteredName, viewModel::onSearchValueChanged
+                            stringResource(id = R.string.storages),
+                            searchEnteredName,
+                            viewModel::onSearchValueChanged
                         )
                     }
 
                     if (!isLoading.value and storages.value.isNotEmpty()) {
-                        items(
-                            items = storages.value,
+                        items(items = storages.value,
                             key = { storage -> storage.id },
                             itemContent = { item ->
-                                val buttonIcons = listOf(Icons.Default.Edit, Icons.Default.Delete)
 
-                                val buttonActions = listOf({
-                                    editDialogOpenedState.value = true
-                                    recentlyEditedStorage = item
-                                }, {
-                                    viewModel.deleteStorage(item)
-                                    needToUpdate.value = true
+                                val currentItem by rememberUpdatedState(item)
+                                val dismissState = rememberDismissState(confirmStateChange = {
+                                    if (it == DismissValue.DismissedToStart) {
+                                        viewModel.deleteStorage(currentItem)
+                                        needToUpdate.value = true
+                                        true
+                                    } else false
                                 })
-                                Row(
+                                SwipeToDismiss(state = dismissState,
                                     modifier = Modifier.animateItemPlacement(
                                         animationSpec = spring(
                                             dampingRatio = Spring.DampingRatioNoBouncy,
                                             stiffness = Spring.StiffnessMediumLow
                                         )
                                     ),
-                                ) {
-                                    SimpleListElement(
-                                        title = item.name,
-                                        buttonActions = buttonActions,
-                                        buttonIcons = buttonIcons
-                                    )
-                                }
-                            },
-                        )
+                                    dismissThresholds = { direction ->
+                                        FractionalThreshold(
+                                            if (direction == DismissDirection.StartToEnd) 0.66f else 0.50f
+                                        )
+                                    },
+                                    background = {
+                                        val color = when (dismissState.dismissDirection) {
+                                            DismissDirection.StartToEnd -> Color.Transparent
+                                            DismissDirection.EndToStart -> MaterialTheme.colorScheme.error
+                                            null -> Color.Transparent
+                                        }
+
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(horizontal = 20.dp, vertical = 10.dp)
+                                                .clip(RoundedCornerShape(25.dp))
+                                                .background(color)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Delete,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onError,
+                                                modifier = Modifier
+                                                    .align(Alignment.CenterEnd)
+                                                    .padding(end = 20.dp)
+                                            )
+                                        }
+
+                                    },
+                                    dismissContent = {
+                                        SimpleListElement(
+                                            title = item.name,
+                                        ) {
+                                            editDialogOpenedState.value = true
+                                            recentlyEditedStorage = item
+                                        }
+                                    },
+                                    directions = setOf(DismissDirection.EndToStart)
+                                )
+                            })
                     }
                 }
                 if (isLoading.value) {
@@ -129,7 +161,7 @@ fun StoragesScreen(
                     }
                 }
 
-                if (storages.value.isEmpty() and !isLoading.value){
+                if (storages.value.isEmpty() and !isLoading.value) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,

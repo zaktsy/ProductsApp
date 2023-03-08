@@ -1,13 +1,12 @@
 package com.zaktsy.products.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +19,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SimpleListElement(
-    title: String,
-    buttonActions: List<() -> Unit>,
-    buttonIcons: List<ImageVector>
+    title: String, onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
@@ -32,36 +29,19 @@ fun SimpleListElement(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .height(50.dp),
+            Row(modifier = Modifier
+                .clickable { onClick() }
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+                horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = title,
                     fontSize = 25.sp,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.weight(6f)
                 )
-
-                buttonIcons.forEachIndexed{ index, buttonIcon ->
-                    IconButton(
-                        onClick = buttonActions[index],
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 10.dp)
-                    ) {
-                        Icon(
-                            buttonIcon,
-                            contentDescription = "additional button",
-                            Modifier.size(35.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-                }
             }
         }
     }
@@ -69,15 +49,15 @@ fun SimpleListElement(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewSimpleListElement(){
+fun PreviewSimpleListElement() {
     val title = "Category"
     val buttonActions = ArrayList<() -> Unit>()
     val buttonIcons = ArrayList<ImageVector>()
 
-    buttonActions.add {  }
+    buttonActions.add { }
     buttonIcons.add(Icons.Outlined.Edit)
-    buttonActions.add {  }
+    buttonActions.add { }
     buttonIcons.add(Icons.Default.Delete)
 
-    SimpleListElement(title, buttonActions, buttonIcons)
+    SimpleListElement(title) {}
 }
