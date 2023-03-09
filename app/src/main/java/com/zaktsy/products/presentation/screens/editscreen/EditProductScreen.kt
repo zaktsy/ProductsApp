@@ -24,7 +24,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun EditProductScreen(
-    navController: NavController, needToUpdate: MutableState<Boolean>
+    navController: NavController, needToUpdateProducts: MutableState<Boolean>
 ) {
     val viewModel = hiltViewModel<EditProductViewModel>()
     val productName = viewModel.productName.collectAsState()
@@ -162,7 +162,7 @@ fun EditProductScreen(
                             selectedCategoryIndex.value, selectedStorageIndex.value
                         )
                         viewModel.updateNotifications(notificationStates.values)
-                        needToUpdate.value = true
+                        needToUpdateProducts.value = true
                         navController.popBackStack()
                     }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,

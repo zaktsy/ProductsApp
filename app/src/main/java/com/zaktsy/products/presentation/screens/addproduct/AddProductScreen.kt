@@ -1,6 +1,8 @@
 package com.zaktsy.products.presentation.screens.addproduct
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,7 +26,9 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun AddProductScreen(
-    navController: NavController, needToUpdate: MutableState<Boolean>
+    navController: NavController,
+    needToUpdateProducts: MutableState<Boolean>,
+    needToUpdateTemplates: MutableState<Boolean>
 ) {
     val viewModel = hiltViewModel<AddProductViewModel>()
     val productName = viewModel.productName.collectAsState()
@@ -44,11 +48,15 @@ fun AddProductScreen(
     val selectedStorageName = viewModel.selectedStorageName.collectAsState()
     val selectedStorageIndex = remember { mutableStateOf(-1) }
 
+    val saveProductAsTemplate = viewModel.saveProductAsTemplate.collectAsState()
+
     val notificationStates = HashMap<Int, Pair<AlarmType, MutableState<Boolean>>>()
 
     Scaffold { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
         ) {
             TitleWithBackButton(
                 title = stringResource(id = R.string.add_product),
@@ -65,7 +73,7 @@ fun AddProductScreen(
                 modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                 text = stringResource(id = R.string.expiration_range),
                 style = TextStyle(
-                    fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
+                    fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
 
@@ -82,7 +90,6 @@ fun AddProductScreen(
                     label = stringResource(id = R.string.expiration_date)
                 )
             }
-
 
             ExpandableSelector(
                 expanded = categoriesSelectorExpanded,
@@ -106,7 +113,7 @@ fun AddProductScreen(
                 modifier = Modifier.padding(start = 20.dp, top = 15.dp),
                 text = stringResource(id = R.string.notifications),
                 style = TextStyle(
-                    fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
+                    fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
 
@@ -126,20 +133,37 @@ fun AddProductScreen(
                 }
             }
 
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
+                    text = stringResource(id = R.string.save_as_template),
+                    style = TextStyle(
+                        fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                )
+                Switch(checked = saveProductAsTemplate.value,
+                    onCheckedChange = { viewModel.setSaveProductAsTemplate(it) })
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(),
+                    .height(50.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
                     enabled = productName.value.isNotEmpty(), onClick = {
                         viewModel.addProductAndNotifications(
-                            selectedCategoryIndex.value, selectedStorageIndex.value,
+                            selectedCategoryIndex.value,
+                            selectedStorageIndex.value,
                             notificationStates.values
                         )
-                        needToUpdate.value = true
+                        viewModel.saveProductAsTemplate(selectedCategoryIndex.value)
+                        needToUpdateTemplates.value = true
+                        needToUpdateProducts.value = true
                         navController.popBackStack()
                     }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,

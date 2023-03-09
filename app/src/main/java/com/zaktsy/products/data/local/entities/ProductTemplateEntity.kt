@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 class ProductTemplateEntity(
     val name: String,
     val expirationDuration: Long,
-    val barCode: Long,
-    val categoryId: Long,
+    val barCode: String,
+    val categoryId: Long?,
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

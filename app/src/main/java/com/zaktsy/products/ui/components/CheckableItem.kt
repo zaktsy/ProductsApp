@@ -33,7 +33,7 @@ fun CheckableItem(
         Row(
             modifier = Modifier
                 .padding(horizontal = 25.dp)
-                .widthIn(min = 150.dp),
+                .widthIn(min = 110.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             val contentColor = if (!checked.value) MaterialTheme.colorScheme.onPrimaryContainer

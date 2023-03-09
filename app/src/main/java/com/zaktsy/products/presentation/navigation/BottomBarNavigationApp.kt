@@ -20,6 +20,7 @@ import com.zaktsy.products.presentation.screens.products.ProductsScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
 import com.zaktsy.products.presentation.screens.storages.StoragesScreen
+import com.zaktsy.products.presentation.screens.templates.TemplatesScreen
 import com.zaktsy.products.ui.components.BottomBar
 import com.zaktsy.products.ui.theme.ProductsTheme
 
@@ -28,7 +29,8 @@ import com.zaktsy.products.ui.theme.ProductsTheme
 fun BottomBarAnimationApp() {
 
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-    val needToUpdate = rememberSaveable { mutableStateOf(false) }
+    val needToUpdateProducts = rememberSaveable { mutableStateOf(false) }
+    val needToUpdateTemplates = rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberLazyListState()
 
     ProductsTheme {
@@ -58,6 +60,9 @@ fun BottomBarAnimationApp() {
             NavigationRoutes.EditProduct -> {
                 bottomBarState.value = false
             }
+            NavigationRoutes.ProductTemplates -> {
+                bottomBarState.value = true
+            }
         }
 
         Scaffold(modifier = Modifier.navigationBarsPadding(), bottomBar = {
@@ -72,25 +77,53 @@ fun BottomBarAnimationApp() {
                 startDestination = NavigationItem.Products.route,
             ) {
                 composable(NavigationItem.Products.route) {
-                    ProductsScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
+                    ProductsScreen(
+                        navController = navController,
+                        scrollState = scrollState,
+                        needToUpdateProducts = needToUpdateProducts,
+                    )
                 }
                 composable(NavigationItem.ShoppingList.route) {
                     ShoppingListScreen(navController = navController)
                 }
                 composable(NavigationItem.AddProduct.route) {
-                    AddProductScreen(navController = navController, needToUpdate = needToUpdate)
+                    AddProductScreen(
+                        navController = navController,
+                        needToUpdateProducts = needToUpdateProducts,
+                        needToUpdateTemplates = needToUpdateTemplates
+                    )
                 }
                 composable(NavigationItem.Settings.route) {
                     SettingsScreen(navController = navController)
                 }
                 composable(NavigationItem.Categories.route) {
-                    CategoriesScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
+                    CategoriesScreen(
+                        navController = navController,
+                        scrollState = scrollState,
+                        needToUpdateProducts = needToUpdateProducts,
+                        needToUpdateTemplates = needToUpdateTemplates
+                    )
                 }
                 composable(NavigationItem.Storages.route) {
-                    StoragesScreen(navController = navController, scrollState = scrollState, needToUpdate = needToUpdate)
+                    StoragesScreen(
+                        navController = navController,
+                        scrollState = scrollState,
+                        needToUpdateProducts = needToUpdateProducts,
+                        needToUpdateTemplates = needToUpdateTemplates
+                    )
                 }
                 composable(NavigationItem.EditProduct.route) {
-                    EditProductScreen(navController = navController, needToUpdate = needToUpdate)
+                    EditProductScreen(
+                        navController = navController,
+                        needToUpdateProducts = needToUpdateProducts
+                    )
+                }
+                composable(NavigationItem.ProductTemplates.route) {
+                    TemplatesScreen(
+                        navController = navController,
+                        scrollState = scrollState,
+                        needToUpdateTemplates = needToUpdateTemplates
+                    )
                 }
             }
         })

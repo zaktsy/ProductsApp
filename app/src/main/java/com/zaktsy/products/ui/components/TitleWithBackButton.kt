@@ -23,7 +23,7 @@ fun TitleWithBackButton(
     onBackAction: () -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
         shape = RoundedCornerShape(25.dp),
     ) {

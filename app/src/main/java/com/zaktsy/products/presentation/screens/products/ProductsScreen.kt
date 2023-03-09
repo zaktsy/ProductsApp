@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -36,7 +35,7 @@ import com.zaktsy.products.ui.theme.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
+    navController: NavController, scrollState: LazyListState, needToUpdateProducts: MutableState<Boolean>
 ) {
 
     val viewModel = hiltViewModel<ProductsViewModel>()
@@ -51,9 +50,9 @@ fun ProductsScreen(
     val showProducts = viewModel.showProducts.collectAsState()
     val products = viewModel.products.collectAsState()
 
-    if (needToUpdate.value) {
+    if (needToUpdateProducts.value) {
         viewModel.getProducts()
-        needToUpdate.value = false
+        needToUpdateProducts.value = false
     }
 
     Scaffold(floatingActionButton = {

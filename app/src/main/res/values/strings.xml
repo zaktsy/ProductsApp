@@ -35,4 +35,6 @@
     <string name="one_week_before">One week before</string>
     <string name="product_expiration">Product is about to be expired</string>
     <string name="product_expiration_text">Product - %1$s will be expired in %2$s d.</string>
+    <string name="save_as_template">Save product as template</string>
+    <string name="product_templates">Templates</string>
 </resources>

@@ -4,14 +4,12 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.alarms.ProductsAlarmScheduler
+import com.zaktsy.products.domain.models.*
 import com.zaktsy.products.utils.AlarmType
-import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.domain.models.ExpirationAlarm
-import com.zaktsy.products.domain.models.Product
-import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.domain.usecases.alarms.AddAlarmUseCase
 import com.zaktsy.products.domain.usecases.categories.GetCategoriesUseCase
 import com.zaktsy.products.domain.usecases.products.AddProductUseCase
+import com.zaktsy.products.domain.usecases.producttemplates.AddProductTemplateUseCase
 import com.zaktsy.products.domain.usecases.storages.GetStoragesUseCase
 import com.zaktsy.products.utils.DateUtils.Companion.toSimpleString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,8 +28,16 @@ class AddProductViewModel @Inject constructor(
     private val getStoragesUseCase: GetStoragesUseCase,
     private val addProductUseCase: AddProductUseCase,
     private val addAlarmUseCase: AddAlarmUseCase,
+    private val addProductTemplateUseCase: AddProductTemplateUseCase,
     private val productsAlarmScheduler: ProductsAlarmScheduler
 ) : ViewModel() {
+
+    private val _saveProductAsTemplate = MutableStateFlow(false)
+    val saveProductAsTemplate = _saveProductAsTemplate.asStateFlow()
+
+    fun setSaveProductAsTemplate(value: Boolean) {
+        _saveProductAsTemplate.value = value
+    }
 
     private val _productName = MutableStateFlow("")
     val productName = _productName.asStateFlow()
@@ -115,6 +121,19 @@ class AddProductViewModel @Inject constructor(
         }
     }
 
+    fun saveProductAsTemplate(selectedCategoryIndex: Int) {
+        if (!saveProductAsTemplate.value) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val productTemplate = ProductTemplate(
+                name = _productName.value,
+                barCode = "",
+                category = if (selectedCategoryIndex == -1) null else _categories.value[selectedCategoryIndex],
+                expirationDuration = _expirationDate.value.time - _manufactureDate.value.time,
+            )
+            addProductTemplateUseCase.invoke(productTemplate)
+        }
+    }
+
     private suspend fun addNotification(alarmType: AlarmType, productId: Long) {
         val expirationDate = _expirationDate.value
         val calender = Calendar.getInstance()
@@ -136,9 +155,7 @@ class AddProductViewModel @Inject constructor(
         }
         val dayToNotify = calender.time
         val alarm = ExpirationAlarm(
-            productId = productId,
-            daysToExpiration = daysToExpiration,
-            dayToNotify = dayToNotify
+            productId = productId, daysToExpiration = daysToExpiration, dayToNotify = dayToNotify
         )
 
         val alarmId = addAlarmUseCase.invoke(alarm)

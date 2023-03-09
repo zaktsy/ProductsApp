@@ -39,7 +39,10 @@ import com.zaktsy.products.ui.components.TextFieldDialog
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CategoriesScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
+    navController: NavController,
+    scrollState: LazyListState,
+    needToUpdateProducts: MutableState<Boolean>,
+    needToUpdateTemplates: MutableState<Boolean>
 ) {
     var recentlyEditedCategory = Category("")
 
@@ -66,7 +69,8 @@ fun CategoriesScreen(
                 addedCategoryName
             ) {
                 viewModel.addCategory(Category(addedCategoryName.value))
-                needToUpdate.value = true
+                needToUpdateProducts.value = true
+                needToUpdateTemplates.value = true
             }
             CategoryDialog(
                 stringResource(id = R.string.edit_category_name),
@@ -74,7 +78,8 @@ fun CategoriesScreen(
                 editedCategoryName
             ) {
                 viewModel.editCategory(recentlyEditedCategory, editedCategoryName.value)
-                needToUpdate.value = true
+                needToUpdateProducts.value = true
+                needToUpdateTemplates.value = true
             }
 
             Column(
@@ -100,7 +105,8 @@ fun CategoriesScreen(
                                 val dismissState = rememberDismissState(confirmStateChange = {
                                     if (it == DismissValue.DismissedToStart) {
                                         viewModel.deleteCategory(currentItem)
-                                        needToUpdate.value = true
+                                        needToUpdateProducts.value = true
+                                        needToUpdateTemplates.value = true
                                         true
                                     } else false
                                 })

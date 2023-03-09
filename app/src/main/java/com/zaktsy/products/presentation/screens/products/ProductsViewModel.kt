@@ -1,8 +1,6 @@
 package com.zaktsy.products.presentation.screens.products
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.GroupedProducts
 import com.zaktsy.products.domain.models.Product
@@ -59,7 +57,7 @@ class ProductsViewModel @Inject constructor(
     fun removeProductFromProducts(product: Product) {
         _products.value.removeIf { it.id == product.id }
         viewModelScope.launch(Dispatchers.IO) {
-            removeProductUseCase(product)
+            removeProductUseCase.invoke(product)
         }
     }
 

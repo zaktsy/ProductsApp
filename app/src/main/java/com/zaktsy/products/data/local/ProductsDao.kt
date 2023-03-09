@@ -116,4 +116,16 @@ interface ProductsDao {
     @Delete
     suspend fun deleteAlarm(alarm: ExpirationAlarmEntity)
     //endregion
+
+    //region product templates
+    @Insert
+    suspend fun addProductTemplate(productTemplateEntity: ProductTemplateEntity)
+
+    @Transaction
+    @Query("SELECT * FROM product_templates WHERE name LIKE '%' || :name || '%'")
+    suspend fun getProductTemplates(name: String): List<ProductTemplateWithCategory>
+
+    @Delete
+    suspend fun deleteProductTemplate(productTemplateEntity: ProductTemplateEntity)
+    //endregion
 }

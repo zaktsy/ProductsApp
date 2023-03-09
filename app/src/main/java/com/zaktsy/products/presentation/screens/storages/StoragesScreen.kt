@@ -36,7 +36,10 @@ import com.zaktsy.products.ui.components.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StoragesScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
+    navController: NavController,
+    scrollState: LazyListState,
+    needToUpdateProducts: MutableState<Boolean>,
+    needToUpdateTemplates: MutableState<Boolean>
 ) {
     var recentlyEditedStorage = Storage("")
 
@@ -63,7 +66,7 @@ fun StoragesScreen(
                 addedStorageName
             ) {
                 viewModel.addStorage(Storage(addedStorageName.value))
-                needToUpdate.value = true
+                needToUpdateProducts.value = true
             }
             StorageDialog(
                 stringResource(id = R.string.edit_category_name),
@@ -71,7 +74,8 @@ fun StoragesScreen(
                 editedStorageName
             ) {
                 viewModel.editStorage(recentlyEditedStorage, editedStorageName.value)
-                needToUpdate.value = true
+                needToUpdateProducts.value = true
+                needToUpdateTemplates.value = true
             }
 
             Column(
@@ -97,7 +101,7 @@ fun StoragesScreen(
                                 val dismissState = rememberDismissState(confirmStateChange = {
                                     if (it == DismissValue.DismissedToStart) {
                                         viewModel.deleteStorage(currentItem)
-                                        needToUpdate.value = true
+                                        needToUpdateProducts.value = true
                                         true
                                     } else false
                                 })

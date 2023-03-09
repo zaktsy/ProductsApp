@@ -3,13 +3,10 @@ package com.zaktsy.products.domain.repository
 import com.zaktsy.products.data.local.ProductsDao
 import com.zaktsy.products.data.local.entities.ProductEntity
 import com.zaktsy.products.domain.models.*
-import com.zaktsy.products.utils.mappers.AlarmMapper
-import com.zaktsy.products.utils.mappers.CategoryMapper
-import com.zaktsy.products.utils.mappers.ProductMapper
-import com.zaktsy.products.utils.mappers.StorageMapper
+import com.zaktsy.products.utils.mappers.*
 import javax.inject.Inject
 
-class ProductsRepository @Inject constructor(private val productsDao: ProductsDao){
+class ProductsRepository @Inject constructor(private val productsDao: ProductsDao) {
 
     //region categories
     suspend fun getAllCategories(): List<Category> {
@@ -17,7 +14,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         return CategoryMapper.transformToCategories(categoryEntities)
     }
 
-    suspend fun getCategories(name: String): List<Category>{
+    suspend fun getCategories(name: String): List<Category> {
         val categoryEntities = productsDao.getCategories(name)
         return CategoryMapper.transformToCategories(categoryEntities)
     }
@@ -29,7 +26,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
 
     suspend fun deleteCategory(category: Category) {
         val productsWithCategory = getProductsByCategory(category.id)
-        productsWithCategory.forEach(){
+        productsWithCategory.forEach() {
             it.categoryId = null
         }
         productsDao.updateProducts(productsWithCategory)
@@ -49,7 +46,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         return StorageMapper.transformToStorages(storageEntities)
     }
 
-    suspend fun getStorages(name: String): List<Storage>{
+    suspend fun getStorages(name: String): List<Storage> {
         val storageEntities = productsDao.getStorages(name)
         return StorageMapper.transformToStorages(storageEntities)
     }
@@ -61,7 +58,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
 
     suspend fun deleteStorage(storage: Storage) {
         val productsWithStorage = getProductsByStorage(storage.id)
-        productsWithStorage.forEach(){
+        productsWithStorage.forEach() {
             it.storageId = null
         }
         productsDao.updateProducts(productsWithStorage)
@@ -81,7 +78,7 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         return ProductMapper.transformFrom(product)
     }
 
-    suspend fun addProduct(product: Product):Long {
+    suspend fun addProduct(product: Product): Long {
         val productEntity = ProductMapper.transformTo(product)
         return productsDao.addProduct(productEntity)
     }
@@ -136,9 +133,26 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         productsDao.updateAlarm(alarmEntity)
     }
 
-    suspend fun removeAlarm(alarm: ExpirationAlarm){
+    suspend fun removeAlarm(alarm: ExpirationAlarm) {
         val alarmEntity = AlarmMapper.transformTo(alarm)
         productsDao.deleteAlarm(alarmEntity)
+    }
+    //endregion
+
+    //region product templates
+    suspend fun addProductTemplate(productTemplate: ProductTemplate) {
+        val productTemplateEntity = ProductTemplateMapper.transformTo(productTemplate)
+        productsDao.addProductTemplate(productTemplateEntity)
+    }
+
+    suspend fun getProductTemplates(name: String): List<ProductTemplate> {
+        val productTemplateEntities = productsDao.getProductTemplates(name)
+        return ProductTemplateMapper.transformToProductTemplates(productTemplateEntities)
+    }
+
+    suspend fun deleteProductTemplate(productTemplate: ProductTemplate) {
+        val productTemplateEntity = ProductTemplateMapper.transformTo(productTemplate)
+        productsDao.deleteProductTemplate(productTemplateEntity)
     }
     //endregion
 }

@@ -35,7 +35,7 @@ import com.zaktsy.products.ui.components.SimpleListElement
 @Composable
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun TemplatesScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdate: MutableState<Boolean>
+    navController: NavController, scrollState: LazyListState, needToUpdateTemplates: MutableState<Boolean>
 ) {
 
     val viewModel = hiltViewModel<TemplatesViewModel>()
@@ -45,9 +45,9 @@ fun TemplatesScreen(
 
     val productTemplates = viewModel.productTemplates.collectAsState()
 
-    if (needToUpdate.value) {
+    if (needToUpdateTemplates.value) {
         viewModel.getTemplates()
-        needToUpdate.value = false
+        needToUpdateTemplates.value = false
     }
 
     Scaffold(floatingActionButton = {
@@ -58,10 +58,12 @@ fun TemplatesScreen(
                 state = scrollState,
             ) {
                 item {
-                    Search(
-                        searchEnteredName = searchedValue,
-                        onSearchValueChanged = viewModel::onSearchValueChanged
-                    )
+                    Row(Modifier.padding(bottom = 20.dp)){
+                        Search(
+                            searchEnteredName = searchedValue,
+                            onSearchValueChanged = viewModel::onSearchValueChanged
+                        )
+                    }
                 }
 
                 if (!isLoading.value) {
@@ -73,7 +75,7 @@ fun TemplatesScreen(
                             val dismissState = rememberDismissState(confirmStateChange = {
                                 if (it == DismissValue.DismissedToStart) {
                                     viewModel.deleteTemplate(currentItem)
-                                    needToUpdate.value = true
+                                    needToUpdateTemplates.value = true
                                     true
                                 } else false
                             })

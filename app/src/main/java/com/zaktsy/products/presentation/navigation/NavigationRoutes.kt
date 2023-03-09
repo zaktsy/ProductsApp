@@ -11,5 +11,6 @@ sealed class NavigationRoutes {
         const val EditProductRoot = "edit_product"
         const val EditProductArg = "productId"
         const val EditProduct = "$EditProductRoot/{$EditProductArg}"
+        const val ProductTemplates = "product_templates"
     }
 }

@@ -26,7 +26,7 @@ fun BottomBar(
     scrollState: LazyListState
 ) {
     val items = listOf(
-        NavigationItem.Products, NavigationItem.ShoppingList, NavigationItem.Settings
+        NavigationItem.Products, NavigationItem.ProductTemplates, NavigationItem.Settings,
     )
 
     val isFirstItemVisible by remember { derivedStateOf { scrollState.firstVisibleItemIndex == 0 } }
