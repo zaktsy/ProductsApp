@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens.editscreen
+package com.zaktsy.products.presentation.screens.editproduct
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.SavedStateHandle
@@ -107,8 +107,8 @@ class EditProductViewModel @Inject constructor(
         val product = getProductUseCase.invoke(selectedProductId)
         _product = product
         _productName.value = product.name
-        _manufactureDate.value = product.manufactureDate
-        _expirationDate.value = Date(product.manufactureDate.time + product.expirationDuration)
+        setManufactureDate(product.manufactureDate)
+        setExpirationDate(Date(product.manufactureDate.time + product.expirationDuration))
 
         if (product.category != null) setSelectedCategoryName(product.category!!.name)
 

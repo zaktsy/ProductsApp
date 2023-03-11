@@ -37,4 +37,7 @@
     <string name="product_expiration_text">Product - %1$s will be expired in %2$s d.</string>
     <string name="save_as_template">Save product as template</string>
     <string name="product_templates">Templates</string>
+    <string name="edit_template">Edit Template</string>
+    <string name="bar_code">Bar code</string>
+    <string name="expiration_duration">Expiration duration</string>
 </resources>

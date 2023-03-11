@@ -1,4 +1,4 @@
-package com.zaktsy.products.presentation.screens.editscreen
+package com.zaktsy.products.presentation.screens.editproduct
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

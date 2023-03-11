@@ -15,7 +15,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.presentation.screens.addproduct.AddProductScreen
 import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
-import com.zaktsy.products.presentation.screens.editscreen.EditProductScreen
+import com.zaktsy.products.presentation.screens.editproduct.EditProductScreen
+import com.zaktsy.products.presentation.screens.edittemplate.EditTemplateScreen
 import com.zaktsy.products.presentation.screens.products.ProductsScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
@@ -62,6 +63,9 @@ fun BottomBarAnimationApp() {
             }
             NavigationRoutes.ProductTemplates -> {
                 bottomBarState.value = true
+            }
+            NavigationRoutes.EditTemplate -> {
+                bottomBarState.value = false
             }
         }
 
@@ -122,6 +126,12 @@ fun BottomBarAnimationApp() {
                     TemplatesScreen(
                         navController = navController,
                         scrollState = scrollState,
+                        needToUpdateTemplates = needToUpdateTemplates
+                    )
+                }
+                composable(NavigationItem.EditTemplate.route){
+                    EditTemplateScreen(
+                        navController = navController,
                         needToUpdateTemplates = needToUpdateTemplates
                     )
                 }

@@ -27,6 +27,7 @@ class TemplatesViewModel @Inject constructor(
 
     override fun onSearchValueChanged(text: String) {
         _searchedValue.value = text
+        getTemplates()
     }
 
     init {

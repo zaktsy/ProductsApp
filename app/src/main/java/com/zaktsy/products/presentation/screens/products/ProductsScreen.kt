@@ -35,7 +35,9 @@ import com.zaktsy.products.ui.theme.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdateProducts: MutableState<Boolean>
+    navController: NavController,
+    scrollState: LazyListState,
+    needToUpdateProducts: MutableState<Boolean>
 ) {
 
     val viewModel = hiltViewModel<ProductsViewModel>()
@@ -138,13 +140,13 @@ fun ProductsScreen(
                 }
 
                 if (showGroupedProducts.value and groupedProducts.value.isNotEmpty() and !isLoading.value) {
-                    items(items = groupedProducts.value,) { item ->
+                    items(items = groupedProducts.value) { item ->
                         ExpandableList(
                             title = item.groupingModel.name,
                             item.products.count().toString(),
                             products = item.products,
                             navController = navController,
-                            onSwipeToDismiss =  viewModel::removeProductFromGroupedProducts
+                            onSwipeToDismiss = viewModel::removeProductFromGroupedProducts
                         )
 
                     }
@@ -165,4 +167,4 @@ fun ProductsScreen(
     }
 }
 
-fun buildTwoRoute(argument: String) = "$EditProductRoot/$argument"
+private fun buildTwoRoute(argument: String) = "$EditProductRoot/$argument"

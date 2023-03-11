@@ -127,5 +127,12 @@ interface ProductsDao {
 
     @Delete
     suspend fun deleteProductTemplate(productTemplateEntity: ProductTemplateEntity)
+
+    @Transaction
+    @Query("SELECT * FROM product_templates WHERE id = :productTemplateId")
+    suspend fun getProductTemplate(productTemplateId: Long): ProductTemplateWithCategory
+
+    @Update
+    suspend fun updateProductTemplate(productTemplateEntity: ProductTemplateEntity)
     //endregion
 }

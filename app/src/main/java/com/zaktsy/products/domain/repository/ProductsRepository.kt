@@ -154,5 +154,15 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val productTemplateEntity = ProductTemplateMapper.transformTo(productTemplate)
         productsDao.deleteProductTemplate(productTemplateEntity)
     }
+
+    suspend fun getProductTemplate(productTemplateId: Long): ProductTemplate {
+        val productTemplateEntity = productsDao.getProductTemplate(productTemplateId)
+        return ProductTemplateMapper.transformFrom(productTemplateEntity)
+    }
+
+    suspend fun editProductTemplates(productTemplate: ProductTemplate) {
+        val productTemplateEntity = ProductTemplateMapper.transformTo(productTemplate)
+        productsDao.updateProductTemplate(productTemplateEntity)
+    }
     //endregion
 }

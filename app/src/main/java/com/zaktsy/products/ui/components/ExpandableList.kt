@@ -131,7 +131,7 @@ fun ExpandableList(
                                     ProductElement(
                                         percentageDueExpiration = item.percentageDueExpiration,
                                         text = item.name,
-                                        daysToExpiration = "3"
+                                        daysToExpiration = item.daysDueExpiration.toString()
                                     ) {
                                         navController.navigate(buildTwoRoute(item.id.toString()))
                                     }

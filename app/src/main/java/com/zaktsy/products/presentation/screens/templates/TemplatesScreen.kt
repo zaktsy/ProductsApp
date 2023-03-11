@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -21,13 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
-import com.zaktsy.products.ui.components.AnimatedFAB
 import com.zaktsy.products.ui.components.Search
 import com.zaktsy.products.ui.components.SimpleListElement
 
@@ -35,7 +31,9 @@ import com.zaktsy.products.ui.components.SimpleListElement
 @Composable
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun TemplatesScreen(
-    navController: NavController, scrollState: LazyListState, needToUpdateTemplates: MutableState<Boolean>
+    navController: NavController,
+    scrollState: LazyListState,
+    needToUpdateTemplates: MutableState<Boolean>
 ) {
 
     val viewModel = hiltViewModel<TemplatesViewModel>()
@@ -50,15 +48,13 @@ fun TemplatesScreen(
         needToUpdateTemplates.value = false
     }
 
-    Scaffold(floatingActionButton = {
-        AnimatedFAB(scrollState, 90.dp) { navController.navigate(NavigationRoutes.AddProduct) }
-    }) {
+    Scaffold {
         Column {
             LazyColumn(
                 state = scrollState,
             ) {
                 item {
-                    Row(Modifier.padding(bottom = 20.dp)){
+                    Row(Modifier.padding(bottom = 20.dp)) {
                         Search(
                             searchEnteredName = searchedValue,
                             onSearchValueChanged = viewModel::onSearchValueChanged
@@ -120,7 +116,7 @@ fun TemplatesScreen(
                                     SimpleListElement(
                                         title = item.name,
                                     ) {
-
+                                        navController.navigate(buildTwoRoute(item.id.toString()))
                                     }
                                 },
                                 directions = setOf(DismissDirection.EndToStart)
@@ -143,13 +139,4 @@ fun TemplatesScreen(
     }
 }
 
-@Composable
-@Preview
-fun PreviewTemplatesScreen() {
-    val navController = rememberNavController()
-    val scrollState = rememberLazyListState()
-    val needToUpdate = remember {
-        mutableStateOf(false)
-    }
-    TemplatesScreen(navController, scrollState, needToUpdate)
-}
+private fun buildTwoRoute(argument: String) = "${NavigationRoutes.EditTemplateRoot}/$argument"

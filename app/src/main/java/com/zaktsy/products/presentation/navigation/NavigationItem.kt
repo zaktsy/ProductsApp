@@ -14,4 +14,5 @@ sealed class NavigationItem(var route: String, var icon: ImageVector, var title:
     object Storages: NavigationItem(NavigationRoutes.Storages, Icons.Default.Storage, R.string.storages)
     object EditProduct : NavigationItem(NavigationRoutes.EditProduct, Icons.Default.Add, R.string.edit_product)
     object ProductTemplates : NavigationItem(NavigationRoutes.ProductTemplates, Icons.Default.Description, R.string.product_templates)
+    object EditTemplate : NavigationItem(NavigationRoutes.EditTemplate, Icons.Default.Add, R.string.edit_template)
 }

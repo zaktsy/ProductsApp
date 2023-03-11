@@ -9,7 +9,7 @@ class ProductTemplateMapper {
 
     companion object {
 
-        private fun transformFrom(data: ProductTemplateWithCategory): ProductTemplate {
+        fun transformFrom(data: ProductTemplateWithCategory): ProductTemplate {
             return ProductTemplate(data.productTemplate.id,
                 data.productTemplate.name,
                 data.productTemplate.expirationDuration,
