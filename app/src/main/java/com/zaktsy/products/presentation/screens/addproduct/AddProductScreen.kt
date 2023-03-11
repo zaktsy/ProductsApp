@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import com.marosseleng.compose.material3.datetimepickers.date.domain.DatePickerDefaults
 import com.marosseleng.compose.material3.datetimepickers.date.ui.dialog.DatePickerDialog
 import com.zaktsy.products.R
+import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.utils.AlarmType
 import com.zaktsy.products.ui.components.*
 import java.time.ZoneId
@@ -164,7 +165,9 @@ fun AddProductScreen(
                         viewModel.saveProductAsTemplate(selectedCategoryIndex.value)
                         needToUpdateTemplates.value = true
                         needToUpdateProducts.value = true
-                        navController.popBackStack()
+                        navController.navigate(NavigationRoutes.Products){
+                            popUpTo(0)
+                        }
                     }, colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,

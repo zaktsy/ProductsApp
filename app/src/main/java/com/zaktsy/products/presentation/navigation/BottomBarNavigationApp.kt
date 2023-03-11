@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zaktsy.products.presentation.screens.addproduct.AddProductScreen
+import com.zaktsy.products.presentation.screens.barcodescanner.BarcodeScannerScreen
 import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
 import com.zaktsy.products.presentation.screens.editproduct.EditProductScreen
 import com.zaktsy.products.presentation.screens.edittemplate.EditTemplateScreen
@@ -67,6 +68,9 @@ fun BottomBarAnimationApp() {
             NavigationRoutes.EditTemplate -> {
                 bottomBarState.value = false
             }
+            NavigationRoutes.BarcodeScanner -> {
+                bottomBarState.value = false
+            }
         }
 
         Scaffold(modifier = Modifier.navigationBarsPadding(), bottomBar = {
@@ -118,8 +122,7 @@ fun BottomBarAnimationApp() {
                 }
                 composable(NavigationItem.EditProduct.route) {
                     EditProductScreen(
-                        navController = navController,
-                        needToUpdateProducts = needToUpdateProducts
+                        navController = navController, needToUpdateProducts = needToUpdateProducts
                     )
                 }
                 composable(NavigationItem.ProductTemplates.route) {
@@ -129,9 +132,18 @@ fun BottomBarAnimationApp() {
                         needToUpdateTemplates = needToUpdateTemplates
                     )
                 }
-                composable(NavigationItem.EditTemplate.route){
+                composable(NavigationItem.EditTemplate.route) {
                     EditTemplateScreen(
+                        navController = navController, needToUpdateTemplates = needToUpdateTemplates
+                    )
+                }
+                composable(NavigationItem.BarcodeScanner.route) {
+                    BarcodeScannerScreen(navController = navController)
+                }
+                composable(NavigationItem.AddProductWithBarCode.route) {
+                    AddProductScreen(
                         navController = navController,
+                        needToUpdateProducts = needToUpdateProducts,
                         needToUpdateTemplates = needToUpdateTemplates
                     )
                 }

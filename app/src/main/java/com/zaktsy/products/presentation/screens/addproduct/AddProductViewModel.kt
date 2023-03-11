@@ -1,6 +1,7 @@
 package com.zaktsy.products.presentation.screens.addproduct
 
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.alarms.ProductsAlarmScheduler
@@ -10,7 +11,9 @@ import com.zaktsy.products.domain.usecases.alarms.AddAlarmUseCase
 import com.zaktsy.products.domain.usecases.categories.GetCategoriesUseCase
 import com.zaktsy.products.domain.usecases.products.AddProductUseCase
 import com.zaktsy.products.domain.usecases.producttemplates.AddProductTemplateUseCase
+import com.zaktsy.products.domain.usecases.producttemplates.GetProductTemplateUseCase
 import com.zaktsy.products.domain.usecases.storages.GetStoragesUseCase
+import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.utils.DateUtils.Companion.toSimpleString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +32,9 @@ class AddProductViewModel @Inject constructor(
     private val addProductUseCase: AddProductUseCase,
     private val addAlarmUseCase: AddAlarmUseCase,
     private val addProductTemplateUseCase: AddProductTemplateUseCase,
-    private val productsAlarmScheduler: ProductsAlarmScheduler
+    private val productsAlarmScheduler: ProductsAlarmScheduler,
+    private val getProductTemplateUseCase: GetProductTemplateUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _saveProductAsTemplate = MutableStateFlow(false)
@@ -57,6 +62,10 @@ class AddProductViewModel @Inject constructor(
     fun setManufactureDate(value: Date) {
         _manufactureDate.value = value
         _manufactureDateString.value = value.toSimpleString()
+
+        if (_expirationDuration != 0L) {
+            setExpirationDate(Date(_manufactureDate.value.time + _expirationDuration))
+        }
     }
 
     private val _manufactureDateString = MutableStateFlow(_manufactureDate.value.toSimpleString())
@@ -82,14 +91,36 @@ class AddProductViewModel @Inject constructor(
         _selectedStorageName.value = value
     }
 
+    private var _barcode = ""
+
+    private var _expirationDuration = 0L
+
+    private var templateForProductExists = false
+
     init {
-        getCategories()
-        getStorages()
+        val argument =
+            savedStateHandle.get<String>(NavigationRoutes.AddProductWithBarCodeArg).orEmpty()
+        viewModelScope.launch(Dispatchers.IO) {
+            getCategories()
+            getStorages()
+            if (argument.isNotEmpty()) getProductTemplate(argument)
+        }
     }
 
-    private val _expirationDate = MutableStateFlow(
-        Date()
-    )
+    private suspend fun getProductTemplate(argument: String) {
+        val template = getProductTemplateUseCase.invoke(argument)
+
+        if (template.category != null) setSelectedCategoryName(template.category!!.name)
+        if (template.name != "") templateForProductExists = true
+
+        _productName.value = template.name
+        setExpirationDate(Date(_manufactureDate.value.time + template.expirationDuration))
+
+        _expirationDuration = template.expirationDuration
+        _barcode = argument
+    }
+
+    private val _expirationDate = MutableStateFlow(Date())
 
     fun setExpirationDate(value: Date) {
         if (value < _manufactureDate.value) {
@@ -122,11 +153,11 @@ class AddProductViewModel @Inject constructor(
     }
 
     fun saveProductAsTemplate(selectedCategoryIndex: Int) {
-        if (!saveProductAsTemplate.value) return
+        if (!saveProductAsTemplate.value or templateForProductExists) return
         viewModelScope.launch(Dispatchers.IO) {
             val productTemplate = ProductTemplate(
                 name = _productName.value,
-                barCode = "",
+                barCode = _barcode,
                 category = if (selectedCategoryIndex == -1) null else _categories.value[selectedCategoryIndex],
                 expirationDuration = _expirationDate.value.time - _manufactureDate.value.time,
             )
@@ -175,17 +206,13 @@ class AddProductViewModel @Inject constructor(
         return addProductUseCase.invoke(product)
     }
 
-    private fun getCategories() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val items = getCategoriesUseCase.invoke("")
-            _categories.value = items
-        }
+    private suspend fun getCategories() {
+        val items = getCategoriesUseCase.invoke("")
+        _categories.value = items
     }
 
-    private fun getStorages() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val items = getStoragesUseCase.invoke("")
-            _storages.value = items
-        }
+    private suspend fun getStorages() {
+        val items = getStoragesUseCase.invoke("")
+        _storages.value = items
     }
 }

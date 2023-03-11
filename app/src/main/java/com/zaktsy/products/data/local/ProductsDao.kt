@@ -134,5 +134,9 @@ interface ProductsDao {
 
     @Update
     suspend fun updateProductTemplate(productTemplateEntity: ProductTemplateEntity)
+
+    @Transaction
+    @Query("SELECT * FROM product_templates WHERE barCode LIKE '%' || :barcode || '%'")
+    suspend fun getProductTemplate(barcode: String): ProductTemplateWithCategory
     //endregion
 }

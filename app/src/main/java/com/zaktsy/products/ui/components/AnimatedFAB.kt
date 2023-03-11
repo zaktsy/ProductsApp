@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 fun AnimatedFAB(
     scrollState: LazyListState,
     bottomPadding: Dp,
+    size: Dp = 70.dp,
+    icon: ImageVector = Icons.Outlined.Edit,
     onClickAction: () -> Unit
 ) {
 
@@ -33,14 +36,13 @@ fun AnimatedFAB(
             FloatingActionButton(
                 modifier = Modifier
                     .padding(bottom = bottomPadding)
-                    .size(70.dp),
+                    .size(size),
                 onClick = { onClickAction() },
                 backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 shape = RoundedCornerShape(16.dp),
-
             ) {
-                Icon(Icons.Outlined.Edit, contentDescription = "Add FAB")
+                Icon(icon, contentDescription = "Add FAB")
             }
         }
     )

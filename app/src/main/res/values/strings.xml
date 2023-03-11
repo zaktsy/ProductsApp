@@ -40,4 +40,6 @@
     <string name="edit_template">Edit Template</string>
     <string name="bar_code">Bar code</string>
     <string name="expiration_duration">Expiration duration</string>
+    <string name="camera_permission">Camera permissions</string>
+    <string name="scan_barcode">Scan barcode</string>
 </resources>

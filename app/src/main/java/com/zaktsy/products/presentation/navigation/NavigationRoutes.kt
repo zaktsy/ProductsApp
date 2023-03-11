@@ -18,10 +18,16 @@ sealed class NavigationRoutes {
         const val EditProductArg = "productId"
         const val EditProduct = "$EditProductRoot/{$EditProductArg}"
 
+        const val AddProductWithBarCodeRoot = "add_product_with_barcode"
+        const val AddProductWithBarCodeArg = "bar_code"
+        const val AddProductWithBarCode = "$AddProductWithBarCodeRoot/{$AddProductWithBarCodeArg}"
+
         const val EditTemplateRoot = "edit_template"
         const val EditTemplateArg = "templateId"
         const val EditTemplate = "$EditTemplateRoot/{$EditTemplateArg}"
 
         const val ProductTemplates = "product_templates"
+
+        const val BarcodeScanner = "barcode_scanner"
     }
 }

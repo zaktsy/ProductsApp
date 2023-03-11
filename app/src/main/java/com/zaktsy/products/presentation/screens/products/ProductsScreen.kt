@@ -1,5 +1,6 @@
 package com.zaktsy.products.presentation.screens.products
 
+import android.Manifest
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -23,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.presentation.navigation.NavigationRoutes.Companion.EditProductRoot
 import com.zaktsy.products.ui.components.AnimatedFAB
@@ -31,7 +35,9 @@ import com.zaktsy.products.ui.components.ExpandableSearch
 import com.zaktsy.products.ui.components.ProductElement
 import com.zaktsy.products.ui.theme.*
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
+    ExperimentalPermissionsApi::class
+)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProductsScreen(
@@ -57,8 +63,21 @@ fun ProductsScreen(
         needToUpdateProducts.value = false
     }
 
+    val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
+
     Scaffold(floatingActionButton = {
-        AnimatedFAB(scrollState, 90.dp) { navController.navigate(NavigationRoutes.AddProduct) }
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            AnimatedFAB(scrollState, 10.dp, 40.dp, Icons.Default.QrCode) {
+                cameraPermissionState.launchPermissionRequest()
+                navController.navigate(
+                    NavigationRoutes.BarcodeScanner
+                )
+            }
+
+            AnimatedFAB(scrollState, 90.dp) { navController.navigate(NavigationRoutes.AddProduct) }
+        }
     }) {
         Column {
             LazyColumn(

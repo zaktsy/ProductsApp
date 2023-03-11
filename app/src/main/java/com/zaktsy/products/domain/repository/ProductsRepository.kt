@@ -164,5 +164,15 @@ class ProductsRepository @Inject constructor(private val productsDao: ProductsDa
         val productTemplateEntity = ProductTemplateMapper.transformTo(productTemplate)
         productsDao.updateProductTemplate(productTemplateEntity)
     }
+
+    suspend fun getProductTemplate(barcode: String): ProductTemplate {
+        val productTemplateEntity = productsDao.getProductTemplate(barcode)
+        if (productTemplateEntity == null)
+            return ProductTemplate(0L,
+                "",
+                1,
+                barcode, null)
+        return ProductTemplateMapper.transformFrom(productTemplateEntity)
+    }
     //endregion
 }
