@@ -8,7 +8,3 @@ import javax.inject.Inject
 class AddAlarmUseCase @Inject constructor(private val repository: ProductsRepository) {
     suspend operator fun invoke(alarm: ExpirationAlarm) = repository.addAlarm(alarm)
 }
-
-class AddCategoryUseCase @Inject constructor(private val repository: ProductsRepository){
-    suspend operator fun invoke(category: Category) = repository.addCategory(category)
-}

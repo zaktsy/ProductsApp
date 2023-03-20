@@ -9,7 +9,7 @@
     <string name="all">All</string>
     <string name="sortOrder">Sort order</string>
     <string name="alphabetically">Alphabetically</string>
-    <string name="expiration">Expiration</string>
+    <string name="expiration_days">Days to expire</string>
     <string name="settings">Settings</string>
     <string name="categories">Categories</string>
     <string name="cancel">Cancel</string>
@@ -42,4 +42,5 @@
     <string name="expiration_duration">Expiration duration</string>
     <string name="camera_permission">Camera permissions</string>
     <string name="scan_barcode">Scan barcode</string>
+    <string name="expiration_percent">Expiration</string>
 </resources>

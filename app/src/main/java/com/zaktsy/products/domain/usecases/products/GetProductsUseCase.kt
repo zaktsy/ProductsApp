@@ -15,8 +15,11 @@ class GetProductsUseCase @Inject constructor(private val repository: ProductsRep
             ProductsSortOrder.ALPHABETICALLY -> products.sortedBy {
                 it.name
             }
-            ProductsSortOrder.EXPIRATION -> products.sortedByDescending {
+            ProductsSortOrder.EXPIRATION_DAYS -> products.sortedByDescending {
                 Date().time - (it.manufactureDate.time + it.expirationDuration)
+            }
+            ProductsSortOrder.EXPIRATION_PERCENT -> products.sortedBy {
+                it.percentageDueExpiration
             }
         }
 

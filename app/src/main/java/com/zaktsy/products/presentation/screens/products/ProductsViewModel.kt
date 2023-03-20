@@ -88,9 +88,10 @@ class ProductsViewModel @Inject constructor(
             _showGroupedProducts.value = false
             val sortOrder = when (_selectedSortOrder.value) {
                 0 -> ProductsSortOrder.ALPHABETICALLY
-                1 -> ProductsSortOrder.EXPIRATION
+                1 -> ProductsSortOrder.EXPIRATION_DAYS
+                2 -> ProductsSortOrder.EXPIRATION_PERCENT
                 else -> {
-                    ProductsSortOrder.EXPIRATION
+                    ProductsSortOrder.EXPIRATION_PERCENT
                 }
             }
 

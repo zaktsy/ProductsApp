@@ -2,5 +2,6 @@ package com.zaktsy.products.utils
 
 enum class ProductsSortOrder{
     ALPHABETICALLY,
-    EXPIRATION
+    EXPIRATION_DAYS,
+    EXPIRATION_PERCENT
 }

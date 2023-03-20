@@ -42,6 +42,7 @@ interface ProductsDao {
 
     //region products
 
+    @Transaction
     @Query("SELECT * FROM products WHERE id = :productId")
     suspend fun getProduct(productId: Long): ProductEntityWithCategoryAndStorage
 

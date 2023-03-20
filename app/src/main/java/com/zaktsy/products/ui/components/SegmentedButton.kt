@@ -81,7 +81,7 @@ fun SegmentedButton(
             ) {
                 Text(
                     text = item,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = if (selectedItemIndex.value == index) {
                         MaterialTheme.colorScheme.onPrimary

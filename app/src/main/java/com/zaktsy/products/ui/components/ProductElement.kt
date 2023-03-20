@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.zaktsy.products.R
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,7 +79,7 @@ fun ProductElement(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = stringResource(id = R.string.expiration),
+                    text = stringResource(id = R.string.expiration_percent),
                     fontSize = 15.sp,
                     color = contentColor,
                     modifier = Modifier.weight(3f)

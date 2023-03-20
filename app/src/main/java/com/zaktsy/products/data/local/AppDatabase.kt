@@ -6,10 +6,16 @@ import androidx.room.TypeConverters
 import com.zaktsy.products.data.local.entities.*
 
 @Database(
-    entities = [CategoryEntity::class, ProductEntity::class, StorageEntity::class, ExpirationAlarmEntity::class, ProductTemplateEntity::class],
+    entities = [CategoryEntity::class,
+        ProductEntity::class,
+        StorageEntity::class,
+        ExpirationAlarmEntity::class,
+        ProductTemplateEntity::class],
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getProductsDao(): ProductsDao
 }
+
+

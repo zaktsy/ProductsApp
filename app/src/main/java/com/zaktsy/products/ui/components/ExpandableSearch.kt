@@ -152,7 +152,8 @@ fun ExpandableSearch(
 
                         val sortOrders = listOf(
                             stringResource(id = R.string.alphabetically),
-                            stringResource(id = R.string.expiration)
+                            stringResource(id = R.string.expiration_days),
+                            stringResource(id = R.string.expiration_percent)
                         )
 
                         Box(
