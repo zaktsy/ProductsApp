@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TitleWithBackButton(
-    title: String,
-    onBackAction: () -> Unit
+    title: String, onBackAction: () -> Unit
 ) {
     Card(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
@@ -31,7 +30,7 @@ fun TitleWithBackButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
-                .height(55.dp),
+                .height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -49,8 +48,7 @@ fun TitleWithBackButton(
                 modifier = Modifier
                     .weight(6f)
                     .fillMaxWidth(),
-
-            ){
+                ) {
                 Text(
                     text = title,
                     modifier = Modifier.align(Center),
@@ -62,7 +60,7 @@ fun TitleWithBackButton(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                )
+            )
         }
     }
 }

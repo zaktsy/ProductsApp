@@ -92,9 +92,11 @@ fun CategoriesScreen(
                 ) {
                     item {
                         HeaderWithSearch(
-                            stringResource(id = R.string.categories),
-                            searchEnteredName,
-                            viewModel::onSearchValueChanged
+                            title = stringResource(id = R.string.categories),
+                            searchEnteredName = searchEnteredName,
+                            onSearchValueChanged = viewModel::onSearchValueChanged,
+                            showBackButton = true,
+                            onBackAction = navController::popBackStack
                         )
                     }
 

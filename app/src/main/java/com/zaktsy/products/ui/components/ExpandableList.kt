@@ -59,7 +59,7 @@ fun ExpandableList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp, end = 15.dp)
-                            .height(55.dp),
+                            .height(50.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {

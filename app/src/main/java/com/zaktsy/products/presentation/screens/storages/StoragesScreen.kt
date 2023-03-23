@@ -90,7 +90,9 @@ fun StoragesScreen(
                         HeaderWithSearch(
                             stringResource(id = R.string.storages),
                             searchEnteredName,
-                            viewModel::onSearchValueChanged
+                            viewModel::onSearchValueChanged,
+                            showBackButton = true,
+                            onBackAction = navController::popBackStack
                         )
                     }
 
