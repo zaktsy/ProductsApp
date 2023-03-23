@@ -57,7 +57,9 @@ fun CategoriesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedCategoryName: MutableState<String> = remember { mutableStateOf("") }
 
-    Scaffold(floatingActionButton = {
+    Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
+        floatingActionButton = {
         AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
 

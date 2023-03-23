@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">products</string>
+    <string name="app_name" translatable="false">products</string>
     <string name="products">Products</string>
     <string name="shoppingList">Shopping List</string>
     <string name="addProducts">Add product</string>

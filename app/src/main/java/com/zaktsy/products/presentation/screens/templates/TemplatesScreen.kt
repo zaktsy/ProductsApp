@@ -48,7 +48,9 @@ fun TemplatesScreen(
         needToUpdateTemplates.value = false
     }
 
-    Scaffold {
+    Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
+    ) {
         Column {
             LazyColumn(
                 state = scrollState,

@@ -29,7 +29,9 @@ import com.zaktsy.products.presentation.navigation.NavigationRoutes
 fun SettingsScreen(
     navController: NavController
 ) {
-    Scaffold() {
+    Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -56,7 +58,8 @@ fun SettingsElement(
     navigationRoute: String,
     title: String
 ) {
-    Box(modifier = Modifier
+    Box(
+        modifier = Modifier
         .padding(vertical = 10.dp, horizontal = 20.dp)
         .clip(RoundedCornerShape(100.dp))
         .clickable { navController.navigate(navigationRoute) }) {

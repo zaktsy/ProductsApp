@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,7 +74,9 @@ fun BottomBarAnimationApp() {
             }
         }
 
-        Scaffold(modifier = Modifier.navigationBarsPadding(), bottomBar = {
+        Scaffold(modifier = Modifier.navigationBarsPadding(),
+            backgroundColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
             BottomBar(
                 navController = navController,
                 bottomBarState = bottomBarState,

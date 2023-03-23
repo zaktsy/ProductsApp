@@ -35,7 +35,9 @@ import com.zaktsy.products.ui.components.ExpandableSearch
 import com.zaktsy.products.ui.components.ProductElement
 import com.zaktsy.products.ui.theme.*
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
+@OptIn(
+    ExperimentalMaterialApi::class,
+    ExperimentalFoundationApi::class,
     ExperimentalPermissionsApi::class
 )
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -65,7 +67,9 @@ fun ProductsScreen(
 
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
 
-    Scaffold(floatingActionButton = {
+    Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
+        floatingActionButton = {
         Column(
             horizontalAlignment = Alignment.End
         ) {

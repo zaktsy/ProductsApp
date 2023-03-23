@@ -54,7 +54,9 @@ fun StoragesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedStorageName: MutableState<String> = remember { mutableStateOf("") }
 
-    Scaffold(floatingActionButton = {
+    Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
+        floatingActionButton = {
         AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
 

@@ -6,7 +6,7 @@ import com.zaktsy.products.domain.models.*
 import com.zaktsy.products.utils.mappers.*
 import javax.inject.Inject
 
-class ProductsRepository @Inject constructor(private val productsDao: ProductsDao) {
+open class ProductsRepository @Inject constructor(private val productsDao: ProductsDao) {
 
     //region categories
     suspend fun getAllCategories(): List<Category> {
