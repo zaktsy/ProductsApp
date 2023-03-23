@@ -63,7 +63,7 @@ fun StoragesScreen(
         Column {
 
             StorageDialog(
-                stringResource(id = R.string.add_category_name),
+                stringResource(id = R.string.add_storage_name),
                 addDialogOpenedState,
                 addedStorageName
             ) {
@@ -71,7 +71,7 @@ fun StoragesScreen(
                 needToUpdateProducts.value = true
             }
             StorageDialog(
-                stringResource(id = R.string.edit_category_name),
+                stringResource(id = R.string.edit_storage_name),
                 editDialogOpenedState,
                 editedStorageName
             ) {

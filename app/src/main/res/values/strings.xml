@@ -45,4 +45,6 @@
     <string name="expiration_percent">Expiration</string>
     <string name="templates">Templates</string>
     <string name="delete_element_q">Delete element?</string>
+    <string name="edit_storage_name">Edit storage name</string>
+    <string name="add_storage_name">Add storage name</string>
 </resources>
