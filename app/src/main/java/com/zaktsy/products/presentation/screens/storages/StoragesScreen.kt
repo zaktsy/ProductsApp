@@ -148,6 +148,7 @@ fun StoragesScreen(
                                         SimpleListElement(
                                             title = item.name,
                                         ) {
+                                            editedStorageName.value = item.name
                                             editDialogOpenedState.value = true
                                             recentlyEditedStorage = item
                                         }

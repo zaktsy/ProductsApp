@@ -153,6 +153,7 @@ fun CategoriesScreen(
                                         SimpleListElement(
                                             title = item.name,
                                         ) {
+                                            editedCategoryName.value = item.name
                                             editDialogOpenedState.value = true
                                             recentlyEditedCategory = item
                                         }
