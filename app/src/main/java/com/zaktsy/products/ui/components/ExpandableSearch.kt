@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -45,7 +46,7 @@ fun ExpandableSearch(
     Surface(
         color = Color.Transparent
     ) {
-        Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
+        Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp),
             backgroundColor = MaterialTheme.colorScheme.primaryContainer,
             shape = RoundedCornerShape(25.dp),
             onClick = {
@@ -68,21 +69,16 @@ fun ExpandableSearch(
                         contentDescription = "Search",
                         modifier = Modifier.weight(1f)
                     )
-                    TextField(
+                    BasicTextField(
                         singleLine = true,
                         modifier = Modifier.weight(6f),
                         value = searchedValue.value,
                         onValueChange = {
                             onSearchValueChanged(it)
                         },
-                        textStyle = TextStyle.Default.copy(fontSize = 16.sp),
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            disabledTextColor = Color.Transparent,
-                            backgroundColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = 20.sp
                         )
                     )
                     IconButton(modifier = Modifier

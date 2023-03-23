@@ -2,6 +2,7 @@ package com.zaktsy.products.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.TextField
@@ -9,12 +10,12 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.sp
 fun Search(searchEnteredName: State<String>, onSearchValueChanged: (String) -> Unit) {
 
     Card(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp),
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp),
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(25.dp),
     ) {
@@ -43,24 +44,28 @@ fun Search(searchEnteredName: State<String>, onSearchValueChanged: (String) -> U
                     contentDescription = "Search",
                     modifier = Modifier.weight(1f)
                 )
-                TextField(
+                BasicTextField(
                     singleLine = true,
                     modifier = Modifier.weight(6f),
                     value = searchEnteredName.value,
                     onValueChange = {
                         onSearchValueChanged(it)
                     },
-                    textStyle = TextStyle.Default.copy(fontSize = 16.sp),
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        disabledTextColor = Color.Transparent,
-                        backgroundColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontSize = 20.sp
                     )
                 )
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun previewa(){
+    val entered = remember {
+        mutableStateOf("cdkcjds")
+    }
+    Search(entered, {})
 }

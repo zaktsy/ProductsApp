@@ -40,7 +40,7 @@ fun SettingsScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.settings),
-                    fontSize = 40.sp,
+                    fontSize = 30.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
                 )
@@ -67,13 +67,13 @@ fun SettingsElement(
             Text(
                 modifier = Modifier.padding(start = 5.dp, end = 5.dp, bottom = 2.dp),
                 text = title,
-                fontSize = 30.sp,
+                fontSize = 25.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = "Right",
-                Modifier.size(35.dp),
+                Modifier.size(30.dp),
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }

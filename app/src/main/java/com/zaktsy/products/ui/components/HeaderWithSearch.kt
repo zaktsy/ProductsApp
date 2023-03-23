@@ -68,13 +68,3 @@ fun HeaderWithSearch(
         }
     }
 }
-
-
-@Composable
-@Preview
-fun preview(){
-    val search = remember {
-        mutableStateOf("ds")
-    }
-    HeaderWithSearch("ds",search,{}, true)
-}

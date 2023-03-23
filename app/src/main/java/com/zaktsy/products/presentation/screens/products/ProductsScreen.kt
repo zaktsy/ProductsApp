@@ -93,7 +93,7 @@ fun ProductsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = stringResource(id = R.string.products),
-                            fontSize = 40.sp,
+                            fontSize = 30.sp,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.padding(top = 20.dp)
                         )
@@ -190,6 +190,9 @@ fun ProductsScreen(
                     }
                 }
 
+                item {
+                    SmartSpacer(scrollState)
+                }
             }
 
             if (isLoading.value) {

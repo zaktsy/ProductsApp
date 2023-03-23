@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,7 @@ fun ExpandableList(
         color = Color.Transparent
     ) {
         Card(
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 20.dp),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp),
             backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
             shape = RoundedCornerShape(25.dp),
         ) {
@@ -65,15 +66,17 @@ fun ExpandableList(
                     ) {
                         Text(
                             text = title,
-                            fontSize = 30.sp,
+                            fontSize = 25.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.weight(8f)
+                            modifier = Modifier.weight(8f),
+                            overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             text = itemCount,
-                            fontSize = 25.sp,
+                            fontSize = 20.sp,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }

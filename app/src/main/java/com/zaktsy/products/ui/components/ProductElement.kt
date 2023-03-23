@@ -25,7 +25,7 @@ fun ProductElement(
     daysToExpiration: String,
     onItemClick: () -> Unit,
 ) {
-    Card(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+    Card(modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
         backgroundColor = when (percentageDueExpiration) {
             in 0.0..0.2 -> {
                 androidx.compose.material.MaterialTheme.colors.RedContainer

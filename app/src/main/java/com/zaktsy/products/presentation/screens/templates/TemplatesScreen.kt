@@ -29,6 +29,7 @@ import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.ui.components.HeaderWithSearch
 import com.zaktsy.products.ui.components.Search
 import com.zaktsy.products.ui.components.SimpleListElement
+import com.zaktsy.products.ui.components.SmartSpacer
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -128,6 +129,9 @@ fun TemplatesScreen(
                         })
                 }
 
+                item {
+                    SmartSpacer(scrollState)
+                }
             }
 
             if (isLoading.value) {

@@ -30,10 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.ui.components.AnimatedFAB
-import com.zaktsy.products.ui.components.HeaderWithSearch
-import com.zaktsy.products.ui.components.SimpleListElement
-import com.zaktsy.products.ui.components.TextFieldDialog
+import com.zaktsy.products.ui.components.*
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -57,9 +54,7 @@ fun CategoriesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedCategoryName: MutableState<String> = remember { mutableStateOf("") }
 
-    Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
-        floatingActionButton = {
+    Scaffold(backgroundColor = MaterialTheme.colorScheme.background, floatingActionButton = {
         AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
     }) {
 
@@ -163,6 +158,10 @@ fun CategoriesScreen(
                                     directions = setOf(DismissDirection.EndToStart)
                                 )
                             })
+                    }
+
+                    item {
+                        SmartSpacer(scrollState)
                     }
                 }
                 if (isLoading.value) {
