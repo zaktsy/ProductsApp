@@ -22,17 +22,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
+import com.zaktsy.products.R
 import com.zaktsy.products.presentation.navigation.NavigationRoutes
 import com.zaktsy.products.presentation.navigation.NavigationRoutes.Companion.EditProductRoot
-import com.zaktsy.products.ui.components.AnimatedFAB
-import com.zaktsy.products.ui.components.ExpandableList
-import com.zaktsy.products.ui.components.ExpandableSearch
-import com.zaktsy.products.ui.components.ProductElement
+import com.zaktsy.products.ui.components.*
 import com.zaktsy.products.ui.theme.*
 
 @OptIn(
@@ -67,9 +67,7 @@ fun ProductsScreen(
 
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
 
-    Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
-        floatingActionButton = {
+    Scaffold(backgroundColor = MaterialTheme.colorScheme.background, floatingActionButton = {
         Column(
             horizontalAlignment = Alignment.End
         ) {
@@ -80,7 +78,9 @@ fun ProductsScreen(
                 )
             }
 
-            AnimatedFAB(scrollState, 90.dp) { navController.navigate(NavigationRoutes.AddProduct) }
+            AnimatedFAB(
+                scrollState, 90.dp
+            ) { navController.navigate(NavigationRoutes.AddProduct) }
         }
     }) {
         Column {
@@ -88,16 +88,31 @@ fun ProductsScreen(
                 state = scrollState,
             ) {
                 item {
-                    ExpandableSearch(
-                        false,
-                        scrollState,
-                        selectedDisplayMode,
-                        viewModel::setSelectedDisplayMode,
-                        selectedSortOrder,
-                        viewModel::setSelectedSortOrder,
-                        viewModel::onSearchValueChanged,
-                        searchedValue
-                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = stringResource(id = R.string.products),
+                            fontSize = 40.sp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.padding(top = 20.dp)
+                        )
+                    }
+                }
+
+                item {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        ExpandableSearch(
+                            false,
+                            scrollState,
+                            selectedDisplayMode,
+                            viewModel::setSelectedDisplayMode,
+                            selectedSortOrder,
+                            viewModel::setSelectedSortOrder,
+                            viewModel::onSearchValueChanged,
+                            searchedValue
+                        )
+                    }
                 }
 
                 if (showProducts.value and products.value.isNotEmpty() and !isLoading.value) {

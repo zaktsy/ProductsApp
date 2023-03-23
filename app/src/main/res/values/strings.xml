@@ -43,4 +43,5 @@
     <string name="camera_permission">Camera permissions</string>
     <string name="scan_barcode">Scan barcode</string>
     <string name="expiration_percent">Expiration</string>
+    <string name="templates">Templates</string>
 </resources>
