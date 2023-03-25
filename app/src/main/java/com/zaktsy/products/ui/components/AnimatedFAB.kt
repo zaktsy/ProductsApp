@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,7 +22,7 @@ fun AnimatedFAB(
     scrollState: LazyListState,
     bottomPadding: Dp,
     size: Dp = 70.dp,
-    icon: ImageVector = Icons.Outlined.Edit,
+    icon: ImageVector = Icons.Default.Edit,
     onClickAction: () -> Unit
 ) {
 

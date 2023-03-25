@@ -148,7 +148,7 @@ fun ProductsScreen(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                                            .padding(horizontal = 20.dp, vertical = 5.dp)
                                             .clip(RoundedCornerShape(25.dp))
                                             .background(color)
                                     ) {

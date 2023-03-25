@@ -98,9 +98,6 @@ fun BottomBarAnimationApp() {
                         needToUpdateProducts = needToUpdateProducts,
                     )
                 }
-                composable(NavigationItem.ShoppingList.route) {
-                    ShoppingListScreen(navController = navController)
-                }
                 composable(NavigationItem.AddProduct.route) {
                     AddProductScreen(
                         navController = navController,
