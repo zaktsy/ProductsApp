@@ -1,6 +1,7 @@
 package com.zaktsy.products.presentation.screens.editproduct
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -111,41 +112,45 @@ fun EditProductScreen(
                 )
             )
 
-            Column {
-                if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_DAY_BEFORE)) {
-                    notificationStatesFromViewModel.value[AlarmType.ONE_DAY_BEFORE]?.let {
-                        notificationStates[R.string.one_day_before] =
-                            Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(it) })
-                    }
-                } else {
+            if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_DAY_BEFORE)) {
+                notificationStatesFromViewModel.value[AlarmType.ONE_DAY_BEFORE]?.let {
                     notificationStates[R.string.one_day_before] =
-                        Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
+                        Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(it) })
                 }
+            } else {
+                notificationStates[R.string.one_day_before] =
+                    Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
+            }
 
-                if (notificationStatesFromViewModel.value.containsKey(AlarmType.TWO_DAYS_BEFORE)) {
-                    notificationStatesFromViewModel.value[AlarmType.TWO_DAYS_BEFORE]?.let {
-                        notificationStates[R.string.two_day_before] =
-                            Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(it) })
-                    }
-                } else {
+            if (notificationStatesFromViewModel.value.containsKey(AlarmType.TWO_DAYS_BEFORE)) {
+                notificationStatesFromViewModel.value[AlarmType.TWO_DAYS_BEFORE]?.let {
                     notificationStates[R.string.two_day_before] =
-                        Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
+                        Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(it) })
                 }
+            } else {
+                notificationStates[R.string.two_day_before] =
+                    Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
+            }
 
-                if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_WEEK_BEFORE)) {
-                    notificationStatesFromViewModel.value[AlarmType.ONE_WEEK_BEFORE]?.let {
-                        notificationStates[R.string.one_week_before] =
-                            Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(it) })
-                    }
-                } else {
+            if (notificationStatesFromViewModel.value.containsKey(AlarmType.ONE_WEEK_BEFORE)) {
+                notificationStatesFromViewModel.value[AlarmType.ONE_WEEK_BEFORE]?.let {
                     notificationStates[R.string.one_week_before] =
-                        Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
+                        Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(it) })
                 }
+            } else {
+                notificationStates[R.string.one_week_before] =
+                    Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
+            }
+            LazyRow(
+            ) {
+                item { Spacer(modifier = Modifier.width(15.dp)) }
 
                 notificationStates.forEach {
-                    CheckableItem(
-                        checked = it.value.second, it.key
-                    )
+                    item {
+                        CheckableItem(
+                            checked = it.value.second, it.key
+                        )
+                    }
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.zaktsy.products.presentation.screens.addproduct
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -118,20 +119,25 @@ fun AddProductScreen(
                 )
             )
 
+            notificationStates[R.string.one_day_before] =
+                Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
+            notificationStates[R.string.two_day_before] =
+                Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
+            notificationStates[R.string.one_week_before] =
+                Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
 
-            Column {
-                notificationStates[R.string.one_day_before] =
-                    Pair(AlarmType.ONE_DAY_BEFORE, remember { mutableStateOf(false) })
-                notificationStates[R.string.two_day_before] =
-                    Pair(AlarmType.TWO_DAYS_BEFORE, remember { mutableStateOf(false) })
-                notificationStates[R.string.one_week_before] =
-                    Pair(AlarmType.ONE_WEEK_BEFORE, remember { mutableStateOf(false) })
+            LazyRow(
+            ) {
+                item { Spacer(modifier = Modifier.width(15.dp)) }
 
                 notificationStates.forEach {
-                    CheckableItem(
-                        checked = it.value.second, it.key
-                    )
+                    item {
+                        CheckableItem(
+                            checked = it.value.second, it.key
+                        )
+                    }
                 }
+
             }
 
             Row(
@@ -165,7 +171,7 @@ fun AddProductScreen(
                         viewModel.saveProductAsTemplate(selectedCategoryIndex.value)
                         needToUpdateTemplates.value = true
                         needToUpdateProducts.value = true
-                        navController.navigate(NavigationRoutes.Products){
+                        navController.navigate(NavigationRoutes.Products) {
                             popUpTo(0)
                         }
                     }, colors = ButtonDefaults.buttonColors(
