@@ -31,6 +31,8 @@ import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.ui.components.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -47,6 +49,10 @@ fun StoragesScreen(
     val searchEnteredName = viewModel.searchedValue.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
     val storages = viewModel.storages.collectAsState()
+    val allStorages = viewModel.allStorages.collectAsState()
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     val addDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val addedStorageName: MutableState<String> = remember { mutableStateOf("") }
@@ -54,16 +60,21 @@ fun StoragesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedStorageName: MutableState<String> = remember { mutableStateOf("") }
 
-    Scaffold(backgroundColor = MaterialTheme.colorScheme.background, floatingActionButton = {
-        AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
-    }) {
+    Scaffold(backgroundColor = MaterialTheme.colorScheme.background,
+        scaffoldState = scaffoldState,
+        floatingActionButton = {
+            AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
+        }) {
 
         Column {
 
             StorageDialog(
                 stringResource(id = R.string.add_storage_name),
                 addDialogOpenedState,
-                addedStorageName
+                addedStorageName,
+                allStorages.value,
+                coroutineScope,
+                scaffoldState
             ) {
                 viewModel.addStorage(Storage(addedStorageName.value))
                 needToUpdateProducts.value = true
@@ -71,7 +82,10 @@ fun StoragesScreen(
             StorageDialog(
                 stringResource(id = R.string.edit_storage_name),
                 editDialogOpenedState,
-                editedStorageName
+                editedStorageName,
+                allStorages.value,
+                coroutineScope,
+                scaffoldState
             ) {
                 viewModel.editStorage(recentlyEditedStorage, editedStorageName.value)
                 needToUpdateProducts.value = true
@@ -202,8 +216,14 @@ fun StorageDialog(
     title: String,
     dialogOpenedState: MutableState<Boolean>,
     typedName: MutableState<String>,
+    allStorages: List<Storage>,
+    coroutineScope: CoroutineScope,
+    scaffoldState: ScaffoldState,
     onSubmit: () -> Unit
 ) {
+    val okString = stringResource(id = R.string.ok)
+    val storageExistsMessage = stringResource(id = R.string.storage_exists)
+
     if (dialogOpenedState.value) {
         Dialog(
             onDismissRequest = {
@@ -214,7 +234,16 @@ fun StorageDialog(
             TextFieldDialog(
                 title, dialogOpenedState, typedName
             ) {
-                onSubmit()
+                val isNameNew = !allStorages.any { it.name == typedName.value }
+                if (isNameNew) {
+                    onSubmit()
+                } else {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = storageExistsMessage, actionLabel = okString
+                        )
+                    }
+                }
                 typedName.value = ""
             }
         }

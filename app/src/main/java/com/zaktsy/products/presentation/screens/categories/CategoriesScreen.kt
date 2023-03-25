@@ -31,6 +31,8 @@ import androidx.navigation.NavController
 import com.zaktsy.products.R
 import com.zaktsy.products.domain.models.Category
 import com.zaktsy.products.ui.components.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -47,6 +49,10 @@ fun CategoriesScreen(
     val searchEnteredName = viewModel.searchedValue.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
     val categories = viewModel.categories.collectAsState()
+    val allCategories = viewModel.allCategories.collectAsState()
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     val addDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val addedCategoryName: MutableState<String> = remember { mutableStateOf("") }
@@ -54,16 +60,21 @@ fun CategoriesScreen(
     val editDialogOpenedState: MutableState<Boolean> = remember { mutableStateOf(false) }
     val editedCategoryName: MutableState<String> = remember { mutableStateOf("") }
 
-    Scaffold(backgroundColor = MaterialTheme.colorScheme.background, floatingActionButton = {
-        AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
-    }) {
+    Scaffold(backgroundColor = MaterialTheme.colorScheme.background,
+        scaffoldState = scaffoldState,
+        floatingActionButton = {
+            AnimatedFAB(scrollState, 10.dp) { addDialogOpenedState.value = true }
+        }) {
 
         Column {
 
             CategoryDialog(
                 stringResource(id = R.string.add_category_name),
                 addDialogOpenedState,
-                addedCategoryName
+                addedCategoryName,
+                allCategories.value,
+                coroutineScope,
+                scaffoldState
             ) {
                 viewModel.addCategory(Category(addedCategoryName.value))
                 needToUpdateProducts.value = true
@@ -72,7 +83,10 @@ fun CategoriesScreen(
             CategoryDialog(
                 stringResource(id = R.string.edit_category_name),
                 editDialogOpenedState,
-                editedCategoryName
+                editedCategoryName,
+                allCategories.value,
+                coroutineScope,
+                scaffoldState
             ) {
                 viewModel.editCategory(recentlyEditedCategory, editedCategoryName.value)
                 needToUpdateProducts.value = true
@@ -204,8 +218,13 @@ fun CategoryDialog(
     title: String,
     dialogOpenedState: MutableState<Boolean>,
     typedName: MutableState<String>,
+    allCategories: List<Category>,
+    coroutineScope: CoroutineScope,
+    scaffoldState: ScaffoldState,
     onSubmit: () -> Unit
 ) {
+    val okString = stringResource(id = R.string.ok)
+    val categoryExistsMessage = stringResource(id = R.string.category_exists)
     if (dialogOpenedState.value) {
         Dialog(
             onDismissRequest = {
@@ -216,7 +235,16 @@ fun CategoryDialog(
             TextFieldDialog(
                 title, dialogOpenedState, typedName
             ) {
-                onSubmit()
+                val isNameNew = !allCategories.any { it.name == typedName.value }
+                if (isNameNew) {
+                    onSubmit()
+                } else {
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = categoryExistsMessage, actionLabel = okString
+                        )
+                    }
+                }
                 typedName.value = ""
             }
         }

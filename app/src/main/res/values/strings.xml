@@ -47,4 +47,6 @@
     <string name="delete_element_q">Delete element?</string>
     <string name="edit_storage_name">Edit storage name</string>
     <string name="add_storage_name">Add storage name</string>
+    <string name="category_exists">Category with that name is already exists</string>
+    <string name="storage_exists">Storage with that name is already exists</string>
 </resources>

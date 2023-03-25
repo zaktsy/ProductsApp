@@ -3,7 +3,6 @@ package com.zaktsy.products.presentation.screens.categories
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.zaktsy.products.domain.models.Category
-import com.zaktsy.products.domain.models.Storage
 import com.zaktsy.products.domain.usecases.categories.AddCategoryUseCase
 import com.zaktsy.products.domain.usecases.categories.DeleteCategoryUseCase
 import com.zaktsy.products.domain.usecases.categories.EditCategoryUseCase
@@ -27,20 +26,32 @@ class CategoriesViewModel @Inject constructor(
     private val _categories = MutableStateFlow(mutableStateListOf<Category>())
     val categories = _categories.asStateFlow()
 
+    private val _allCategories = MutableStateFlow(mutableStateListOf<Category>())
+    val allCategories = _allCategories.asStateFlow()
+
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
     init {
         getCategories()
+        getAllCategories()
     }
 
     private fun getCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
-            val items = getCategoriesUseCase.invoke(_searchedValue.value)
+            val categoryList = getCategoriesUseCase.invoke(_searchedValue.value)
             _categories.value = mutableStateListOf()
-            _categories.value.addAll(items)
+            _categories.value.addAll(categoryList)
             _isLoading.value = false
+        }
+    }
+
+    private fun getAllCategories(){
+        viewModelScope.launch(Dispatchers.IO){
+            val allCategoryList = getCategoriesUseCase.invoke("")
+            _allCategories.value = mutableStateListOf()
+            _allCategories.value.addAll(allCategoryList)
         }
     }
 
@@ -48,11 +59,13 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             addCategoryUseCase.invoke(category)
             getCategories()
+            getAllCategories()
         }
     }
 
     fun deleteCategory(category: Category) {
         _categories.value.removeIf { it.id == category.id }
+        _allCategories.value.removeIf { it.id == category.id }
         viewModelScope.launch(Dispatchers.IO) {
             deleteCategoryUseCase.invoke(category)
         }
@@ -64,6 +77,7 @@ class CategoriesViewModel @Inject constructor(
             editedCategory.name = newCategoryName
             editCategoryUseCase.invoke(editedCategory)
             getCategories()
+            getAllCategories()
         }
     }
 
