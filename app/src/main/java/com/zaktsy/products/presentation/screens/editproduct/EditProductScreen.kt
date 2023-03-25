@@ -63,11 +63,13 @@ fun EditProductScreen(
                 onValueChanged = viewModel::setProductName
             )
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                 text = stringResource(id = R.string.expiration_range),
                 style = TextStyle(
-                    fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
+                    fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
 
@@ -85,6 +87,7 @@ fun EditProductScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.height(15.dp))
 
             ExpandableSelector(
                 expanded = categoriesSelectorExpanded,
@@ -104,11 +107,13 @@ fun EditProductScreen(
                 onSelectedChanged = viewModel::setSelectedStorageName
             )
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+                modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                 text = stringResource(id = R.string.notifications),
                 style = TextStyle(
-                    fontSize = 25.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
+                    fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
 
@@ -154,6 +159,8 @@ fun EditProductScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -176,7 +183,9 @@ fun EditProductScreen(
                         disabledContentColor = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
-                    Text(stringResource(id = R.string.save))
+                    Text(
+                        stringResource(id = R.string.save), fontSize = 20.sp
+                    )
                 }
             }
 

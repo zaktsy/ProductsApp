@@ -1,5 +1,6 @@
 package com.zaktsy.products.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,7 +17,9 @@ fun TextInput(
 ) {
     OutlinedTextField(
         singleLine = true,
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+        modifier = Modifier
+            .padding(horizontal = 20.dp, vertical = 5.dp)
+            .fillMaxWidth(),
         value = text.value,
         label = {
             Text(

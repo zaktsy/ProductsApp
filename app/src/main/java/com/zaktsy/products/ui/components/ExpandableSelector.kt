@@ -1,5 +1,6 @@
 package com.zaktsy.products.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
@@ -21,17 +22,17 @@ fun ExpandableSelector(
     selectedItemIndex: MutableState<Int>,
     onSelectedChanged: (String) -> Unit,
 ) {
-
     ExposedDropdownMenuBox(
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value },
         modifier = Modifier
-            .width(300.dp)
-            .padding(start = 20.dp, top = 10.dp)
+            .padding(horizontal = 20.dp, vertical = 5.dp)
     ) {
         OutlinedTextField(singleLine = true,
             readOnly = true,
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth(),
             value = selectedItemName.value,
             onValueChange = { },
             label = {

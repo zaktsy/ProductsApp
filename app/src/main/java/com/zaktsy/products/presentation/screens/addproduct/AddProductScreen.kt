@@ -71,8 +71,10 @@ fun AddProductScreen(
                 onValueChanged = viewModel::setProductName
             )
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 5.dp),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
                 text = stringResource(id = R.string.expiration_range),
                 style = TextStyle(
                     fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -93,6 +95,8 @@ fun AddProductScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             ExpandableSelector(
                 expanded = categoriesSelectorExpanded,
                 label = stringResource(id = R.string.category),
@@ -111,8 +115,10 @@ fun AddProductScreen(
                 onSelectedChanged = viewModel::setSelectedStorageName
             )
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             Text(
-                modifier = Modifier.padding(start = 20.dp, top = 15.dp),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
                 text = stringResource(id = R.string.notifications),
                 style = TextStyle(
                     fontSize = 22.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -140,11 +146,13 @@ fun AddProductScreen(
 
             }
 
+            Spacer(modifier = Modifier.height(5.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    modifier = Modifier.padding(start = 20.dp, top = 5.dp, end = 20.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp),
                     text = stringResource(id = R.string.save_as_template),
                     style = TextStyle(
                         fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -154,10 +162,12 @@ fun AddProductScreen(
                     onCheckedChange = { viewModel.setSaveProductAsTemplate(it) })
             }
 
+            Spacer(modifier = Modifier.height(5.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -181,7 +191,9 @@ fun AddProductScreen(
                         disabledContentColor = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
-                    Text(stringResource(id = R.string.save))
+                    Text(
+                        stringResource(id = R.string.save), fontSize = 20.sp
+                    )
                 }
             }
 
