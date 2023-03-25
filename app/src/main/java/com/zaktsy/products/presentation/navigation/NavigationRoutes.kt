@@ -29,5 +29,7 @@ sealed class NavigationRoutes {
         const val ProductTemplates = "product_templates"
 
         const val BarcodeScanner = "barcode_scanner"
+
+        const val Instruction = "instruction"
     }
 }

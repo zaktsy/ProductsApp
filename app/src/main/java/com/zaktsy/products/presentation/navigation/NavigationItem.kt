@@ -12,6 +12,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector, var title:
     object Settings: NavigationItem(NavigationRoutes.Settings, Icons.Default.Settings, R.string.settings)
     object Categories: NavigationItem(NavigationRoutes.Categories, Icons.Default.Category, R.string.categories)
     object Storages: NavigationItem(NavigationRoutes.Storages, Icons.Default.Storage, R.string.storages)
+    object Instruction: NavigationItem(NavigationRoutes.Instruction, Icons.Default.Storage, R.string.instruction)
     object EditProduct : NavigationItem(NavigationRoutes.EditProduct, Icons.Default.Add, R.string.edit_product)
     object ProductTemplates : NavigationItem(NavigationRoutes.ProductTemplates, Icons.Default.Description, R.string.product_templates)
     object EditTemplate : NavigationItem(NavigationRoutes.EditTemplate, Icons.Default.Add, R.string.edit_template)

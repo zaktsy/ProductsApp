@@ -49,4 +49,12 @@
     <string name="add_storage_name">Add storage name</string>
     <string name="category_exists">Category with that name is already exists</string>
     <string name="storage_exists">Storage with that name is already exists</string>
+    <string name="instruction">Instruction</string>
+    <string name="product_color_meanings">Product color meanings</string>
+    <string name="product_color_meanings_info">Product cards are colored differently depending on how much of their expiration date is left.</string>
+    <string name="meanings_of_colors">Meanings of colors:</string>
+    <string name="product_color_green_info">The product is fresh. 100% to 50% of the expiration date remains</string>
+    <string name="product_color_yellow_info">50% to 25% of the expiration date remains</string>
+    <string name="product_color_red_info">Product will expire soon. 25% to 0% of the expiration date remains</string>
+    <string name="product_color_expired_info">Product has expired</string>
 </resources>

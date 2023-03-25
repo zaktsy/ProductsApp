@@ -48,6 +48,7 @@ fun SettingsScreen(
 
             SettingsElement(navController, NavigationRoutes.Categories, stringResource(R.string.categories))
             SettingsElement(navController, NavigationRoutes.Storages, stringResource(R.string.storages))
+            SettingsElement(navController, NavigationRoutes.Instruction, stringResource(R.string.instruction))
         }
     }
 }
@@ -60,9 +61,9 @@ fun SettingsElement(
 ) {
     Box(
         modifier = Modifier
-        .padding(vertical = 10.dp, horizontal = 20.dp)
-        .clip(RoundedCornerShape(100.dp))
-        .clickable { navController.navigate(navigationRoute) }) {
+            .padding(vertical = 10.dp, horizontal = 20.dp)
+            .clip(RoundedCornerShape(100.dp))
+            .clickable { navController.navigate(navigationRoute) }) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 modifier = Modifier.padding(start = 5.dp, end = 5.dp, bottom = 2.dp),

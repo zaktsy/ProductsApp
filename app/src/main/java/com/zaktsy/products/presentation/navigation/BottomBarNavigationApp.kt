@@ -20,6 +20,7 @@ import com.zaktsy.products.presentation.screens.categories.CategoriesScreen
 import com.zaktsy.products.presentation.screens.editproduct.EditProductScreen
 import com.zaktsy.products.presentation.screens.edittemplate.EditTemplateScreen
 import com.zaktsy.products.presentation.screens.products.ProductsScreen
+import com.zaktsy.products.presentation.screens.settings.InstructionScreen
 import com.zaktsy.products.presentation.screens.settings.SettingsScreen
 import com.zaktsy.products.presentation.screens.shoppinglist.ShoppingListScreen
 import com.zaktsy.products.presentation.screens.storages.StoragesScreen
@@ -70,6 +71,9 @@ fun BottomBarAnimationApp() {
                 bottomBarState.value = false
             }
             NavigationRoutes.BarcodeScanner -> {
+                bottomBarState.value = false
+            }
+            NavigationRoutes.Instruction -> {
                 bottomBarState.value = false
             }
         }
@@ -149,6 +153,9 @@ fun BottomBarAnimationApp() {
                         needToUpdateProducts = needToUpdateProducts,
                         needToUpdateTemplates = needToUpdateTemplates
                     )
+                }
+                composable(NavigationItem.Instruction.route){
+                    InstructionScreen(navController = navController)
                 }
             }
         })

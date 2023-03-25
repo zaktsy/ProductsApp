@@ -27,10 +27,10 @@ fun ProductElement(
 ) {
     Card(modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
         backgroundColor = when (percentageDueExpiration) {
-            in 0.0..0.2 -> {
+            in 0.0..0.25 -> {
                 androidx.compose.material.MaterialTheme.colors.RedContainer
             }
-            in 0.2..0.5 -> {
+            in 0.25..0.5 -> {
                 androidx.compose.material.MaterialTheme.colors.YellowContainer
             }
             in 0.5..1.0 -> {

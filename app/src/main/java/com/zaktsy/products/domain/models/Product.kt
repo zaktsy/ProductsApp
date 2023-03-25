@@ -1,8 +1,5 @@
 package com.zaktsy.products.domain.models
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.ui.graphics.Color
-import com.zaktsy.products.ui.theme.GreenContainer
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
